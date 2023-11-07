@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QPaintEvent>
+
 using namespace std;
 
 void print(int num1, string toPrint, int num2) {
@@ -26,6 +27,12 @@ MainWindow::MainWindow(QWidget *parent)
     painter->pen().color().green();
     painter->drawRect(r);
     painter->end();
+    update();
+}
+
+void CustomWidget::paintEvent(QPaintEvent* e)
+{
+
 }
 
 MainWindow::~MainWindow()
