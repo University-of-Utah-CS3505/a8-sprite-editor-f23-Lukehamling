@@ -52,8 +52,15 @@ void MainWindow::paintEvent(QPaintEvent*)
     int penWidth =  1;
     pen.setWidth(penWidth);
     painter.setPen(pen);
-    QRect box(100, 170, 80, 60);
-    painter.fillRect(box, Qt::blue);
+    const int scale = 20;
+    for (size_t i = 0; i < 10; i++) {
+        for (size_t j = 0; j < 10; j++) {
+            int x = ui->canvas->x() + (i * scale);
+            int y = ui->canvas->y() + (j * scale);
+            QRect box(x, y, scale, scale);
+            painter.fillRect(box, QColor(i*25,j*25,50));
+        }
+    }
     QRect frame(ui->canvas->x(), ui->canvas->y(), ui->canvas->width(), ui->canvas->height());
 //    pen.setColor(Qt::black);
     painter.drawRect(frame);
