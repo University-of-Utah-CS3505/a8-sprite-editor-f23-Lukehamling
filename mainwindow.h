@@ -14,6 +14,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void paintEvent(QPaintEvent*);
+
+public slots:
+    void valueChanged();
 
 private:
     Ui::MainWindow *ui;
