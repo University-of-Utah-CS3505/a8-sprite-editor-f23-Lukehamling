@@ -40,7 +40,31 @@ void Sprite::setColor(unsigned short int x, unsigned short int y, QColor desired
 
 void Sprite::fill(unsigned short int x, unsigned short int y, QColor fillColor)
 {
-    //TODO: Implement this method
+    QColor originalColor = getColor(x,y);
+    fillRecursive(x,y, originalColor, fillColor);
+}
+
+void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor originalColor, QColor fillColor)
+{
+    if(getColor(x,y) == fillColor)
+        return;
+
+    if(getColor(x,y) != originalColor)
+        return;
+
+    setColor(x, y, fillColor);
+
+    if(x > 0)
+        fill(x-1, y, fillColor);
+
+    if(x < width)
+        fill(x+1, y, fillColor);
+
+    if(y > 0)
+        fill(x, y-1, fillColor);
+
+    if(y < height)
+        fill(x, y+1, fillColor);
 }
 
 void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
