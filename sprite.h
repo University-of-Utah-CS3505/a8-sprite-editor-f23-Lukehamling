@@ -17,14 +17,14 @@ using std::vector;
 class Sprite
 {
 private:
-    unsigned short int width;
-    unsigned short int height;
 
     //TODO: declaring arrays like this is problematic for what we are trying to do
     //array<array<QColor, 32>, 32> grid;
     vector<vector<QColor>> grid;
     const QColor DEFAULT_COLOR = Qt::transparent;
 public:
+    unsigned short int width;
+    unsigned short int height;
     /// @brief Constructor for Sprite object. The user will pass in a width and height for the spite that
     ///         will used to set the size of the editing grid in the view. The grid will be represented
     ///         in the Sprite object as a 2d vector of QColors. Indexing into the grid will work as expected
