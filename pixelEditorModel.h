@@ -37,7 +37,7 @@ private:
     QStack<std::vector<Sprite>> undoStack;
     Tool currentTool;
     std::vector<Sprite> frames;
-    Sprite currentFrame;
+    int currentFrameIndex;
     QColor currentColor;
     int fps;
 
