@@ -11,10 +11,12 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    model.cpp \
     sprite.cpp
 
 HEADERS += \
     mainwindow.h \
+    model.h \
     sprite.h
 
 FORMS += \
