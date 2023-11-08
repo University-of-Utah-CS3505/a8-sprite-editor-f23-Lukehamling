@@ -2,10 +2,11 @@
 #define PIXELEDITORMODEL_H
 
 #include "sprite.h"
+#include <QStack>
 class pixelEditorModel : public QObject
 {
 public:
-    explict pixelEditorModel();
+    pixelEditorModel();
 
 public slots:
     void redo();
@@ -32,15 +33,15 @@ private:
         Redo
     };
 
-    QStack<std::vector<Sprite>> redo;
-    QStack<std::vector<Sprite>> undo;
+    QStack<std::vector<Sprite>> redoStack;
+    QStack<std::vector<Sprite>> undoStack;
     Tool currentTool;
     std::vector<Sprite> frames;
     Sprite currentFrame;
     QColor currentColor;
     int fps;
 
-}
+};
 
 #endif // PIXELEDITORMODEL_H
 
