@@ -14,6 +14,29 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    const int canvasEdgeRight = ui->canvas->x() + ui->canvas->width();
+    const int canvasEdgeBottom = ui->canvas->y() + ui->canvas->height();
+    whiteOutBoxLeft = QRect(0,0,ui->canvas->x(),this->height());
+    whiteOutBoxRight = QRect(canvasEdgeRight,0,this->width() - canvasEdgeRight,this->height());
+    whiteOutBoxTop = QRect(ui->canvas->x(),0,ui->canvas->width(),ui->canvas->y());
+    whiteOutBoxBottom = QRect(ui->canvas->x(),canvasEdgeBottom,ui->canvas->width(),this->height() - canvasEdgeBottom);
+
+    canvasCenterx = ui->canvas->x() + (ui->canvas->width() / 2.0);
+    canvasCentery = ui->canvas->y() + (ui->canvas->height() / 2.0);
+
+    focusSpriteCenterx = 16;
+    focusSpriteCentery = 16;
+
+    // todo remove
+    // make a gradient grid for testing
+    for (size_t i = 0; i < loadedSprite.width; i++) {
+        for (size_t j = 0; j < loadedSprite.height; j++) {
+            loadedSprite.setColor(i,j, QColor(i*7,j*7,i+j+80));
+        }
+    }
+
+
     print(ui->canvas->x(),",",ui->canvas->y());
     print(ui->canvas->height(),",",ui->canvas->width());
 
@@ -48,23 +71,34 @@ void MainWindow::valueChanged()
 void MainWindow::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
+    const int scale = 10;
 
     QPen pen(Qt::black);
     int penWidth =  1;
     pen.setWidth(penWidth);
     painter.setPen(pen);
 
-    const int scale = 20;
-    for (size_t i = 0; i < 10; i++) {
-        for (size_t j = 0; j < 10; j++) {
-            int x = ui->canvas->x() + (i * scale);
-            int y = ui->canvas->y() + (j * scale);
+    const int xOffset = canvasCenterx - (focusSpriteCenterx * scale);
+    const int yOffset = canvasCentery - (focusSpriteCentery * scale);
+
+    // draw the sprite
+    for (size_t i = 0; i < loadedSprite.width; i++) {
+        for (size_t j = 0; j < loadedSprite.height; j++) {
+            //int x = ui->canvas->x() + (i * scale);
+            //int y = ui->canvas->y() + (j * scale);
+            int x = xOffset + (i * scale);
+            int y = yOffset + (j * scale);
             QRect box(x, y, scale, scale);
-            painter.fillRect(box, QColor(i*25,j*25,50));
+            painter.fillRect(box, loadedSprite.getColor(i,j));//QColor(i*25,j*25,50));
         }
     }
 
+    // crop out the sprite
+    painter.fillRect(whiteOutBoxLeft, Qt::white);
+    painter.fillRect(whiteOutBoxRight, Qt::white);
+    painter.fillRect(whiteOutBoxTop, Qt::white);
+    painter.fillRect(whiteOutBoxBottom, Qt::white);
+    // add a black frame
     QRect frame(ui->canvas->x(), ui->canvas->y(), ui->canvas->width(), ui->canvas->height());
-//    pen.setColor(Qt::black);
     painter.drawRect(frame);
 }
