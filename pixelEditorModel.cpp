@@ -30,6 +30,7 @@ void pixelEditorModel::selectColor(QColor color)
 
 void pixelEditorModel::save(QString filename)
 {
+    qDebug() << "save clicked";
     //TODO
 }
 

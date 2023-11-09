@@ -38,10 +38,20 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 //            &MainWindow::valueChanged);
 
     // showing icons on the ui
-    ui -> undoButton -> setIcon(QIcon(":/buttons/undo.png"));
-    ui -> redoButton -> setIcon(QIcon(":/buttons/redo.png"));
-    ui -> saveButton -> setIcon(QIcon(":/buttons/save.png"));
-    ui -> loadButton -> setIcon(QIcon(""));
+    ui -> undoButton        -> setIcon(QIcon(":/buttons/undo.png"));
+    ui -> redoButton        -> setIcon(QIcon(":/buttons/redo.png"));
+    ui -> saveButton        -> setIcon(QIcon(":/buttons/save.png"));
+    ui -> loadButton        -> setIcon(QIcon(":/buttons/load.png"));
+    ui -> rectangleButton   -> setIcon(QIcon(":/buttons/rectangle.png"));
+    ui -> circleButton      -> setIcon(QIcon(":/buttons/circle.png"));
+    ui -> fillButton        -> setIcon(QIcon(":/buttons/fill.png"));
+    ui -> colorButton       -> setIcon(QIcon(":/buttons/color.png"));
+    ui -> addFrameButton    -> setIcon(QIcon(":/buttons/add_frame.png"));
+    ui -> panUpButton       -> setIcon(QIcon(":/buttons/up_arrow.png"));
+    ui -> panDownButton     -> setIcon(QIcon(":/buttons/down_arrow.png"));
+    ui -> panLeftButton     -> setIcon(QIcon(":/buttons/left_arrow.png"));
+    ui -> panRightButton    -> setIcon(QIcon(":/buttons/right_arrow.png"));
+    ui -> deleteFrameButton -> setIcon(QIcon(":/buttons/remove_frame.png"));
 
     // keyboard shortcuts
     QAction *undoShortcut = new QAction(this);
