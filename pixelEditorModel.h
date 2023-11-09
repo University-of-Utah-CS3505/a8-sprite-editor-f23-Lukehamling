@@ -17,7 +17,7 @@ public slots:
     void addToUndo();
     void changePixel();
     void selectColor(QColor color);
-    void writeJSON();
+    void createJSON();
     void save(QString filename);
     void load(QString filepath);
     void panUp();

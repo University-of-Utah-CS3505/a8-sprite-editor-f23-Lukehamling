@@ -47,26 +47,24 @@ void pixelEditorModel::selectColor(QColor color)
     //TODO
 }
 
-void pixelEditorModel::writeJSON()
+void pixelEditorModel::createJSON()
 {
     spriteJSON.insert("height", height);
     spriteJSON.insert("width", width);
     spriteJSON.insert("numberOfFrames", numberOfSprites);
 
     QJsonObject frames;
-    // Accesses each frame
     for(int spriteIndex = 0; spriteIndex < numberOfSprites; spriteIndex++)
     {
         QJsonArray rows;
-        // Accesses each row
+        // loops through row of pixel
         for(int rowIndex = 0; rowIndex < height; rowIndex++)
         {
             QJsonArray pixels;
-            // Accesses each pixel in a different row
+            // loops through each pixel in said row
             for(int pixelIndex = 0; pixelIndex < width; pixelIndex++)
             {
                 QJsonArray colors;
-                // Retrieves the color of a particular pixel and saves its r,g,b,alpha values
                 QColor currentPixelColor = grid[spriteIndex].pixelColor(pixelIndex, rowIndex);
                 colors.push_back(currentPixelColor.red());
                 colors.push_back(currentPixelColor.green());
@@ -74,7 +72,7 @@ void pixelEditorModel::writeJSON()
                 colors.push_back(currentPixelColor.alpha());
                 pixels.push_back(colors);
             }
-            // Each rows holds an array of each pixel in that row
+            // Each rows will hold an array of each pixel in that row
             rows.push_back(pixels);
         }
         // Each frames holds an array of rows that describe a sprite
@@ -86,7 +84,7 @@ void pixelEditorModel::writeJSON()
 void pixelEditorModel::save(QString filename)
 {
     qDebug() << "save clicked";
-    writeJSON();
+    createJSON();
     QFile saveFile(filename);
     if (!saveFile.open(QIODevice::WriteOnly))
         return;
