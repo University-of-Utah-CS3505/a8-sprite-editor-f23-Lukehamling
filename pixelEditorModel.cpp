@@ -8,12 +8,14 @@ pixelEditorModel::pixelEditorModel(QObject *parent)
 
 void pixelEditorModel::redo()
 {
-    //TODO
+    qDebug() << "redo clicked";
+    // TODO
 }
 
 void pixelEditorModel::undo()
 {
-    //TODO
+    qDebug() << "undo clicked";
+    // TODO
 }
 
 void pixelEditorModel::changePixel()

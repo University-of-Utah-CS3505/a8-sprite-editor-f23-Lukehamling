@@ -3,5 +3,6 @@
         <file>redo.png</file>
         <file>undo.png</file>
         <file>save.png</file>
+        <file>load.png</file>
     </qresource>
 </RCC>

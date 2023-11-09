@@ -5,6 +5,8 @@
 #include <string>
 #include <QPainter>
 #include <QPen>
+#include <QShortcut>
+
 using namespace std;
 void print(int num1, string toPrint, int num2) {
     qDebug() << num1 << toPrint << num2;
@@ -39,6 +41,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     ui -> undoButton -> setIcon(QIcon(":/buttons/undo.png"));
     ui -> redoButton -> setIcon(QIcon(":/buttons/redo.png"));
     ui -> saveButton -> setIcon(QIcon(":/buttons/save.png"));
+    ui -> loadButton -> setIcon(QIcon(""));
 
     // keyboard shortcuts
     QAction *undoShortcut = new QAction(this);
@@ -46,8 +49,24 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(undoShortcut,
             &QAction::triggered,
             &model,
-            &pixelEditorModel::save);
+            &pixelEditorModel::undo);
     this->addAction(undoShortcut);
+
+    QAction *redoShortcut = new QAction(this);
+    redoShortcut->setShortcut(Qt::CTRL | Qt::Key_Y);
+    connect(redoShortcut,
+            &QAction::triggered,
+            &model,
+            &pixelEditorModel::redo);
+    this->addAction(redoShortcut);
+
+//    QAction *saveShortcut = new QAction(this);
+//    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
+//    connect(saveShortcut,
+//            &QAction::triggered,
+//            &model,
+//            &pixelEditorModel::save);
+//    this->addAction(saveShortcut);
 }
 
 MainWindow::~MainWindow()
