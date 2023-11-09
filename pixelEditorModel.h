@@ -3,6 +3,8 @@
 
 #include "sprite.h"
 #include <QStack>
+#include <QJsonObject>
+
 class pixelEditorModel : public QObject
 {
 public:
@@ -11,8 +13,11 @@ public:
 public slots:
     void redo();
     void undo();
+    void addToRedo();
+    void addToUndo();
     void changePixel();
     void selectColor(QColor color);
+    void writeJSON();
     void save(QString filename);
     void load(QString filepath);
     void panUp();
@@ -40,7 +45,7 @@ private:
     int currentFrameIndex;
     QColor currentColor;
     int fps;
-
+    QJsonObject spriteJSON;
 };
 
 #endif // PIXELEDITORMODEL_H
