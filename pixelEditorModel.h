@@ -12,7 +12,7 @@ public slots:
     void redo();
     void undo();
     void changePixel();
-    void selectColor(QColor color);
+    void selectColor();
     void save(QString filename);
     void load(QString filepath);
     void panUp();

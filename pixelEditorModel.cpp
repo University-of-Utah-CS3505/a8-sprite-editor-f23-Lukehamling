@@ -1,4 +1,5 @@
 #include "pixelEditorModel.h"
+#include <QColorDialog>>
 
 pixelEditorModel::pixelEditorModel(QObject *parent)
 {
@@ -23,9 +24,12 @@ void pixelEditorModel::changePixel()
     //TODO
 }
 
-void pixelEditorModel::selectColor(QColor color)
+void pixelEditorModel::selectColor()
 {
-    //TODO
+    QColor newColor =QColorDialog::getColor("Select Brush Color");
+
+    if(newColor.isValid())
+        currentColor = newColor;
 }
 
 void pixelEditorModel::save(QString filename)

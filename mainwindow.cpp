@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 
 #include <string>
+#include <QPushButton>
 #include <QPainter>
 #include <QPen>
 #include <QShortcut>
@@ -92,6 +93,11 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &model,
             &pixelEditorModel::redo);
     this->addAction(redoShortcut);
+
+    connect(ui->colorButton,
+            &QPushButton::pressed,
+            &model,
+            &pixelEditorModel::selectColor);
 
 //    QAction *saveShortcut = new QAction(this);
 //    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
