@@ -3,6 +3,7 @@
 
 #include "sprite.h"
 #include <QMainWindow>
+#include "pixelEditorModel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,7 +27,7 @@ class MainWindow : public QMainWindow
     Sprite loadedSprite = Sprite(32,32);
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(pixelEditorModel& model, QWidget *parent = nullptr);
     ~MainWindow();
     void paintEvent(QPaintEvent*);
 

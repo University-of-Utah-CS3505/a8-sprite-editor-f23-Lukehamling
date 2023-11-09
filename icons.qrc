@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/buttons">
+        <file>redo.png</file>
+        <file>undo.png</file>
+        <file>save.png</file>
+        <file>load.png</file>
+        <file>rectangle.png</file>
+        <file>circle.png</file>
+        <file>fill.png</file>
+        <file>color.png</file>
+        <file>add_frame.png</file>
+        <file>down_arrow.png</file>
+        <file>left_arrow.png</file>
+        <file>right_arrow.png</file>
+        <file>up_arrow.png</file>
+        <file>remove_frame.png</file>
+    </qresource>
+</RCC>

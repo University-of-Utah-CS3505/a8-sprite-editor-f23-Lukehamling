@@ -1,18 +1,21 @@
 #include "pixelEditorModel.h"
 
-pixelEditorModel::pixelEditorModel()
+pixelEditorModel::pixelEditorModel(QObject *parent)
 {
+    setParent(parent);
     QColor currentColor = QColor(0, 0, 0);
 }
 
 void pixelEditorModel::redo()
 {
-    //TODO
+    qDebug() << "redo clicked";
+    // TODO
 }
 
 void pixelEditorModel::undo()
 {
-    //TODO
+    qDebug() << "undo clicked";
+    // TODO
 }
 
 void pixelEditorModel::changePixel()
@@ -27,6 +30,7 @@ void pixelEditorModel::selectColor(QColor color)
 
 void pixelEditorModel::save(QString filename)
 {
+    qDebug() << "save clicked";
     //TODO
 }
 

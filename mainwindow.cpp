@@ -1,15 +1,18 @@
 #include "mainwindow.h"
+#include "pixelEditorModel.h"
 #include "ui_mainwindow.h"
 
 #include <string>
 #include <QPainter>
 #include <QPen>
+#include <QShortcut>
+
 using namespace std;
 void print(int num1, string toPrint, int num2) {
     qDebug() << num1 << toPrint << num2;
 }
 
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -56,6 +59,47 @@ MainWindow::MainWindow(QWidget* parent)
 //            &QSpinBox::valueChanged,
 //            this,
 //            &MainWindow::valueChanged);
+
+    // showing icons on the ui
+    ui -> undoButton        -> setIcon(QIcon(":/buttons/undo.png"));
+    ui -> redoButton        -> setIcon(QIcon(":/buttons/redo.png"));
+    ui -> saveButton        -> setIcon(QIcon(":/buttons/save.png"));
+    ui -> loadButton        -> setIcon(QIcon(":/buttons/load.png"));
+    ui -> rectangleButton   -> setIcon(QIcon(":/buttons/rectangle.png"));
+    ui -> circleButton      -> setIcon(QIcon(":/buttons/circle.png"));
+    ui -> fillButton        -> setIcon(QIcon(":/buttons/fill.png"));
+    ui -> colorButton       -> setIcon(QIcon(":/buttons/color.png"));
+    ui -> addFrameButton    -> setIcon(QIcon(":/buttons/add_frame.png"));
+    ui -> panUpButton       -> setIcon(QIcon(":/buttons/up_arrow.png"));
+    ui -> panDownButton     -> setIcon(QIcon(":/buttons/down_arrow.png"));
+    ui -> panLeftButton     -> setIcon(QIcon(":/buttons/left_arrow.png"));
+    ui -> panRightButton    -> setIcon(QIcon(":/buttons/right_arrow.png"));
+    ui -> deleteFrameButton -> setIcon(QIcon(":/buttons/remove_frame.png"));
+
+    // keyboard shortcuts
+    QAction *undoShortcut = new QAction(this);
+    undoShortcut->setShortcut(Qt::CTRL | Qt::Key_Z);
+    connect(undoShortcut,
+            &QAction::triggered,
+            &model,
+            &pixelEditorModel::undo);
+    this->addAction(undoShortcut);
+
+    QAction *redoShortcut = new QAction(this);
+    redoShortcut->setShortcut(Qt::CTRL | Qt::Key_Y);
+    connect(redoShortcut,
+            &QAction::triggered,
+            &model,
+            &pixelEditorModel::redo);
+    this->addAction(redoShortcut);
+
+//    QAction *saveShortcut = new QAction(this);
+//    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
+//    connect(saveShortcut,
+//            &QAction::triggered,
+//            &model,
+//            &pixelEditorModel::save);
+//    this->addAction(saveShortcut);
 }
 
 MainWindow::~MainWindow()

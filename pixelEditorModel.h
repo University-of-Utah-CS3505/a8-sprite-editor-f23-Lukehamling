@@ -6,7 +6,7 @@
 class pixelEditorModel : public QObject
 {
 public:
-    pixelEditorModel();
+    explicit pixelEditorModel(QObject *parent = nullptr);
 
 public slots:
     void redo();
