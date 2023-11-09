@@ -1,7 +1,8 @@
 #include "pixelEditorModel.h"
 
-pixelEditorModel::pixelEditorModel()
+pixelEditorModel::pixelEditorModel(QObject *parent)
 {
+    setParent(parent);
     QColor currentColor = QColor(0, 0, 0);
 }
 

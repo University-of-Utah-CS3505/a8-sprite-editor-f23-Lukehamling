@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "pixelEditorModel.h"
 #include "ui_mainwindow.h"
 
 #include <string>
@@ -9,7 +10,7 @@ void print(int num1, string toPrint, int num2) {
     qDebug() << num1 << toPrint << num2;
 }
 
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -33,6 +34,20 @@ MainWindow::MainWindow(QWidget* parent)
 //            &QSpinBox::valueChanged,
 //            this,
 //            &MainWindow::valueChanged);
+
+    // showing icons on the ui
+    ui -> undoButton -> setIcon(QIcon(":/buttons/undo.png"));
+    ui -> redoButton -> setIcon(QIcon(":/buttons/redo.png"));
+    ui -> saveButton -> setIcon(QIcon(":/buttons/save.png"));
+
+    // keyboard shortcuts
+    QAction *undoShortcut = new QAction(this);
+    undoShortcut->setShortcut(Qt::CTRL | Qt::Key_Z);
+    connect(undoShortcut,
+            &QAction::triggered,
+            &model,
+            &pixelEditorModel::save);
+    this->addAction(undoShortcut);
 }
 
 MainWindow::~MainWindow()
