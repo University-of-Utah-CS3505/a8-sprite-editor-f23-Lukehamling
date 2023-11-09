@@ -116,17 +116,15 @@ void pixelEditorModel::load(QString filename)
 
         for(int imageIndex = 0; imageIndex < numberOfSprites; imageIndex++)
         {
-            QImage img = QImage(spriteWidth, spriteHeight, QImage::Format_ARGB32);
+            Sprite img = Sprite(spriteWidth, spriteHeight);
             sprites.push_back(img);
 
             QString rowName = "frame" + QString::number(imageIndex);
             QJsonArray rows = frames.value(rowName).toArray();
 
-            // Accesses each row of pixels in an image
             for(int rowIndex = 0; rowIndex < spriteHeight; rowIndex++)
             {
                 QJsonArray pixels = rows.at(rowIndex).toArray();
-                // Accesses each pixel in a particular row of an image
                 for(int pixelIndex = 0; pixelIndex < spriteWidth; pixelIndex++)
                 {
                     QJsonArray colors = pixels.at(pixelIndex).toArray();
@@ -135,15 +133,22 @@ void pixelEditorModel::load(QString filename)
                     int blue = colors.at(2).toInt();
                     int alpha = colors.at(3).toInt();
                     QColor currentPixelColor(red, green, blue, alpha);
-                    // Draws each pixel in the loaded image with the read color data
                     sprites[imageIndex].setColor(pixelIndex, rowIndex, currentPixelColor);
                 }
             }
         }
+
+        // Emits signals to the UI to reflect the images of the loaded file rather than its current state.
+//        emit setUpCanvasSize(spriteWidth, spriteHeight);
+//        emit updateMainCanvas(sprites.at(0));
+//        emit updatePreviewWindow(sprites.at(0));
+//        int currentSprite = 0;
+//        if (numberOfSprites > 1)
+//            changeFPS();
     }
     catch (...)
     {
-
+        // emit a signal to create a message popup saying an error occurred when reading
     }
 }
 

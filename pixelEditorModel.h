@@ -19,7 +19,7 @@ public slots:
     void selectColor(QColor color);
     void createJSON();
     void save(QString filename);
-    void load(QString filepath);
+    void load(QString filename);
     void panUp();
     void panDown();
     void panLeft();
@@ -41,7 +41,7 @@ private:
     QStack<std::vector<Sprite>> redoStack;
     QStack<std::vector<Sprite>> undoStack;
     Tool currentTool;
-    std::vector<Sprite> frames;
+    std::vector<Sprite> sprites;
     int currentFrameIndex;
     QColor currentColor;
     int fps;
