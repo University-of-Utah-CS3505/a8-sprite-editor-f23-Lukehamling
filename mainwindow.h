@@ -34,6 +34,7 @@ public:
 public slots:
     void valueChanged();
     void updateFPSLabel(int newFPS);
+    void showFrame(QImage image);
 
 private:
     Ui::MainWindow *ui;

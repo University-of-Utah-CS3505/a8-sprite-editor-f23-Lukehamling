@@ -3,10 +3,15 @@
 
 #include "sprite.h"
 #include <QStack>
+#include <QImage>
 class pixelEditorModel : public QObject
 {
+    Q_OBJECT
 public:
     explicit pixelEditorModel(QObject *parent = nullptr);
+
+signals:
+    void showFrameSignal(QImage image);
 
 public slots:
     void redo();
@@ -23,6 +28,7 @@ public slots:
     void deleteFrame();
     void selectFrame();
     void changeFPS(int newFPS);
+    void playAnimation();
 
 private:
     enum Tool {
@@ -32,6 +38,8 @@ private:
         Undo,
         Redo
     };
+
+    void showFrame(int i);
 
     QStack<std::vector<Sprite>> redoStack;
     QStack<std::vector<Sprite>> undoStack;

@@ -1,5 +1,7 @@
 #include "pixelEditorModel.h"
 #include <QColorDialog>
+#include <QDebug>
+#include <QTimer>
 
 pixelEditorModel::pixelEditorModel(QObject *parent)
 {
@@ -76,6 +78,27 @@ void pixelEditorModel::deleteFrame()
 void pixelEditorModel::selectFrame()
 {
     //TODO
+}
+
+void pixelEditorModel::playAnimation()
+{
+    for(size_t i =0; i < frames.size(); i++)
+    {
+        QTimer::singleShot(i * (1000/fps), Qt::PreciseTimer, this, [this, i](){showFrame(i); });
+    }
+}
+
+void pixelEditorModel::showFrame(int i)
+{
+    Sprite frame = frames.at(i);
+    QImage image = QImage(frame.width, frame.height, QImage::Format_ARGB32);
+
+    for (size_t i = 0; i < frame.width; i++) {
+        for (size_t j = 0; j < frame.height; j++) {
+            image.setPixelColor(i, j, frame.getColor(i, j));
+        }
+    }
+    emit showFrameSignal(image);
 }
 
 void pixelEditorModel::changeFPS(int newFPS)

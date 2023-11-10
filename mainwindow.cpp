@@ -112,6 +112,16 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             this,
             &MainWindow::updateFPSLabel);
 
+    connect(ui->playButton,
+            &QPushButton::pressed,
+            &model,
+            &pixelEditorModel::playAnimation);
+
+    connect(&model,
+            &pixelEditorModel::showFrameSignal,
+            this,
+            &MainWindow::showFrame);
+
 //    QAction *saveShortcut = new QAction(this);
 //    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
 //    connect(saveShortcut,
@@ -134,6 +144,12 @@ void MainWindow::valueChanged()
 void MainWindow::updateFPSLabel(int newFPS)
 {
     ui->FPSLabel->setText("FPS: " + QString::number(newFPS));
+}
+
+void MainWindow::showFrame(QImage image)
+{
+    QPixmap pixmap = QPixmap::fromImage(image);
+    pixmap = pixmap.scaled(ui->animationPreview->height(),ui->animationPreview->width(), Qt::IgnoreAspectRatio);
 }
 
 void MainWindow::paintEvent(QPaintEvent*)
