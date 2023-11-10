@@ -35,6 +35,7 @@ public:
     void updateCanvasView();
 
 public slots:
+    void changeFrameBox(int data);
     void valueChanged();
     void panUp();
     void panDown();

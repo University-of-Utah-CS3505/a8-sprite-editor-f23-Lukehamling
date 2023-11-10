@@ -5,13 +5,17 @@
 #include <QStack>
 class pixelEditorModel : public QObject
 {
+    Q_OBJECT
 public:
+
     explicit pixelEditorModel(QObject *parent = nullptr);
     Sprite* getSelectedSprite();
 
     unsigned short int spriteWidth;
     unsigned short int spriteHeight;
 
+signals:
+    void updateFrameBox(int data);
 public slots:
     void redo();
     void undo();

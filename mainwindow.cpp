@@ -122,6 +122,18 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             this,
             &MainWindow::panDown);
+    connect(ui->addFrameButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::addFrame);
+    connect(ui->deleteFrameButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::deleteFrame);
+    connect(&model,
+            &pixelEditorModel::updateFrameBox,
+            this,
+            &MainWindow::changeFrameBox);
 
     setupStartScreen();
     populateSpriteSizeComboBox();
@@ -475,4 +487,16 @@ void MainWindow::mainScreen()
 void MainWindow::loadButtonClicked()
 {
     //TODO: Implement this method.
+}
+
+void MainWindow::changeFrameBox(int data)
+{
+    if (data != -1)
+    {
+        ui->frameSelector->addItem("Frame" + QString::number(data));
+    }
+    else
+    {
+        ui->frameSelector->removeItem(ui->frameSelector->count() - 1);
+    }
 }

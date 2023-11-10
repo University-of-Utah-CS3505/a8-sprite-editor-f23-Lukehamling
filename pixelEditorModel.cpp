@@ -62,12 +62,16 @@ void pixelEditorModel::load(QString filepath)
 
 void pixelEditorModel::addFrame()
 {
-    //TODO
+    Sprite newFrame(frames[currentFrameIndex].width, frames[currentFrameIndex].height);
+    frames.push_back(newFrame);
+    emit updateFrameBox(frames.size());
+
 }
 
 void pixelEditorModel::deleteFrame()
 {
-    //TODO
+    frames.pop_back();
+    emit updateFrameBox(-1);
 }
 
 void pixelEditorModel::selectFrame()
