@@ -28,10 +28,13 @@ Sprite* pixelEditorModel::getSelectedSprite()
 void pixelEditorModel::redo()
 {
     qDebug() << "redo clicked";
+
     if(redoStack.size() > 0)
     {
         addToUndo();
         frames.at(currentFrameIndex) = redoStack.pop();
+
+        emit updateCanvas();
     }
 }
 
@@ -39,21 +42,25 @@ void pixelEditorModel::undo()
 {
     qDebug() << "undo clicked";
     if (undoStack.size() > 0) {
-        Sprite tempSprite = undoStack.pop();
-        redoStack.push(tempSprite);
-        frames[currentFrameIndex] = tempSprite;
+        Sprite currentSprite = frames[currentFrameIndex];
+        Sprite oldSprite = undoStack.pop();
+        redoStack.push(currentSprite);
+        frames[currentFrameIndex] = oldSprite;
+
+        emit updateCanvas();
     }
 }
 
 Sprite pixelEditorModel::addToUndo()
 {
-    Sprite tempSprite = frames.at(currentFrameIndex);
+    Sprite tempSprite = frames[currentFrameIndex];
     undoStack.push(tempSprite);
     return tempSprite;
 }
 
 void pixelEditorModel::clickPixel(int x, int y)
 {
+    addToUndo();
     switch (currentTool) {
     case Pen:
         frames[currentFrameIndex].setColor(x, y, currentColor);
@@ -101,7 +108,7 @@ void pixelEditorModel::releasePixel(int x, int y)
         break;
     }
     // we dont have to clear storedX,Y
-    addToUndo();
+    //addToUndo();
 }
 
 void pixelEditorModel::selectColor()

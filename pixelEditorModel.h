@@ -35,6 +35,9 @@ public slots:
     ///         create the first sprite
     void createInitialSprite(unsigned short int x, unsigned short int y);
 
+signals:
+    void updateCanvas();
+
 private:
     enum Tool {
         Pen,

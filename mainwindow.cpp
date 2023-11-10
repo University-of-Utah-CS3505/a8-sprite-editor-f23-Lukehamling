@@ -134,6 +134,11 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             this,
             &MainWindow::panDown);
 
+    connect(&model,
+            &pixelEditorModel::updateCanvas,
+            this,
+            &MainWindow::valueChanged);
+
     setupStartScreen();
     populateSpriteSizeComboBox();
 }
