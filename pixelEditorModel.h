@@ -7,11 +7,13 @@ class pixelEditorModel : public QObject
 {
 public:
     explicit pixelEditorModel(QObject *parent = nullptr);
+    Sprite* getSelectedSprite();
+    Q_OBJECT
 
 public slots:
     void redo();
     void undo();
-    void changePixel();
+    void changePixel(int x, int y);
     void selectColor();
     void save(QString filename);
     void load(QString filepath);
@@ -30,11 +32,12 @@ public slots:
 
 private:
     enum Tool {
-        Circle,
+        Pen,
+        Erase,
         Square,
-        Fill,
-        Undo,
-        Redo
+        Circle,
+        Fill
+
     };
 
     QStack<std::vector<Sprite>> redoStack;

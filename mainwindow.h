@@ -28,8 +28,6 @@ class MainWindow : public QMainWindow
     int xOffset = 0;
     int yOffset = 0;
 
-    Sprite loadedSprite = Sprite(32,32);
-
 public:
     MainWindow(pixelEditorModel& model, QWidget *parent = nullptr);
     ~MainWindow();
@@ -46,6 +44,7 @@ signals:
 
 private:
     Ui::MainWindow *ui;
+    pixelEditorModel* editorModel;
 
     /// @brief Displays the start up screen while hiding all other elements of the UI. Forces a user to choose
     ///         whether to create a new sprite or load an old one.

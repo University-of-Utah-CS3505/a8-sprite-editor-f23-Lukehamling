@@ -1,10 +1,19 @@
 #include "pixelEditorModel.h"
-#include <QColorDialog>>
+#include <QColorDialog>
 
 pixelEditorModel::pixelEditorModel(QObject *parent)
 {
     setParent(parent);
-    QColor currentColor = QColor(0, 0, 0);
+    currentColor = QColor(0, 0, 0);
+    currentTool = Pen;
+    currentFrameIndex = 0;
+    Sprite initial(16,16);
+    frames.push_back(initial);
+}
+
+Sprite* pixelEditorModel::getSelectedSprite()
+{
+    return &frames[currentFrameIndex];
 }
 
 void pixelEditorModel::redo()
@@ -19,14 +28,22 @@ void pixelEditorModel::undo()
     // TODO
 }
 
-void pixelEditorModel::changePixel()
+void pixelEditorModel::changePixel(int x, int y)
 {
+    switch (currentTool) {
+    case Pen:
+        qDebug() << "coloring";
+        frames[currentFrameIndex].setColor(x, y, currentColor);
+        break;
+    default:
+        break;
+    }
     //TODO
 }
 
 void pixelEditorModel::selectColor()
 {
-    QColor newColor =QColorDialog::getColor("Select Brush Color");
+    QColor newColor = QColorDialog::getColor("Select Brush Color");
 
     if(newColor.isValid())
         currentColor = newColor;
@@ -88,6 +105,14 @@ void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short 
     this->spriteWidth   = x;
     this->spriteHeight  = y;
 
+    frames.pop_back(); // remove the 0,0 sprite
     Sprite initial(x,y);
     frames.push_back(initial);
+    // TODO: remove
+    // make a gradient grid for testing
+    for (size_t i = 0; i < initial.width; i++) {
+        for (size_t j = 0; j < initial.height; j++) {
+            initial.setColor(i,j, QColor(i*7,j*7,i+j+80));
+        }
+    }
 }

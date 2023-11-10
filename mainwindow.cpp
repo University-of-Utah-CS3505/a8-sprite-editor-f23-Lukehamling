@@ -23,6 +23,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    editorModel = &model;
 
     const int canvasEdgeRight = ui->canvas->x() + ui->canvas->width();
     const int canvasEdgeBottom = ui->canvas->y() + ui->canvas->height();
@@ -149,14 +150,16 @@ void MainWindow::changeCanvasView(float focusOnSpriteX, float focusOnSpriteY, in
 
 /// takes in x,y canvas mouse points, and turns them to x,y sprite points
 bool MainWindow::checkInCanvas(int& x, int& y) {
+    print("checkInCanvas");
     // move our window's 0,0 to the canvas 0,0
     if (x < ui->canvas->x() || y < ui->canvas->y() || x > ui->canvas->width() + ui->canvas->x() || y > ui->canvas->height() + ui->canvas->y()) {
         // we are clicking outside the canvas. Dont even calculate the sprite points
         return false;
     } else {
+        Sprite* loadedSprite = editorModel->getSelectedSprite();
         x = (x - xOffset) / scale;
         y = (y - yOffset) / scale;
-        if (x < 0 || y < 0 || x > loadedSprite.width || y > loadedSprite.height) {
+        if (x < 0 || y < 0 || x > loadedSprite->width || y > loadedSprite->height) {
             // we are checking if we are clicking outside the sprite
             return false;
         } else {
@@ -171,22 +174,30 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
-        print(x, " onsprite ", y);
+        editorModel->changePixel(x,y);
     }
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     print("mouse moved");
     print(event->pos().x(), ",", event->pos().y());
+    int x = event->pos().x();
+    int y = event->pos().y();
+    if (checkInCanvas(x, y)) {
+        editorModel->changePixel(x,y);
+    }
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
     print("mouse released");
     print(event->pos().x(), ",", event->pos().y());
+    update();
 }
 
 void MainWindow::paintEvent(QPaintEvent*)
 {
+    Sprite* loadedSprite = editorModel->getSelectedSprite();
+    print(loadedSprite->width, "painting", loadedSprite->height);
     QPainter painter(this);
 
     QPen pen(Qt::black);
@@ -195,12 +206,12 @@ void MainWindow::paintEvent(QPaintEvent*)
     painter.setPen(pen);
 
     // draw the sprite
-    for (size_t i = 0; i < loadedSprite.width; i++) {
-        for (size_t j = 0; j < loadedSprite.height; j++) {
+    for (size_t i = 0; i < loadedSprite->width; i++) {
+        for (size_t j = 0; j < loadedSprite->height; j++) {
             int x = xOffset + (i * scale);
             int y = yOffset + (j * scale);
             QRect box(x, y, scale, scale);
-            painter.fillRect(box, loadedSprite.getColor(i,j));//QColor(i*25,j*25,50));
+            painter.fillRect(box, loadedSprite->getColor(i,j));//QColor(i*25,j*25,50));
         }
     }
 
@@ -424,16 +435,6 @@ void MainWindow::mainScreen()
     ui->spriteSizeComboBox      ->hide();
 
     ui->loadButton->setGeometry(260, 18, 75, 25);
-
-
-
-    // TODO: remove
-    // make a gradient grid for testing
-    for (size_t i = 0; i < loadedSprite.width; i++) {
-        for (size_t j = 0; j < loadedSprite.height; j++) {
-            loadedSprite.setColor(i,j, QColor(i*7,j*7,i+j+80));
-        }
-    }
 }
 
 void MainWindow::loadButtonClicked()
