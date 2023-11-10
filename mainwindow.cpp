@@ -181,20 +181,26 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
-        editorModel->changePixel(x,y);
+        editorModel->clickPixel(x,y);
     }
+    update();
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
-        editorModel->changePixel(x,y);
+        editorModel->movePixel(x,y);
     }
+    update();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
-    print("mouse released");
+    int x = event->pos().x();
+    int y = event->pos().y();
+    if (checkInCanvas(x, y)) {
+        editorModel->releasePixel(x,y);
+    }
     update();
 }
 

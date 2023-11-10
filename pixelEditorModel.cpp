@@ -38,15 +38,11 @@ void pixelEditorModel::redo()
 void pixelEditorModel::undo()
 {
     qDebug() << "undo clicked";
-    if(undoStack.size() > 0)
-        frames.at(currentFrameIndex) = addToRedo();
-}
-
-Sprite pixelEditorModel::addToRedo()
-{
+    if (undoStack.size() > 0) {
         Sprite tempSprite = undoStack.pop();
         redoStack.push(tempSprite);
-        return tempSprite;
+        frames[currentFrameIndex] = tempSprite;
+    }
 }
 
 Sprite pixelEditorModel::addToUndo()
@@ -56,18 +52,56 @@ Sprite pixelEditorModel::addToUndo()
     return tempSprite;
 }
 
-void pixelEditorModel::changePixel(int x, int y)
+void pixelEditorModel::clickPixel(int x, int y)
 {
-    //addToUndo();
     switch (currentTool) {
-    	case Pen:
-        	qDebug() << "coloring";
-        	frames[currentFrameIndex].setColor(x, y, currentColor);
-        	break;
-    	default:
-        	break;
+    case Pen:
+        frames[currentFrameIndex].setColor(x, y, currentColor);
+        break;
+    case Erase:
+        frames[currentFrameIndex].setColor(x, y, Qt::transparent);
+        break;
+    case Fill:
+        frames[currentFrameIndex].fill(x, y, currentColor);
+        break;
+    case Rectangle:
+        // TODO store xy
+        break;
+    case Circle:
+        // TODO store xy
+        break;
+    default:
+        break;
     }
-    //TODO
+}
+
+void pixelEditorModel::movePixel(int x, int y)
+{
+    switch (currentTool) {
+    case Pen:
+        // todo draw a line from point to point
+        frames[currentFrameIndex].setColor(x, y, currentColor);
+        break;
+    case Erase:
+        frames[currentFrameIndex].setColor(x, y, Qt::transparent);
+        break;
+    default:
+        break;
+    }
+}
+void pixelEditorModel::releasePixel(int x, int y)
+{
+    switch (currentTool) {
+    default:
+    case Rectangle:
+//        frames[currentFrameIndex].drawRectangle(storedX, storedY, x, y, currentColor);
+        break;
+    case Circle:
+//        frames[currentFrameIndex].drawCircle(storedX, storedY, x, y, currentColor);
+        break;
+    }
+    // we dont have to clear storedX,Y
+    addToUndo();
 }
 
 void pixelEditorModel::selectColor()
@@ -76,12 +110,6 @@ void pixelEditorModel::selectColor()
 
     if(newColor.isValid())
         currentColor = newColor;
-}
-
-void pixelEditorModel::fill(unsigned short int x, unsigned short int y, QColor fillColor)
-{
-    addToUndo();
-    frames.at(currentFrameIndex).fill(x, y, fillColor);
 }
 
 void pixelEditorModel::createJSON()
@@ -189,6 +217,11 @@ void pixelEditorModel::load(QString filename)
     }
 }
 
+void pixelEditorModel::addFrame()
+{
+    //TODO: implement this method
+}
+
 void pixelEditorModel::deleteFrame()
 {
     //TODO
@@ -214,21 +247,3 @@ void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short 
     frames.push_back(initial);
 }
 
-void pixelEditorModel::addFrame()
-{
-    //TODO: implement this method
-}
-
-//TODO: We might not need these.
-void pixelEditorModel::drawRectangleOnSprite(unsigned short int startX, unsigned short int startY,
-                           unsigned short int endX, unsigned short int endY)
-{
-
-}
-
-void pixelEditorModel::drawCircleOnSprite(unsigned short int startX, unsigned short int startY,
-                                          unsigned short int endX, unsigned short int endY)
-{
-    addToUndo();
-    frames.at(currentFrameIndex).drawCircle(startX, startY, endX, endY);
-}

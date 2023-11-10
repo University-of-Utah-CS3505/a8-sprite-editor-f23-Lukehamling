@@ -76,7 +76,7 @@ public:
     /// @param endX is the ending x location that the user clicked
     /// @param endY is the ending y location that the user clicked
     void drawCircle(unsigned short int startX, unsigned short int startY,
-                    unsigned short int endX, unsigned short int endY);
+                    unsigned short int endX, unsigned short int endY, QColor color);
 
     /// @brief Creates a square in the grid so the user can use pre-defined shapes. The user will click a starting pixel on the
     ///         sprite editor and an ending pixel. The square will be drawn with one edge being on start(x,y) and the other
@@ -86,7 +86,7 @@ public:
     /// @param endX is the ending x location that the user clicked
     /// @param endY is the ending y location that the user clicked
     void drawRectangle(unsigned short int startX, unsigned short int startY,
-                    unsigned short int endX, unsigned short int endY);
+                    unsigned short int endX, unsigned short int endY, QColor color);
 
 private:
     /// @brief Recursive method that will perform the filling as long as the pixel at x,y matches originalColor

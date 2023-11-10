@@ -85,13 +85,13 @@ void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor or
 }
 
 void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
-                        unsigned short int endX, unsigned short int endY)
+                        unsigned short int endX, unsigned short int endY, QColor color)
 {
     //TODO: Implement this method
 }
 
 void Sprite::drawRectangle(unsigned short int startX, unsigned short int startY,
-                unsigned short int endX, unsigned short int endY)
+                unsigned short int endX, unsigned short int endY, QColor color)
 {
     //TODO: Implement this method
 }

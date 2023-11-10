@@ -19,7 +19,9 @@ public:
 public slots:
     void redo();
     void undo();
-    void changePixel(int x, int y);
+    void clickPixel(int x, int y);
+    void movePixel(int x, int y);
+    void releasePixel(int x, int y);
     void selectColor();
     void createJSON();
     void save(QString filename);
@@ -32,31 +34,6 @@ public slots:
     /// @brief This method will recieve the signal with the x,y dimensions sent from the view then
     ///         create the first sprite
     void createInitialSprite(unsigned short int x, unsigned short int y);
-
-    /// @brief Recieves a signal from the view of (x,y) location and a fillColor. Then this will add
-    ///         the current state of the Sprite to the undo stack then call the sprite's fill method.
-    /// @param x is the x location of the selected pixel
-    /// @param y is the y location of the selected pixel
-    /// @param fillColor is the desired color to fill the Sprite with
-    void fill(unsigned short int x, unsigned short int y, QColor fillColor);
-
-    /// @brief Recieves a signal from the view to draw a circle with required locations and then
-    ///         calls the drawCircle method on the currently selected Sprite object.
-    /// @param startX is the starting x location that the user clicked
-    /// @param startY is the starting y location that the user clicked
-    /// @param endX is the ending x location that the user clicked
-    /// @param endY is the ending y location that the user clicked
-    void drawCircleOnSprite(unsigned short int startX, unsigned short int startY,
-                            unsigned short int endX, unsigned short int endY);
-
-    /// @brief Recieves a signal from the view to draw a rectangle with required locations and then
-    ///         calls the drawRectangle method on the currently selected Sprite object.
-    /// @param startX is the starting x location that the user clicked
-    /// @param startY is the starting y location that the user clicked
-    /// @param endX is the ending x location that the user clicked
-    /// @param endY is the ending y location that the user clicked
-    void drawRectangleOnSprite(unsigned short int startX, unsigned short int startY,
-                               unsigned short int endX, unsigned short int endY);
 
 private:
     enum Tool {
