@@ -25,6 +25,10 @@ public slots:
     void selectFrame();
     void changeFPS();
 
+    /// @brief This method will recieve the signal with the x,y dimensions sent from the view then
+    ///         create the first sprite
+    void createInitialSprite(unsigned short int x, unsigned short int y);
+
 private:
     enum Tool {
         Circle,
@@ -42,6 +46,8 @@ private:
     QColor currentColor;
     int fps;
 
+    unsigned short int spriteWidth;
+    unsigned short int spriteHeight;
 };
 
 #endif // PIXELEDITORMODEL_H
