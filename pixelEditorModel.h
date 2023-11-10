@@ -22,7 +22,7 @@ public slots:
     void addFrame();
     void deleteFrame();
     void selectFrame();
-    void changeFPS();
+    void changeFPS(int newFPS);
 
 private:
     enum Tool {

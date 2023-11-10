@@ -33,6 +33,7 @@ public:
 
 public slots:
     void valueChanged();
+    void updateFPSLabel(int newFPS);
 
 private:
     Ui::MainWindow *ui;

@@ -1,10 +1,10 @@
 #include "pixelEditorModel.h"
-#include <QColorDialog>>
+#include <QColorDialog>
 
 pixelEditorModel::pixelEditorModel(QObject *parent)
 {
     setParent(parent);
-    QColor currentColor = QColor(0, 0, 0);
+    currentColor = QColor(0, 0, 0);
 }
 
 void pixelEditorModel::redo()
@@ -78,7 +78,7 @@ void pixelEditorModel::selectFrame()
     //TODO
 }
 
-void pixelEditorModel::changeFPS()
+void pixelEditorModel::changeFPS(int newFPS)
 {
-    //TODO
+    fps = newFPS;
 }

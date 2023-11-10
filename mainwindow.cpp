@@ -19,6 +19,9 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 {
     ui->setupUi(this);
 
+    ui->FPSslider->setMaximum(60);
+    ui->FPSslider->setMinimum(0);
+
     const int canvasEdgeRight = ui->canvas->x() + ui->canvas->width();
     const int canvasEdgeBottom = ui->canvas->y() + ui->canvas->height();
     whiteOutBoxLeft = QRect(0,0,ui->canvas->x(),this->height());
@@ -99,6 +102,16 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &model,
             &pixelEditorModel::selectColor);
 
+    connect(ui->FPSslider,
+            &QSlider::valueChanged,
+            &model,
+            &pixelEditorModel::changeFPS);
+
+    connect(ui->FPSslider,
+            &QSlider::valueChanged,
+            this,
+            &MainWindow::updateFPSLabel);
+
 //    QAction *saveShortcut = new QAction(this);
 //    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
 //    connect(saveShortcut,
@@ -116,6 +129,11 @@ MainWindow::~MainWindow()
 void MainWindow::valueChanged()
 {
     update();
+}
+
+void MainWindow::updateFPSLabel(int newFPS)
+{
+    ui->FPSLabel->setText("FPS: " + QString::number(newFPS));
 }
 
 void MainWindow::paintEvent(QPaintEvent*)
