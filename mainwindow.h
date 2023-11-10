@@ -36,5 +36,17 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+
+    /// @brief Displays the start up screen while hiding all other elements of the UI. Forces a user to choose
+    ///         whether to create a new sprite or load an old one.
+    void setupStartScreen();
+
+    /// @brief After the user selects to create a new sprite, this method will be called and will allow them to
+    ///         choose from a few pre-selected sprite sizes.
+    void newSpriteScreen();
+
+    /// @brief The main screen for editing sprites. This contains the Sprite editor grid, along with all tools
+    ///         and animation window.
+    void mainScreen();
 };
 #endif // MAINWINDOW_H

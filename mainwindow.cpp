@@ -100,6 +100,8 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 //            &model,
 //            &pixelEditorModel::save);
 //    this->addAction(saveShortcut);
+
+    setupStartScreen();
 }
 
 MainWindow::~MainWindow()
@@ -145,4 +147,10 @@ void MainWindow::paintEvent(QPaintEvent*)
     // add a black frame
     QRect frame(ui->canvas->x(), ui->canvas->y(), ui->canvas->width(), ui->canvas->height());
     painter.drawRect(frame);
+}
+
+void MainWindow::setupStartScreen()
+{
+    ui->topButtons->setEnabled(false);
+    ui->topButtons->setEnabled(false);
 }
