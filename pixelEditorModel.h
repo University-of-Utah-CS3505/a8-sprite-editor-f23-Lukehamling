@@ -33,7 +33,7 @@ public slots:
     ///         create the first sprite
     void createInitialSprite(unsigned short int x, unsigned short int y);
 
-/// @brief Recieves a signal from the view of (x,y) location and a fillColor. Then this will add
+    /// @brief Recieves a signal from the view of (x,y) location and a fillColor. Then this will add
     ///         the current state of the Sprite to the undo stack then call the sprite's fill method.
     /// @param x is the x location of the selected pixel
     /// @param y is the y location of the selected pixel
@@ -70,7 +70,7 @@ private:
     QStack<Sprite> redoStack;
     QStack<Sprite> undoStack;
     Tool currentTool;
-    std::vector<Sprite> sprites;
+    std::vector<Sprite> frames;
     int currentFrameIndex{0};
     QColor currentColor;
     int fps;

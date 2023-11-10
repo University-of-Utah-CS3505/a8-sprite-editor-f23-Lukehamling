@@ -31,7 +31,7 @@ void pixelEditorModel::redo()
     if(redoStack.size() > 0)
     {
         addToUndo();
-        sprites.at(currentFrameIndex) = redoStack.pop();
+        frames.at(currentFrameIndex) = redoStack.pop();
     }
 }
 
@@ -39,7 +39,7 @@ void pixelEditorModel::undo()
 {
     qDebug() << "undo clicked";
     if(undoStack.size() > 0)
-        sprites.at(currentFrameIndex) = addToRedo();
+        frames.at(currentFrameIndex) = addToRedo();
 }
 
 Sprite pixelEditorModel::addToRedo()
@@ -51,7 +51,7 @@ Sprite pixelEditorModel::addToRedo()
 
 Sprite pixelEditorModel::addToUndo()
 {
-    Sprite tempSprite = sprites.at(currentFrameIndex);
+    Sprite tempSprite = frames.at(currentFrameIndex);
     undoStack.push(tempSprite);
     return tempSprite;
 }
