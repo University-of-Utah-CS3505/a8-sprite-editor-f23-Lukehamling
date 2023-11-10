@@ -33,6 +33,9 @@
       <height>321</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
    </widget>
    <widget class="QSlider" name="FPSslider">
     <property name="geometry">
@@ -334,7 +337,7 @@
      <x>0</x>
      <y>0</y>
      <width>847</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

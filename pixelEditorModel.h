@@ -8,7 +8,9 @@ class pixelEditorModel : public QObject
 public:
     explicit pixelEditorModel(QObject *parent = nullptr);
     Sprite* getSelectedSprite();
-    Q_OBJECT
+
+    unsigned short int spriteWidth;
+    unsigned short int spriteHeight;
 
 public slots:
     void redo();
@@ -17,10 +19,6 @@ public slots:
     void selectColor();
     void save(QString filename);
     void load(QString filepath);
-    void panUp();
-    void panDown();
-    void panLeft();
-    void panRight();
     void addFrame();
     void deleteFrame();
     void selectFrame();
@@ -47,9 +45,6 @@ private:
     int currentFrameIndex;
     QColor currentColor;
     int fps;
-
-    unsigned short int spriteWidth;
-    unsigned short int spriteHeight;
 };
 
 #endif // PIXELEDITORMODEL_H

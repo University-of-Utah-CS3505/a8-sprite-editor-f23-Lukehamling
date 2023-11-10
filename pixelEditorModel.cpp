@@ -60,26 +60,6 @@ void pixelEditorModel::load(QString filepath)
     //TODO
 }
 
-void pixelEditorModel::panUp()
-{
-    //TODO
-}
-
-void pixelEditorModel::panDown()
-{
-    //TODO
-}
-
-void pixelEditorModel::panLeft()
-{
-    //TODO
-}
-
-void pixelEditorModel::panRight()
-{
-    //TODO
-}
-
 void pixelEditorModel::addFrame()
 {
     //TODO
@@ -108,11 +88,4 @@ void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short 
     frames.pop_back(); // remove the 0,0 sprite
     Sprite initial(x,y);
     frames.push_back(initial);
-    // TODO: remove
-    // make a gradient grid for testing
-    for (size_t i = 0; i < initial.width; i++) {
-        for (size_t j = 0; j < initial.height; j++) {
-            initial.setColor(i,j, QColor(i*7,j*7,i+j+80));
-        }
-    }
 }

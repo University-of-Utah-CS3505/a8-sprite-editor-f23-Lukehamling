@@ -14,12 +14,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     // constants
-    QRect whiteOutBoxLeft;
-    QRect whiteOutBoxRight;
-    QRect whiteOutBoxTop;
-    QRect whiteOutBoxBottom;
-    int canvasCenterx;
-    int canvasCentery;
+    QRect WhiteOutBoxLeft;
+    QRect WhiteOutBoxRight;
+    QRect WhiteOutBoxTop;
+    QRect WhiteOutBoxBottom;
+    int CanvasCenterx;
+    int CanvasCentery;
 
     // these are inverse, so -5 to the center would move it 5 to the right.
     int scale = 0;
@@ -32,10 +32,14 @@ public:
     MainWindow(pixelEditorModel& model, QWidget *parent = nullptr);
     ~MainWindow();
     void paintEvent(QPaintEvent*) override;
-    void changeCanvasView(float focusOnCanvasX, float focusOnCanvasY, int newScale);
+    void updateCanvasView();
 
 public slots:
     void valueChanged();
+    void panUp();
+    void panDown();
+    void panLeft();
+    void panRight();
 
 signals:
     /// @brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will

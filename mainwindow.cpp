@@ -25,39 +25,19 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     ui->setupUi(this);
     editorModel = &model;
 
+    // Math out some x,y locations for later calculation
     const int canvasEdgeRight = ui->canvas->x() + ui->canvas->width();
     const int canvasEdgeBottom = ui->canvas->y() + ui->canvas->height();
-    whiteOutBoxLeft = QRect(0,0,ui->canvas->x(),this->height());
-    whiteOutBoxRight = QRect(canvasEdgeRight,0,this->width() - canvasEdgeRight,this->height());
-    whiteOutBoxTop = QRect(ui->canvas->x(),0,ui->canvas->width(),ui->canvas->y());
-    whiteOutBoxBottom = QRect(ui->canvas->x(),canvasEdgeBottom,ui->canvas->width(),this->height() - canvasEdgeBottom);
-
-    canvasCenterx = ui->canvas->x() + (ui->canvas->width() / 2.0);
-    canvasCentery = ui->canvas->y() + (ui->canvas->height() / 2.0);
-    // set the focus center and zoom/scale of our view
-    changeCanvasView(16,16,10);
-
-
-
-    print(ui->canvas->x(),",",ui->canvas->y());
-    print(ui->canvas->height(),",",ui->canvas->width());
-
-    // populate the combo box
-//    ui->shapeComboBox->addItem("Rectangle");
-//    ui->shapeComboBox->addItem("Ellipse");
-
-//    // put limits on the pen width
-//    ui->penWidthSpinBox->setRange(0, 20);
-
-//    connect(ui->shapeComboBox,
-//            &QComboBox::activated,
-//            this,
-//            &MainWindow::valueChanged);
-
-//    connect(ui->penWidthSpinBox,
-//            &QSpinBox::valueChanged,
-//            this,
-//            &MainWindow::valueChanged);
+    WhiteOutBoxLeft = QRect(0,0,ui->canvas->x(),this->height());
+    WhiteOutBoxRight = QRect(canvasEdgeRight,0,this->width() - canvasEdgeRight,this->height());
+    WhiteOutBoxTop = QRect(ui->canvas->x(),0,ui->canvas->width(),ui->canvas->y());
+    WhiteOutBoxBottom = QRect(ui->canvas->x(),canvasEdgeBottom,ui->canvas->width(),this->height() - canvasEdgeBottom);
+    CanvasCenterx = ui->canvas->x() + (ui->canvas->width() / 2);
+    CanvasCentery = ui->canvas->y() + (ui->canvas->height() / 2);
+    focusSpriteCenterx = 900; // draw a empty box out of the way
+    focusSpriteCentery = 900; // these views are initialzied in startButtonClicked()
+    scale = 1;
+    updateCanvasView();// set the focus center and zoom/scale of our view
 
     // showing icons on the ui
     ui -> undoButton        -> setIcon(QIcon(":/buttons/undo.png"));
@@ -125,6 +105,24 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &model,
             &pixelEditorModel::createInitialSprite);
 
+    //Connect view control buttons
+    connect(ui->panUpButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::panUp);
+    connect(ui->panLeftButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::panLeft);
+    connect(ui->panRightButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::panRight);
+    connect(ui->panDownButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::panDown);
+
     setupStartScreen();
     populateSpriteSizeComboBox();
 }
@@ -139,13 +137,13 @@ void MainWindow::valueChanged()
     update();
 }
 
-void MainWindow::changeCanvasView(float focusOnSpriteX, float focusOnSpriteY, int newScale)
+void MainWindow::updateCanvasView()
 {
-    scale = newScale;
-    focusSpriteCenterx = focusOnSpriteX;
-    focusSpriteCentery = focusOnSpriteY;
-    xOffset = canvasCenterx - (focusSpriteCenterx * scale);
-    yOffset = canvasCentery - (focusSpriteCentery * scale);
+    xOffset = CanvasCenterx - (focusSpriteCenterx * scale);
+    yOffset = CanvasCentery - (focusSpriteCentery * scale);
+    update();
+    qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery
+             << ",XOff:" << xOffset << ",YOff" << yOffset;
 }
 
 /// takes in x,y canvas mouse points, and turns them to x,y sprite points
@@ -159,7 +157,7 @@ bool MainWindow::checkInCanvas(int& x, int& y) {
         Sprite* loadedSprite = editorModel->getSelectedSprite();
         x = (x - xOffset) / scale;
         y = (y - yOffset) / scale;
-        if (x < 0 || y < 0 || x > loadedSprite->width || y > loadedSprite->height) {
+        if (x < 0 || y < 0 || x > loadedSprite->width || y > loadedSprite->height) { // todo crashes if start to draw off go on sprite then release off
             // we are checking if we are clicking outside the sprite
             return false;
         } else {
@@ -169,8 +167,6 @@ bool MainWindow::checkInCanvas(int& x, int& y) {
 }
 
 void MainWindow::mousePressEvent(QMouseEvent* event) {
-    print("mouse pressed");
-    print(event->pos().x(), ",", event->pos().y());
     int x = event->pos().x();
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
@@ -179,8 +175,6 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
-    print("mouse moved");
-    print(event->pos().x(), ",", event->pos().y());
     int x = event->pos().x();
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
@@ -190,20 +184,24 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event) {
 
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
     print("mouse released");
-    print(event->pos().x(), ",", event->pos().y());
     update();
 }
 
+// paints everytime update is called
+/// draws
 void MainWindow::paintEvent(QPaintEvent*)
 {
     Sprite* loadedSprite = editorModel->getSelectedSprite();
-    print(loadedSprite->width, "painting", loadedSprite->height);
+//    print(loadedSprite->width, "painting", loadedSprite->height);
     QPainter painter(this);
 
     QPen pen(Qt::black);
     int penWidth =  1;
     pen.setWidth(penWidth);
     painter.setPen(pen);
+
+    QRect spriteFrame(xOffset, yOffset, loadedSprite->width * scale, loadedSprite->height * scale);
+    painter.drawRect(spriteFrame);
 
     // draw the sprite
     for (size_t i = 0; i < loadedSprite->width; i++) {
@@ -216,14 +214,40 @@ void MainWindow::paintEvent(QPaintEvent*)
     }
 
     // crop out the sprite
-    painter.fillRect(whiteOutBoxLeft, Qt::white);
-    painter.fillRect(whiteOutBoxRight, Qt::white);
-    painter.fillRect(whiteOutBoxTop, Qt::white);
-    painter.fillRect(whiteOutBoxBottom, Qt::white);
+    painter.fillRect(WhiteOutBoxLeft, Qt::white);
+    painter.fillRect(WhiteOutBoxRight, Qt::white);
+    painter.fillRect(WhiteOutBoxTop, Qt::white);
+    painter.fillRect(WhiteOutBoxBottom, Qt::white);
     // add a black frame
-    QRect frame(ui->canvas->x(), ui->canvas->y(), ui->canvas->width(), ui->canvas->height());
-    painter.drawRect(frame);
+    QRect canvasFrame(ui->canvas->x(), ui->canvas->y(), ui->canvas->width(), ui->canvas->height());
+    painter.drawRect(canvasFrame);
 }
+
+
+void MainWindow::panUp()
+{
+    focusSpriteCentery -= editorModel->spriteHeight / 4;
+    updateCanvasView();
+}
+
+void MainWindow::panDown()
+{
+    focusSpriteCentery += editorModel->spriteHeight / 4;
+    updateCanvasView();
+}
+
+void MainWindow::panLeft()
+{
+    focusSpriteCenterx -= editorModel->spriteWidth / 4;
+    updateCanvasView();
+}
+
+void MainWindow::panRight()
+{
+    focusSpriteCenterx += editorModel->spriteWidth / 4;
+    updateCanvasView();
+}
+
 
 void MainWindow::setupStartScreen()
 {
@@ -311,8 +335,8 @@ void MainWindow::populateSpriteSizeComboBox()
 
 void MainWindow::startButtonClicked()
 {
-    unsigned short int x = 0;
-    unsigned short int y = 0;
+    unsigned short int x = 32;
+    unsigned short int y = 32;
 
     switch(ui->spriteSizeComboBox->currentIndex())
     {
@@ -370,6 +394,17 @@ void MainWindow::startButtonClicked()
         break;
     }
     emit selectedSpriteSize(x, y);
+    int largeSide = x;
+    if (y > x)
+        largeSide = y;
+    scale = ui->canvas->height() / largeSide;
+    if (scale < 1) {
+        scale = 1;
+    }
+    focusSpriteCenterx = x / 2;
+    focusSpriteCentery = y / 2;
+    qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery;
+    updateCanvasView();
 
     mainScreen();
 }
