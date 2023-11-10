@@ -81,41 +81,28 @@ void pixelEditorModel::selectColor()
 void pixelEditorModel::fill(unsigned short int x, unsigned short int y, QColor fillColor)
 {
     addToUndo();
-    sprites.at(currentFrameIndex).fill(x, y, fillColor);
-}
-
-void pixelEditorModel::drawCircleOnSprite(unsigned short int startX, unsigned short int startY,
-                                          unsigned short int endX, unsigned short int endY)
-{
-    addToUndo();
-    sprites.at(currentFrameIndex).drawCircle(startX, startY, endX, endY);
-}
-
-
-void pixelEditorModel::selectColor(QColor color)
-{
-    //emit some signal
+    frames.at(currentFrameIndex).fill(x, y, fillColor);
 }
 
 void pixelEditorModel::createJSON()
 {
-    spriteJSON.insert("height", sprites[0].height);
-    spriteJSON.insert("width", sprites[0].width);
-    spriteJSON.insert("numberOfFrames", (int)sprites.size());
+    spriteJSON.insert("height", frames[0].height);
+    spriteJSON.insert("width", frames[0].width);
+    spriteJSON.insert("numberOfFrames", (int)frames.size());
 
     QJsonObject frame;
-    for(unsigned int spriteIndex = 0; spriteIndex < sprites.size(); spriteIndex++)
+    for(unsigned int spriteIndex = 0; spriteIndex < frames.size(); spriteIndex++)
     {
         QJsonArray rows;
         // loops through row of pixel
-        for(int rowIndex = 0; rowIndex < sprites[spriteIndex].height; rowIndex++)
+        for(int rowIndex = 0; rowIndex < frames[spriteIndex].height; rowIndex++)
         {
             QJsonArray pixels;
             // loops through each pixel in said row
-            for(int pixelIndex = 0; pixelIndex < sprites[spriteIndex].width; pixelIndex++)
+            for(int pixelIndex = 0; pixelIndex < frames[spriteIndex].width; pixelIndex++)
             {
                 QJsonArray colors;
-                QColor currentPixelColor = sprites[spriteIndex].getColor(pixelIndex, rowIndex);
+                QColor currentPixelColor = frames[spriteIndex].getColor(pixelIndex, rowIndex);
                 colors.push_back(currentPixelColor.red());
                 colors.push_back(currentPixelColor.green());
                 colors.push_back(currentPixelColor.blue());
@@ -159,18 +146,18 @@ void pixelEditorModel::load(QString filename)
         QJsonValue width = savedData.value("width");
         int spriteWidth = width.toInt();
         QJsonValue numberOfFrames = savedData.value("numberOfFrames");
-        int numberOfSprites = numberOfFrames.toInt();
+        int numberOfframes = numberOfFrames.toInt();
 
-        QJsonObject frames = savedData.value("frames").toObject();
-        sprites.clear();
+        QJsonObject savedSprites = savedData.value("frames").toObject();
+        frames.clear();
 
-        for(int imageIndex = 0; imageIndex < numberOfSprites; imageIndex++)
+        for(int imageIndex = 0; imageIndex < numberOfframes; imageIndex++)
         {
             Sprite img = Sprite(spriteWidth, spriteHeight);
-            sprites.push_back(img);
+            frames.push_back(img);
 
             QString rowName = "frame" + QString::number(imageIndex);
-            QJsonArray rows = frames.value(rowName).toArray();
+            QJsonArray rows = savedSprites.value(rowName).toArray();
 
             for(int rowIndex = 0; rowIndex < spriteHeight; rowIndex++)
             {
@@ -183,28 +170,23 @@ void pixelEditorModel::load(QString filename)
                     int blue = colors.at(2).toInt();
                     int alpha = colors.at(3).toInt();
                     QColor currentPixelColor(red, green, blue, alpha);
-                    sprites[imageIndex].setColor(pixelIndex, rowIndex, currentPixelColor);
+                    frames[imageIndex].setColor(pixelIndex, rowIndex, currentPixelColor);
                 }
             }
         }
 
         // Emits signals to the UI to reflect the images of the loaded file rather than its current state.
 //        emit setUpCanvasSize(spriteWidth, spriteHeight);
-//        emit updateMainCanvas(sprites.at(0));
-//        emit updatePreviewWindow(sprites.at(0));
+//        emit updateMainCanvas(frames.at(0));
+//        emit updatePreviewWindow(frames.at(0));
 //        int currentSprite = 0;
-//        if (numberOfSprites > 1)
+//        if (numberOfframes > 1)
 //            changeFPS();
     }
     catch (...)
     {
         // emit a signal to create a message popup saying an error occurred when reading
     }
-}
-
-void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short int y)
-{
-    //TODO
 }
 
 void pixelEditorModel::deleteFrame()
@@ -230,4 +212,23 @@ void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short 
     frames.pop_back(); // remove the 0,0 sprite
     Sprite initial(x,y);
     frames.push_back(initial);
+}
+
+void pixelEditorModel::addFrame()
+{
+    //TODO: implement this method
+}
+
+//TODO: We might not need these.
+void pixelEditorModel::drawRectangleOnSprite(unsigned short int startX, unsigned short int startY,
+                           unsigned short int endX, unsigned short int endY)
+{
+
+}
+
+void pixelEditorModel::drawCircleOnSprite(unsigned short int startX, unsigned short int startY,
+                                          unsigned short int endX, unsigned short int endY)
+{
+    addToUndo();
+    frames.at(currentFrameIndex).drawCircle(startX, startY, endX, endY);
 }

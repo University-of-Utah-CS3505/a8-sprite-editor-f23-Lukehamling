@@ -20,7 +20,7 @@ public slots:
     void redo();
     void undo();
     void changePixel(int x, int y);
-    void selectColor(QColor color);
+    void selectColor();
     void createJSON();
     void save(QString filename);
     void load(QString filepath);
