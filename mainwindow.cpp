@@ -72,6 +72,39 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &pixelEditorModel::redo);
     this->addAction(redoShortcut);
 
+    QAction *panLeftShortcut = new QAction(this);
+    panLeftShortcut->setShortcut(Qt::Key_Left);
+    connect(panLeftShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panLeft);
+    this->addAction(panLeftShortcut);
+
+    QAction *panUpShortcut = new QAction(this);
+    panUpShortcut->setShortcut(Qt::Key_Up);
+    connect(panUpShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panUp);
+    this->addAction(panUpShortcut);
+
+    QAction *panRightShortcut = new QAction(this);
+    panRightShortcut->setShortcut(Qt::Key_Right);
+    connect(panRightShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panRight);
+    this->addAction(panRightShortcut);
+
+    QAction *panDownShortcut = new QAction(this);
+    panDownShortcut->setShortcut(Qt::Key_Down);
+    connect(panDownShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panDown);
+    this->addAction(panDownShortcut);
+
+    // undo-redo and color select connects
     connect(ui->undoButton,
             &QPushButton::clicked,
             &model,
@@ -80,21 +113,11 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             &model,
             &pixelEditorModel::redo);
-    this->addAction(redoShortcut);
-
 
     connect(ui->colorButton,
             &QPushButton::pressed,
             &model,
             &pixelEditorModel::selectColor);
-
-//    QAction *saveShortcut = new QAction(this);
-//    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
-//    connect(saveShortcut,
-//            &QAction::triggered,
-//            &model,
-//            &pixelEditorModel::save);
-//    this->addAction(saveShortcut);
 
     //Set connections for start up logic
     connect(ui->createButton,
