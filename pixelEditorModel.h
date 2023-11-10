@@ -5,7 +5,6 @@
 #include <QStack>
 class pixelEditorModel : public QObject
 {
-Q_OBJECT
 public:
     explicit pixelEditorModel(QObject *parent = nullptr);
 
