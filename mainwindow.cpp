@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QShortcut>
+#include <QStringList>
 
 using namespace std;
 void print(int num1, string toPrint, int num2) {
@@ -31,13 +32,6 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     focusSpriteCenterx = 16;
     focusSpriteCentery = 16;
 
-    // todo remove
-    // make a gradient grid for testing
-    for (size_t i = 0; i < loadedSprite.width; i++) {
-        for (size_t j = 0; j < loadedSprite.height; j++) {
-            loadedSprite.setColor(i,j, QColor(i*7,j*7,i+j+80));
-        }
-    }
 
 
     print(ui->canvas->x(),",",ui->canvas->y());
@@ -101,7 +95,28 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 //            &pixelEditorModel::save);
 //    this->addAction(saveShortcut);
 
+    //Set connections for start up logic
+    connect(ui->createButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::newSpriteScreen);
+    connect(ui->startButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::startButtonClicked);
+    connect(ui->loadButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::loadButtonClicked);
+
+    //Create new sprite based on this size
+    connect(this,
+            &MainWindow::selectedSpriteSize,
+            &model,
+            &pixelEditorModel::createInitialSprite);
+
     setupStartScreen();
+    populateSpriteSizeComboBox();
 }
 
 MainWindow::~MainWindow()
@@ -151,6 +166,227 @@ void MainWindow::paintEvent(QPaintEvent*)
 
 void MainWindow::setupStartScreen()
 {
-    ui->topButtons->setEnabled(false);
-    ui->topButtons->setEnabled(false);
+    ui->saveButton          ->setEnabled(false);
+    ui->addFrameButton      ->setEnabled(false);
+    ui->deleteFrameButton   ->setEnabled(false);
+    ui->circleButton        ->setEnabled(false);
+    ui->colorButton         ->setEnabled(false);
+    ui->deleteFrameButton   ->setEnabled(false);
+    ui->eraseButton         ->setEnabled(false);
+    ui->fillButton          ->setEnabled(false);
+    ui->panDownButton       ->setEnabled(false);
+    ui->panLeftButton       ->setEnabled(false);
+    ui->panRightButton      ->setEnabled(false);
+    ui->panUpButton         ->setEnabled(false);
+    ui->rectangleButton     ->setEnabled(false);
+    ui->redoButton          ->setEnabled(false);
+    ui->undoButton          ->setEnabled(false);
+    ui->FPSLabel            ->setEnabled(false);
+    ui->FPSslider           ->setEnabled(false);
+    ui->animationPreview    ->setEnabled(false);
+    ui->canvas              ->setEnabled(false);
+    ui->statusbar           ->setEnabled(false);
+    ui->penButton           ->setEnabled(false);
+    ui->frameSelectorLabel  ->setEnabled(false);
+    ui->frameSelector       ->setEnabled(false);
+    ui->startButton         ->setEnabled(false);
+    ui->spriteSizeComboBox  ->setEnabled(false);
+
+    ui->saveButton              ->hide();
+    ui->addFrameButton          ->hide();
+    ui->deleteFrameButton       ->hide();
+    ui->circleButton            ->hide();
+    ui->colorButton             ->hide();
+    ui->deleteFrameButton       ->hide();
+    ui->eraseButton             ->hide();
+    ui->fillButton              ->hide();
+    ui->panDownButton           ->hide();
+    ui->panLeftButton           ->hide();
+    ui->panRightButton          ->hide();
+    ui->panUpButton             ->hide();
+    ui->rectangleButton         ->hide();
+    ui->redoButton              ->hide();
+    ui->undoButton              ->hide();
+    ui->FPSLabel                ->hide();
+    ui->FPSslider               ->hide();
+    ui->animationPreview        ->hide();
+    ui->canvas                  ->hide();
+    ui->statusbar               ->hide();
+    ui->penButton               ->hide();
+    ui->frameSelectorLabel      ->hide();
+    ui->frameSelector           ->hide();
+    ui->spriteSizeSelectorLabel ->hide();
+    ui->frameSelectorLabel      ->hide();
+    ui->frameSelector           ->hide();
+    ui->startButton             ->hide();
+    ui->spriteSizeComboBox      ->hide();
+}
+
+void MainWindow::newSpriteScreen()
+{
+    ui->loadButton              ->setEnabled(false);
+    ui->createButton            ->setEnabled(false);
+
+    ui->loadButton              ->hide();
+    ui->createButton            ->hide();
+    ui->createNewOrLoadLabel    ->hide();
+
+
+    ui->spriteSizeComboBox      ->setEnabled(true);
+    ui->spriteSizeSelectorLabel ->setEnabled(true);
+    ui->startButton             ->setEnabled(true);
+
+    ui->spriteSizeComboBox      ->show();
+    ui->spriteSizeSelectorLabel ->show();
+    ui->startButton             ->show();
+}
+
+void MainWindow::populateSpriteSizeComboBox()
+{
+    QStringList sizeOptions{"32x32", "64x32", "32x64", "64x64", "128x64", "64x128", "128x128", "256x128", "128x256", "256x256", "512x256", "256x512", "512x512"};
+    ui->spriteSizeComboBox->addItems(sizeOptions);
+    ui->spriteSizeComboBox->setMaxVisibleItems(4); //TODO: Still displays 10 items?
+}
+
+void MainWindow::startButtonClicked()
+{
+    unsigned short int x = 0;
+    unsigned short int y = 0;
+
+    switch(ui->spriteSizeComboBox->currentIndex())
+    {
+    case 0:
+        x = 32;
+        y = 32;
+        break;
+    case 1:
+        x = 64;
+        y = 32;
+        break;
+    case 2:
+        x = 32;
+        y = 64;
+        break;
+    case 3:
+        x = 64;
+        y = 64;
+        break;
+    case 4:
+        x = 128;
+        y = 64;
+        break;
+    case 5:
+        x = 64;
+        y = 128;
+        break;
+    case 6:
+        x = 128;
+        y = 128;
+        break;
+    case 7:
+        x = 256;
+        y = 128;
+        break;
+    case 8:
+        x = 128;
+        y = 256;
+        break;
+    case 9:
+        x = 256;
+        y = 256;
+        break;
+    case 10:
+        x = 512;
+        y = 256;
+        break;
+    case 11:
+        x = 256;
+        y = 512;
+        break;
+    case 12:
+        x = 512;
+        y = 512;
+        break;
+    }
+    emit selectedSpriteSize(x, y);
+
+    mainScreen();
+}
+
+void MainWindow::mainScreen()
+{
+    ui->saveButton          ->setEnabled(true);
+    ui->addFrameButton      ->setEnabled(true);
+    ui->deleteFrameButton   ->setEnabled(true);
+    ui->circleButton        ->setEnabled(true);
+    ui->colorButton         ->setEnabled(true);
+    ui->deleteFrameButton   ->setEnabled(true);
+    ui->eraseButton         ->setEnabled(true);
+    ui->fillButton          ->setEnabled(true);
+    ui->panDownButton       ->setEnabled(true);
+    ui->panLeftButton       ->setEnabled(true);
+    ui->panRightButton      ->setEnabled(true);
+    ui->panUpButton         ->setEnabled(true);
+    ui->rectangleButton     ->setEnabled(true);
+    ui->redoButton          ->setEnabled(true);
+    ui->undoButton          ->setEnabled(true);
+    ui->FPSLabel            ->setEnabled(true);
+    ui->FPSslider           ->setEnabled(true);
+    ui->animationPreview    ->setEnabled(true);
+    ui->canvas              ->setEnabled(true);
+    ui->statusbar           ->setEnabled(true);
+    ui->penButton           ->setEnabled(true);
+    ui->frameSelectorLabel  ->setEnabled(true);
+    ui->frameSelector       ->setEnabled(true);
+    ui->loadButton          ->setEnabled(true);
+    ui->startButton         ->setEnabled(false);
+    ui->spriteSizeComboBox  ->setEnabled(false);
+
+    ui->saveButton              ->show();
+    ui->addFrameButton          ->show();
+    ui->deleteFrameButton       ->show();
+    ui->circleButton            ->show();
+    ui->colorButton             ->show();
+    ui->deleteFrameButton       ->show();
+    ui->eraseButton             ->show();
+    ui->fillButton              ->show();
+    ui->panDownButton           ->show();
+    ui->panLeftButton           ->show();
+    ui->panRightButton          ->show();
+    ui->panUpButton             ->show();
+    ui->rectangleButton         ->show();
+    ui->redoButton              ->show();
+    ui->undoButton              ->show();
+    ui->FPSLabel                ->show();
+    ui->FPSslider               ->show();
+    ui->animationPreview        ->show();
+    ui->canvas                  ->show();
+    ui->statusbar               ->show();
+    ui->penButton               ->show();
+    ui->frameSelectorLabel      ->show();
+    ui->frameSelector           ->show();
+    ui->spriteSizeSelectorLabel ->show();
+    ui->frameSelectorLabel      ->show();
+    ui->frameSelector           ->show();
+    ui->loadButton              ->show();
+    ui->spriteSizeSelectorLabel ->hide();
+    ui->startButton             ->hide();
+    ui->spriteSizeComboBox      ->hide();
+
+    ui->loadButton->setGeometry(260, 18, 75, 25);
+
+
+
+    // TODO: remove
+    // make a gradient grid for testing
+    for (size_t i = 0; i < loadedSprite.width; i++) {
+        for (size_t j = 0; j < loadedSprite.height; j++) {
+            loadedSprite.setColor(i,j, QColor(i*7,j*7,i+j+80));
+        }
+    }
+}
+
+void MainWindow::loadButtonClicked()
+{
+    //TODO: Implement this method.
 }

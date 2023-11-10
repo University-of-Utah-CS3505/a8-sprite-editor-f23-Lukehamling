@@ -78,3 +78,12 @@ void pixelEditorModel::changeFPS()
 {
     //TODO
 }
+
+void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short int y)
+{
+    this->spriteWidth   = x;
+    this->spriteHeight  = y;
+
+    Sprite initial(x,y);
+    frames.push_back(initial);
+}
