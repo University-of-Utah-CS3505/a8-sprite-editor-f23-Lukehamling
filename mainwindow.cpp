@@ -205,7 +205,6 @@ void MainWindow::paintEvent(QPaintEvent*)
     Sprite* loadedSprite = editorModel->getSelectedSprite();
 //    print(loadedSprite->width, "painting", loadedSprite->height);
     QPainter painter(this);
-    const int scale = 10;
 
     QPen pen(Qt::black);
     int penWidth =  1;
