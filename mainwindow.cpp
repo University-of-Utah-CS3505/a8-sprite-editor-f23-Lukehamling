@@ -8,10 +8,14 @@
 #include <QPen>
 #include <QShortcut>
 #include <QStringList>
+#include <QMouseEvent>
 
 using namespace std;
 void print(int num1, string toPrint, int num2) {
     qDebug() << num1 << toPrint << num2;
+}
+void print(string toPrint) {
+    qDebug() << toPrint;
 }
 
 MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
@@ -29,9 +33,8 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 
     canvasCenterx = ui->canvas->x() + (ui->canvas->width() / 2.0);
     canvasCentery = ui->canvas->y() + (ui->canvas->height() / 2.0);
-
-    focusSpriteCenterx = 16;
-    focusSpriteCentery = 16;
+    // set the focus center and zoom/scale of our view
+    changeCanvasView(16,16,10);
 
 
 
@@ -135,24 +138,65 @@ void MainWindow::valueChanged()
     update();
 }
 
+void MainWindow::changeCanvasView(float focusOnSpriteX, float focusOnSpriteY, int newScale)
+{
+    scale = newScale;
+    focusSpriteCenterx = focusOnSpriteX;
+    focusSpriteCentery = focusOnSpriteY;
+    xOffset = canvasCenterx - (focusSpriteCenterx * scale);
+    yOffset = canvasCentery - (focusSpriteCentery * scale);
+}
+
+/// takes in x,y canvas mouse points, and turns them to x,y sprite points
+bool MainWindow::checkInCanvas(int& x, int& y) {
+    // move our window's 0,0 to the canvas 0,0
+    if (x < ui->canvas->x() || y < ui->canvas->y() || x > ui->canvas->width() + ui->canvas->x() || y > ui->canvas->height() + ui->canvas->y()) {
+        // we are clicking outside the canvas. Dont even calculate the sprite points
+        return false;
+    } else {
+        x = (x - xOffset) / scale;
+        y = (y - yOffset) / scale;
+        if (x < 0 || y < 0 || x > loadedSprite.width || y > loadedSprite.height) {
+            // we are checking if we are clicking outside the sprite
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+void MainWindow::mousePressEvent(QMouseEvent* event) {
+    print("mouse pressed");
+    print(event->pos().x(), ",", event->pos().y());
+    int x = event->pos().x();
+    int y = event->pos().y();
+    if (checkInCanvas(x, y)) {
+        print(x, " onsprite ", y);
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent* event) {
+    print("mouse moved");
+    print(event->pos().x(), ",", event->pos().y());
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
+    print("mouse released");
+    print(event->pos().x(), ",", event->pos().y());
+}
+
 void MainWindow::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
-    const int scale = 10;
 
     QPen pen(Qt::black);
     int penWidth =  1;
     pen.setWidth(penWidth);
     painter.setPen(pen);
 
-    const int xOffset = canvasCenterx - (focusSpriteCenterx * scale);
-    const int yOffset = canvasCentery - (focusSpriteCentery * scale);
-
     // draw the sprite
     for (size_t i = 0; i < loadedSprite.width; i++) {
         for (size_t j = 0; j < loadedSprite.height; j++) {
-            //int x = ui->canvas->x() + (i * scale);
-            //int y = ui->canvas->y() + (j * scale);
             int x = xOffset + (i * scale);
             int y = yOffset + (j * scale);
             QRect box(x, y, scale, scale);

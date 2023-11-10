@@ -13,6 +13,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    // constants
     QRect whiteOutBoxLeft;
     QRect whiteOutBoxRight;
     QRect whiteOutBoxTop;
@@ -21,15 +22,19 @@ class MainWindow : public QMainWindow
     int canvasCentery;
 
     // these are inverse, so -5 to the center would move it 5 to the right.
-    float focusSpriteCenterx;
-    float focusSpriteCentery;
+    int scale = 0;
+    float focusSpriteCenterx = 0;
+    float focusSpriteCentery = 0;
+    int xOffset = 0;
+    int yOffset = 0;
 
     Sprite loadedSprite = Sprite(32,32);
 
 public:
     MainWindow(pixelEditorModel& model, QWidget *parent = nullptr);
     ~MainWindow();
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*) override;
+    void changeCanvasView(float focusOnCanvasX, float focusOnCanvasY, int newScale);
 
 public slots:
     void valueChanged();
@@ -63,5 +68,9 @@ private:
 
     /// @brief Loads the combo box with appropriate Sprite sizes that the user can select.
     void populateSpriteSizeComboBox();
+    bool checkInCanvas(int& canvasX, int& canvasY);
+    virtual void mousePressEvent(QMouseEvent* event) override;
+    virtual void mouseMoveEvent(QMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QMouseEvent* event) override;
 };
 #endif // MAINWINDOW_H
