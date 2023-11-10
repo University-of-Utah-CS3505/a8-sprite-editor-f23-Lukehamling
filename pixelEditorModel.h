@@ -7,6 +7,8 @@
 
 class pixelEditorModel : public QObject
 {
+    Q_OBJECT
+
 public:
     explicit pixelEditorModel(QObject *parent = nullptr);
 
@@ -29,6 +31,10 @@ public slots:
     void selectFrame();
     void changeFPS();
 
+    /// @brief Recieves a signal from the view of (x,y) location and a fillColor. Then this will add
+    ///         the current state of the Sprite to the undo stack then call the sprite's fill method.
+    void fill();
+
 private:
     enum Tool {
         Circle,
@@ -38,11 +44,11 @@ private:
         Redo
     };
 
-    QStack<std::vector<Sprite>> redoStack;
-    QStack<std::vector<Sprite>> undoStack;
+    QStack<Sprite> redoStack;
+    QStack<Sprite> undoStack;
     Tool currentTool;
     std::vector<Sprite> sprites;
-    int currentFrameIndex;
+    int currentFrameIndex{0};
     QColor currentColor;
     int fps;
     QJsonObject spriteJSON;

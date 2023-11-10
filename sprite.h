@@ -23,8 +23,10 @@ private:
     vector<vector<QColor>> grid;
     const QColor DEFAULT_COLOR = Qt::transparent;
 public:
+    //TODO: make these private and add getters but no setters
     unsigned short int width;
     unsigned short int height;
+
     /// @brief Constructor for Sprite object. The user will pass in a width and height for the spite that
     ///         will used to set the size of the editing grid in the view. The grid will be represented
     ///         in the Sprite object as a 2d vector of QColors. Indexing into the grid will work as expected
@@ -36,6 +38,16 @@ public:
     /// @brief Creates a Sprite object from a previously saved Sprite JSON.
     /// @param loadedSprite is a Sprite that was created in the past and saved as a JSON file.
     Sprite(QJsonObject loadedSprite);
+
+    /// @brief Copy constructor for Sprite class. Performs deep copy of data members.
+    /// @param spriteToCopy is the Sprite whose values will be copied into this Sprite.
+    Sprite(const Sprite& spriteToCopy);
+
+    /// @brief Assignment overload. This will allow us to assign one sprite to another.
+    Sprite& operator=(Sprite otherSprite);
+
+    //TODO: Did not create Destructor because no memory is being managed. Reach consensus with team
+    //      whether destructor is neccessary or not.
 
     /// @brief Retrieves a color from a certain pixel x,y location.
     /// @param x is the x location of the pixel in the Sprite

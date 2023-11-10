@@ -10,6 +10,7 @@
 #include <vector>
 
 using std::vector;
+using std::swap;
 
 Sprite::Sprite(unsigned short int spriteWidth, unsigned short int spriteHeight) : width{spriteWidth}, height{spriteHeight}
 {
@@ -26,6 +27,22 @@ Sprite::Sprite(unsigned short int spriteWidth, unsigned short int spriteHeight) 
 Sprite::Sprite(QJsonObject loadedSprite)
 {
     //TODO: Implement this constructor after deserializing sprite
+}
+
+Sprite::Sprite(const Sprite& spriteToCopy)
+{
+    this->height    = spriteToCopy.height;
+    this->width     = spriteToCopy.width;
+    this->grid      = spriteToCopy.grid;
+}
+
+Sprite& Sprite::operator=(Sprite otherSprite)
+{
+    swap(this->height, otherSprite.height);
+    swap(this->width, otherSprite.width);
+    swap(this->grid, otherSprite.grid);
+
+    return *this;
 }
 
 QColor Sprite::getColor(unsigned short int x, unsigned short int y)

@@ -29,11 +29,18 @@ void pixelEditorModel::undo()
 
 void pixelEditorModel::addToRedo()
 {
+    if(undoStack.size() > 0)
+    {
+        Sprite tempSprite = undoStack.pop();
+        redoStack.push(tempSprite);
+    }
+
     //todo
 }
 
 void pixelEditorModel::addToUndo()
 {
+    sprites.at(currentFrameIndex);
     //todo
 }
 
