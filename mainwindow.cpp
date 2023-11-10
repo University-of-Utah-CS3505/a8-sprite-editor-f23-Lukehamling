@@ -127,19 +127,18 @@ void MainWindow::changeCanvasView(float focusOnSpriteX, float focusOnSpriteY, in
 /// takes in x,y canvas mouse points, and turns them to x,y sprite points
 bool MainWindow::checkInCanvas(int& x, int& y) {
     // move our window's 0,0 to the canvas 0,0
-    x = y - ui->canvas->x();
-    x = y - ui->canvas->y();
-    if (x < 0 || y < 0 || x > ui->canvas->width() || y > ui->canvas->height()) {
+    if (x < ui->canvas->x() || y < ui->canvas->y() || x > ui->canvas->width() + ui->canvas->x() || y > ui->canvas->height() + ui->canvas->y()) {
         // we are clicking outside the canvas. Dont even calculate the sprite points
         return false;
     } else {
-        // todo convert our x,y to a x,y on the sprite
-//        if () {
-//            // we are checking if we are clicking outside the sprite
-//            return false;
-//        } else {
-//            return true;
-//        }
+        x = (x - xOffset) / scale;
+        y = (y - yOffset) / scale;
+        if (x < 0 || y < 0 || x > loadedSprite.width || y > loadedSprite.height) {
+            // we are checking if we are clicking outside the sprite
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
@@ -148,7 +147,9 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
     print(event->pos().x(), ",", event->pos().y());
     int x = event->pos().x();
     int y = event->pos().y();
-    checkInCanvas(x, y);
+    if (checkInCanvas(x, y)) {
+        print(x, " onsprite ", y);
+    }
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
