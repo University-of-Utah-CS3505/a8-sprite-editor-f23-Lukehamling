@@ -18,35 +18,58 @@ pixelEditorModel::pixelEditorModel(QObject *parent)
 void pixelEditorModel::redo()
 {
     qDebug() << "redo clicked";
-    // TODO
+    if(redoStack.size() > 0)
+    {
+        addToUndo();
+        sprites.at(currentFrameIndex) = redoStack.pop();
+    }
 }
 
 void pixelEditorModel::undo()
 {
     qDebug() << "undo clicked";
-    // TODO
+    if(undoStack.size() > 0)
+        sprites.at(currentFrameIndex) = addToRedo();
 }
 
-void pixelEditorModel::addToRedo()
+Sprite pixelEditorModel::addToRedo()
 {
-    if(undoStack.size() > 0)
-    {
         Sprite tempSprite = undoStack.pop();
         redoStack.push(tempSprite);
-    }
-
-    //todo
+        return tempSprite;
 }
 
-void pixelEditorModel::addToUndo()
+Sprite pixelEditorModel::addToUndo()
 {
-    sprites.at(currentFrameIndex);
-    //todo
+    Sprite tempSprite = sprites.at(currentFrameIndex);
+    undoStack.push(tempSprite);
+    return tempSprite;
 }
 
 void pixelEditorModel::changePixel()
 {
+    addToUndo();
     //TODO
+}
+
+void pixelEditorModel::fill(unsigned short int x, unsigned short int y, QColor fillColor)
+{
+    addToUndo();
+    sprites.at(currentFrameIndex).fill(x, y, fillColor);
+}
+
+void pixelEditorModel::drawCircleOnSprite(unsigned short int startX, unsigned short int startY,
+                                          unsigned short int endX, unsigned short int endY)
+{
+    addToUndo();
+    sprites.at(currentFrameIndex).drawCircle(startX, startY, endX, endY);
+}
+
+void pixelEditorModel::drawRectangleOnSprite(unsigned short int startX, unsigned short int startY,
+                                             unsigned short int endX, unsigned short int endY)
+{
+    addToUndo();
+    sprites.at(currentFrameIndex).drawRectangle(startX, startY, endX, endY);
 }
 
 void pixelEditorModel::selectColor(QColor color)

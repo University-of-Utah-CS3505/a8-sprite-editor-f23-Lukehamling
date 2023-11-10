@@ -90,7 +90,7 @@ void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
     //TODO: Implement this method
 }
 
-void Sprite::drawSquare(unsigned short int startX, unsigned short int startY,
+void Sprite::drawRectangle(unsigned short int startX, unsigned short int startY,
                 unsigned short int endX, unsigned short int endY)
 {
     //TODO: Implement this method

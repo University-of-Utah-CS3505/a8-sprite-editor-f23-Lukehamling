@@ -91,6 +91,15 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QAction::triggered,
             &model,
             &pixelEditorModel::redo);
+
+    connect(ui->undoButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::undo);
+    connect(ui->redoButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::redo);
     this->addAction(redoShortcut);
 
 //    QAction *saveShortcut = new QAction(this);
@@ -100,6 +109,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 //            &model,
 //            &pixelEditorModel::save);
 //    this->addAction(saveShortcut);
+
 }
 
 MainWindow::~MainWindow()

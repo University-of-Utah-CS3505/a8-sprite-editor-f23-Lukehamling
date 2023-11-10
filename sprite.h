@@ -85,7 +85,7 @@ public:
     /// @param startY is the starting y location that the user clicked
     /// @param endX is the ending x location that the user clicked
     /// @param endY is the ending y location that the user clicked
-    void drawSquare(unsigned short int startX, unsigned short int startY,
+    void drawRectangle(unsigned short int startX, unsigned short int startY,
                     unsigned short int endX, unsigned short int endY);
 
 private:
