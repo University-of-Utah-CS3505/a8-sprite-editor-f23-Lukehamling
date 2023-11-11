@@ -175,7 +175,6 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             this,
             &MainWindow::panDown);
-
     connect(&model,
             &pixelEditorModel::updateCanvas,
             this,

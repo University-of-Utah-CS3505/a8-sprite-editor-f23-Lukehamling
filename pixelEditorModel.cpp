@@ -210,7 +210,8 @@ void pixelEditorModel::load(QString filename)
             }
         }
 
-        // Emits signals to the UI to reflect the images of the loaded file rather than its current state.
+        emit updateCanvas();
+        // todo: Emit signals to the UI to reflect the images of the loaded file
 //        emit setUpCanvasSize(spriteWidth, spriteHeight);
 //        emit updateMainCanvas(frames.at(0));
 //        emit updatePreviewWindow(frames.at(0));
