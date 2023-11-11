@@ -157,11 +157,14 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QComboBox::activated,
             this,
             &MainWindow::valueChanged);
+<<<<<<< Updated upstream
 
     connect(&model,
             &pixelEditorModel::updateCanvas,
             this,
             &MainWindow::valueChanged);
+=======
+>>>>>>> Stashed changes
 
     setupStartScreen();
     populateSpriteSizeComboBox();
