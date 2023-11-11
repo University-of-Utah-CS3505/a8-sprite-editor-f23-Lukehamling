@@ -46,6 +46,8 @@ signals:
     /// @brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will
     ///         use this size to create a new Sprite.
     void selectedSpriteSize(int x, int y);
+    void updateFPSLabel(int newFPS);
+    void showFrame(QImage image);
 
 private:
     Ui::MainWindow *ui;

@@ -25,6 +25,10 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     ui->setupUi(this);
     editorModel = &model;
 
+    
+    ui->FPSslider->setMaximum(60);
+    ui->FPSslider->setMinimum(0);
+
     // Math out some x,y locations for later calculation
     const int canvasEdgeRight = ui->canvas->x() + ui->canvas->width();
     const int canvasEdgeBottom = ui->canvas->y() + ui->canvas->height();
@@ -87,6 +91,26 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::pressed,
             &model,
             &pixelEditorModel::selectColor);
+
+    connect(ui->FPSslider,
+            &QSlider::valueChanged,
+            &model,
+            &pixelEditorModel::changeFPS);
+
+    connect(ui->FPSslider,
+            &QSlider::valueChanged,
+            this,
+            &MainWindow::updateFPSLabel);
+
+    connect(ui->playButton,
+            &QPushButton::pressed,
+            &model,
+            &pixelEditorModel::playAnimation);
+
+    connect(&model,
+            &pixelEditorModel::showFrameSignal,
+            this,
+            &MainWindow::showFrame);
 
 //    QAction *saveShortcut = new QAction(this);
 //    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
@@ -230,6 +254,17 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
 
 // paints everytime update is called
 /// draws
+void MainWindow::updateFPSLabel(int newFPS)
+{
+    ui->FPSLabel->setText("FPS: " + QString::number(newFPS));
+}
+
+void MainWindow::showFrame(QImage image)
+{
+    QPixmap pixmap = QPixmap::fromImage(image);
+    pixmap = pixmap.scaled(ui->animationPreview->height(),ui->animationPreview->width(), Qt::IgnoreAspectRatio);
+}
+
 void MainWindow::paintEvent(QPaintEvent*)
 {
     Sprite* loadedSprite = editorModel->getSelectedSprite();

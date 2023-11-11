@@ -9,12 +9,19 @@ class pixelEditorModel : public QObject
 {
     Q_OBJECT
 
+#include <QImage>
+class pixelEditorModel : public QObject
+{
+    Q_OBJECT
 public:
     explicit pixelEditorModel(QObject *parent = nullptr);
     Sprite* getSelectedSprite();
 
     unsigned short int spriteWidth;
     unsigned short int spriteHeight;
+
+signals:
+    void showFrameSignal(QImage image);
 
 public slots:
     void redo();
@@ -30,6 +37,9 @@ public slots:
     void deleteFrame();
     void selectFrame(int data);
     void changeFPS();
+    void selectFrame();
+    void changeFPS(int newFPS);
+    void playAnimation();
 
     /// @brief This method will recieve the signal with the x,y dimensions sent from the view then
     ///         create the first sprite
@@ -50,6 +60,10 @@ private:
 
     QStack<Sprite> redoStack;
     QStack<Sprite> undoStack;
+    void showFrame(int i);
+
+    QStack<std::vector<Sprite>> redoStack;
+    QStack<std::vector<Sprite>> undoStack;
     Tool currentTool;
     std::vector<Sprite> frames;
     int currentFrameIndex{0};
