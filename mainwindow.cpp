@@ -527,11 +527,9 @@ void MainWindow::changeFrameBox(int data)
     }
     else
     {
-        qDebug() << "got to change frame box";
         int index = ui->frameSelector->currentIndex();
         ui->frameSelector->setCurrentIndex(index - 1);
         update();
-        qDebug()<< "got past update";
         ui->frameSelector->removeItem(ui->frameSelector->count() - 1);
     }
 }
