@@ -74,9 +74,9 @@ void pixelEditorModel::deleteFrame()
     emit updateFrameBox(-1);
 }
 
-void pixelEditorModel::selectFrame()
+void pixelEditorModel::selectFrame(int data)
 {
-    //TODO
+    currentFrameIndex = data;
 }
 
 void pixelEditorModel::changeFPS()
