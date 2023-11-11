@@ -9,6 +9,7 @@
 #include <QShortcut>
 #include <QStringList>
 #include <QMouseEvent>
+#include <QFileDialog>
 
 using namespace std;
 void print(int num1, string toPrint, int num2) {
@@ -104,7 +105,25 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &MainWindow::panDown);
     this->addAction(panDownShortcut);
 
-    // undo-redo and color select connects
+    // save-load
+    connect(ui->saveButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::saveClicked);
+    connect(this,
+            &MainWindow::saveFileSelected,
+            &model,
+            &pixelEditorModel::save);
+    connect(ui->loadButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::loadClicked);
+    connect(this,
+            &MainWindow::loadFileSelected,
+            &model,
+            &pixelEditorModel::load);
+
+    // undo-redo & color select
     connect(ui->undoButton,
             &QPushButton::clicked,
             &model,
@@ -113,7 +132,6 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             &model,
             &pixelEditorModel::redo);
-
     connect(ui->colorButton,
             &QPushButton::pressed,
             &model,
@@ -128,11 +146,6 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             this,
             &MainWindow::startButtonClicked);
-    connect(ui->loadButton,
-            &QPushButton::clicked,
-            this,
-            &MainWindow::loadButtonClicked);
-
     //Create new sprite based on this size
     connect(this,
             &MainWindow::selectedSpriteSize,
@@ -293,6 +306,25 @@ void MainWindow::panRight()
     updateCanvasView();
 }
 
+void MainWindow::saveClicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save File"),
+                                                    "/home/",
+                                                    tr("Sprites (*.ssp)"));
+    emit saveFileSelected(fileName);
+}
+
+void MainWindow::loadClicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open File"),
+                                                    "/home/",
+                                                    tr("Sprites (*.ssp)"));
+
+    if(!fileName.isEmpty())
+        emit loadFileSelected(fileName);
+}
 
 void MainWindow::setupStartScreen()
 {
@@ -515,9 +547,4 @@ void MainWindow::mainScreen()
     ui->spriteSizeComboBox      ->hide();
 
     ui->loadButton->setGeometry(260, 18, 75, 25);
-}
-
-void MainWindow::loadButtonClicked()
-{
-    //TODO: Implement this method.
 }
