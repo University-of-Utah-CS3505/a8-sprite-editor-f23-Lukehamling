@@ -27,7 +27,9 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 
     
     ui->FPSslider->setMaximum(60);
-    ui->FPSslider->setMinimum(0);
+    ui->FPSslider->setMinimum(1);
+    ui->FPSslider->setValue(24);
+    ui->FPSLabel->setText("FPS 24");
 
     // Math out some x,y locations for later calculation
     const int canvasEdgeRight = ui->canvas->x() + ui->canvas->width();
@@ -263,6 +265,7 @@ void MainWindow::showFrame(QImage image)
 {
     QPixmap pixmap = QPixmap::fromImage(image);
     pixmap = pixmap.scaled(ui->animationPreview->height(),ui->animationPreview->width(), Qt::IgnoreAspectRatio);
+    ui->animationPreview->setPixmap(pixmap);
 }
 
 void MainWindow::paintEvent(QPaintEvent*)
@@ -352,6 +355,7 @@ void MainWindow::setupStartScreen()
     ui->frameSelector       ->setEnabled(false);
     ui->startButton         ->setEnabled(false);
     ui->spriteSizeComboBox  ->setEnabled(false);
+    ui->playButton          ->setEnabled(false);
 
     ui->saveButton              ->hide();
     ui->addFrameButton          ->hide();
@@ -381,6 +385,7 @@ void MainWindow::setupStartScreen()
     ui->frameSelector           ->hide();
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
+    ui->playButton              ->hide();
 }
 
 void MainWindow::newSpriteScreen()
@@ -511,6 +516,7 @@ void MainWindow::mainScreen()
     ui->frameSelectorLabel  ->setEnabled(true);
     ui->frameSelector       ->setEnabled(true);
     ui->loadButton          ->setEnabled(true);
+    ui->playButton          ->setEnabled(true);
     ui->startButton         ->setEnabled(false);
     ui->spriteSizeComboBox  ->setEnabled(false);
 
@@ -541,6 +547,7 @@ void MainWindow::mainScreen()
     ui->frameSelectorLabel      ->show();
     ui->frameSelector           ->show();
     ui->loadButton              ->show();
+    ui->playButton              ->show();
     ui->spriteSizeSelectorLabel ->hide();
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
@@ -553,10 +560,11 @@ void MainWindow::changeFrameBox(int data)
 {
     if (data > 0)
     {
+        qDebug() << "called correct signal";
         ui->frameSelector->addItem("Frame " + QString::number(data));
     }
     //this is the case where someone deletes a frame, but there is only one frame
-    if (data == 0)
+    else if (data == 0)
     {
         update();
     }

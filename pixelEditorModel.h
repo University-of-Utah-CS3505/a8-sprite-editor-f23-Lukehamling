@@ -32,8 +32,6 @@ public slots:
     void addFrame();
     void deleteFrame();
     void selectFrame(int data);
-    void changeFPS();
-    void selectFrame();
     void changeFPS(int newFPS);
     void playAnimation();
 
@@ -64,7 +62,7 @@ private:
     int fps;
     QJsonObject spriteJSON;
 
-    void showFrame(int i);
+    QImage showFrame(int i);
 
     /// @brief Pops a Sprite off of the undo stack and adds it to the redo stack
     /// @return the Sprite object that was popped off of the undo stack

@@ -21,6 +21,7 @@ pixelEditorModel::pixelEditorModel(QObject *parent)
     currentFrameIndex = 0;
     Sprite initial(16,16);
     frames.push_back(initial);
+    fps = 24;
 }
 
 Sprite* pixelEditorModel::getSelectedSprite()
@@ -261,11 +262,12 @@ void pixelEditorModel::playAnimation()
 {
     for(size_t i =0; i < frames.size(); i++)
     {
-        QTimer::singleShot(i * (1000/fps), Qt::PreciseTimer, this, [this, i](){showFrame(i); });
+        QImage frame = showFrame(i);
+        QTimer::singleShot(i * (1000/fps), Qt::PreciseTimer, this, [this, frame](){emit showFrameSignal(frame); });
     }
 }
 
-void pixelEditorModel::showFrame(int i)
+QImage pixelEditorModel::showFrame(int i)
 {
     Sprite frame = frames.at(i);
     QImage image = QImage(frame.width, frame.height, QImage::Format_ARGB32);
@@ -275,7 +277,7 @@ void pixelEditorModel::showFrame(int i)
             image.setPixelColor(i, j, frame.getColor(i, j));
         }
     }
-    emit showFrameSignal(image);
+    return image;
 }
 
 void pixelEditorModel::changeFPS(int newFPS)
