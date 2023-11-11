@@ -18,6 +18,7 @@ void print(string toPrint) {
     qDebug() << toPrint;
 }
 
+///@include
 MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -188,16 +189,19 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     populateSpriteSizeComboBox();
 }
 
+///@include
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+///@include
 void MainWindow::valueChanged()
 {
     update();
 }
 
+///@include
 void MainWindow::updateCanvasView()
 {
     xOffset = CanvasCenterx - (focusSpriteCenterx * scale);
@@ -207,7 +211,7 @@ void MainWindow::updateCanvasView()
              << ",XOff:" << xOffset << ",YOff" << yOffset;
 }
 
-/// takes in x,y canvas mouse points, and turns them to x,y sprite points
+///@include
 bool MainWindow::checkInCanvas(int& x, int& y) {
     print("checkInCanvas");
     // move our window's 0,0 to the canvas 0,0
@@ -227,6 +231,7 @@ bool MainWindow::checkInCanvas(int& x, int& y) {
     }
 }
 
+///@include
 void MainWindow::mousePressEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
@@ -236,6 +241,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
     update();
 }
 
+///@include
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
@@ -245,6 +251,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     update();
 }
 
+///@include
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
@@ -254,13 +261,13 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
     update();
 }
 
-// paints everytime update is called
-/// draws
+///@include
 void MainWindow::updateFPSLabel(int newFPS)
 {
     ui->FPSLabel->setText("FPS: " + QString::number(newFPS));
 }
 
+///@include
 void MainWindow::showFrame(QImage image)
 {
     QPixmap pixmap = QPixmap::fromImage(image);
@@ -268,6 +275,7 @@ void MainWindow::showFrame(QImage image)
     ui->animationPreview->setPixmap(pixmap);
 }
 
+///@include
 void MainWindow::paintEvent(QPaintEvent*)
 {
     Sprite* loadedSprite = editorModel->getSelectedSprite();
@@ -302,32 +310,35 @@ void MainWindow::paintEvent(QPaintEvent*)
     painter.drawRect(canvasFrame);
 }
 
-
+///@include
 void MainWindow::panUp()
 {
     focusSpriteCentery -= editorModel->spriteHeight / 4;
     updateCanvasView();
 }
 
+///@include
 void MainWindow::panDown()
 {
     focusSpriteCentery += editorModel->spriteHeight / 4;
     updateCanvasView();
 }
 
+///@include
 void MainWindow::panLeft()
 {
     focusSpriteCenterx -= editorModel->spriteWidth / 4;
     updateCanvasView();
 }
 
+///@include
 void MainWindow::panRight()
 {
     focusSpriteCenterx += editorModel->spriteWidth / 4;
     updateCanvasView();
 }
 
-
+///@include
 void MainWindow::setupStartScreen()
 {
     ui->saveButton          ->setEnabled(false);
@@ -388,6 +399,7 @@ void MainWindow::setupStartScreen()
     ui->playButton              ->hide();
 }
 
+///@include
 void MainWindow::newSpriteScreen()
 {
     ui->loadButton              ->setEnabled(false);
@@ -407,6 +419,7 @@ void MainWindow::newSpriteScreen()
     ui->startButton             ->show();
 }
 
+///@include
 void MainWindow::populateSpriteSizeComboBox()
 {
     QStringList sizeOptions{"32x32", "64x32", "32x64", "64x64", "128x64", "64x128", "128x128", "256x128", "128x256", "256x256", "512x256", "256x512", "512x512"};
@@ -414,6 +427,7 @@ void MainWindow::populateSpriteSizeComboBox()
     ui->spriteSizeComboBox->setMaxVisibleItems(4); //TODO: Still displays 10 items?
 }
 
+///@include
 void MainWindow::startButtonClicked()
 {
     unsigned short int x = 32;
@@ -490,6 +504,7 @@ void MainWindow::startButtonClicked()
     mainScreen();
 }
 
+///@include
 void MainWindow::mainScreen()
 {
     ui->saveButton          ->setEnabled(true);
@@ -556,6 +571,7 @@ void MainWindow::mainScreen()
     ui->loadButton->setGeometry(260, 18, 75, 25);
 }
 
+///@include
 void MainWindow::changeFrameBox(int data)
 {
     if (data > 0)
@@ -577,6 +593,7 @@ void MainWindow::changeFrameBox(int data)
     }
 }
 
+///@include
 void MainWindow::loadButtonClicked()
 {
     //TODO: Implement this method.

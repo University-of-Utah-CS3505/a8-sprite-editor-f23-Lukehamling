@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QTimer>
 
+///@include
 pixelEditorModel::pixelEditorModel(QObject *parent)
 {
     setParent(parent);
@@ -24,11 +25,13 @@ pixelEditorModel::pixelEditorModel(QObject *parent)
     fps = 24;
 }
 
+///@include
 Sprite* pixelEditorModel::getSelectedSprite()
 {
     return &frames[currentFrameIndex];
 }
 
+///@include
 void pixelEditorModel::redo()
 {
     qDebug() << "redo clicked";
@@ -42,6 +45,7 @@ void pixelEditorModel::redo()
     }
 }
 
+///@include
 void pixelEditorModel::undo()
 {
     qDebug() << "undo clicked";
@@ -55,6 +59,7 @@ void pixelEditorModel::undo()
     }
 }
 
+///@include
 Sprite pixelEditorModel::addToUndo()
 {
     Sprite tempSprite = frames[currentFrameIndex];
@@ -62,6 +67,7 @@ Sprite pixelEditorModel::addToUndo()
     return tempSprite;
 }
 
+///@include
 void pixelEditorModel::clickPixel(int x, int y)
 {
     addToUndo();
@@ -86,6 +92,7 @@ void pixelEditorModel::clickPixel(int x, int y)
     }
 }
 
+///@include
 void pixelEditorModel::movePixel(int x, int y)
 {
     switch (currentTool) {
@@ -100,6 +107,8 @@ void pixelEditorModel::movePixel(int x, int y)
         break;
     }
 }
+
+///@include
 void pixelEditorModel::releasePixel(int x, int y)
 {
     switch (currentTool) {
@@ -115,6 +124,7 @@ void pixelEditorModel::releasePixel(int x, int y)
     //addToUndo();
 }
 
+///@include
 void pixelEditorModel::selectColor()
 {
     QColor newColor = QColorDialog::getColor("Select Brush Color");
@@ -123,6 +133,7 @@ void pixelEditorModel::selectColor()
         currentColor = newColor;
 }
 
+///@include
 void pixelEditorModel::createJSON()
 {
     spriteJSON.insert("height", frames[0].height);
@@ -157,6 +168,7 @@ void pixelEditorModel::createJSON()
     spriteJSON.insert("frame", frame);
 }
 
+///@include
 void pixelEditorModel::save(QString filename)
 {
     qDebug() << "save clicked";
@@ -168,6 +180,7 @@ void pixelEditorModel::save(QString filename)
     saveFile.write(saveDoc.toJson());
 }
 
+///@include
 void pixelEditorModel::load(QString filename)
 {
     try
@@ -228,6 +241,7 @@ void pixelEditorModel::load(QString filename)
     }
 }
 
+///@include
 void pixelEditorModel::addFrame()
 {
     Sprite newFrame(frames[currentFrameIndex].width, frames[currentFrameIndex].height);
@@ -235,6 +249,7 @@ void pixelEditorModel::addFrame()
     emit updateFrameBox(frames.size());
 }
 
+///@include
 void pixelEditorModel::deleteFrame()
 {
     qDebug() << currentFrameIndex;
@@ -253,11 +268,13 @@ void pixelEditorModel::deleteFrame()
     emit updateFrameBox(-1);
 }
 
+///@include
 void pixelEditorModel::selectFrame(int data)
 {
     currentFrameIndex = data;
 }
 
+///@include
 void pixelEditorModel::playAnimation()
 {
     for(size_t i =0; i < frames.size(); i++)
@@ -267,6 +284,7 @@ void pixelEditorModel::playAnimation()
     }
 }
 
+///@include
 QImage pixelEditorModel::showFrame(int i)
 {
     Sprite frame = frames.at(i);
@@ -280,11 +298,13 @@ QImage pixelEditorModel::showFrame(int i)
     return image;
 }
 
+///@include
 void pixelEditorModel::changeFPS(int newFPS)
 {
     fps = newFPS;
 }
 
+///@include
 void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short int y)
 {
     this->spriteWidth   = x;
@@ -294,4 +314,3 @@ void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short 
     Sprite initial(x,y);
     frames.push_back(initial);
 }
-
