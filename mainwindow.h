@@ -40,6 +40,7 @@ public slots:
     void panDown();
     void panLeft();
     void panRight();
+    void changeFrameBox(int data);
 
 signals:
     /// @brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will

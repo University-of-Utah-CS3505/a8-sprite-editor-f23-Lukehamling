@@ -226,17 +226,32 @@ void pixelEditorModel::load(QString filename)
 
 void pixelEditorModel::addFrame()
 {
-    //TODO: implement this method
+    Sprite newFrame(frames[currentFrameIndex].width, frames[currentFrameIndex].height);
+    frames.push_back(newFrame);
+    emit updateFrameBox(frames.size());
 }
 
 void pixelEditorModel::deleteFrame()
 {
-    //TODO
+    qDebug() << currentFrameIndex;
+    if(frames.size() == 1)
+    {
+        Sprite frame = frames[0];
+        frames[0] = Sprite(frame.width, frame.height);
+        emit updateFrameBox(0);
+        return;
+    }
+    frames.erase(next(begin(frames), currentFrameIndex));
+    if(currentFrameIndex > 0)
+    {
+        currentFrameIndex--;
+    }
+    emit updateFrameBox(-1);
 }
 
-void pixelEditorModel::selectFrame()
+void pixelEditorModel::selectFrame(int data)
 {
-    //TODO
+    currentFrameIndex = data;
 }
 
 void pixelEditorModel::changeFPS()

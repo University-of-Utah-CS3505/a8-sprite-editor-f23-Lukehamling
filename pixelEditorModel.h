@@ -28,7 +28,7 @@ public slots:
     void load(QString filepath);
     void addFrame();
     void deleteFrame();
-    void selectFrame();
+    void selectFrame(int data);
     void changeFPS();
 
     /// @brief This method will recieve the signal with the x,y dimensions sent from the view then
@@ -36,6 +36,7 @@ public slots:
     void createInitialSprite(unsigned short int x, unsigned short int y);
 
 signals:
+    void updateFrameBox(int data);
     void updateCanvas();
 
 private:

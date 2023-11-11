@@ -133,9 +133,28 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             this,
             &MainWindow::panDown);
-
     connect(&model,
             &pixelEditorModel::updateCanvas,
+            this,
+            &MainWindow::valueChanged);
+    connect(ui->addFrameButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::addFrame);
+    connect(ui->deleteFrameButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::deleteFrame);
+    connect(&model,
+            &pixelEditorModel::updateFrameBox,
+            this,
+            &MainWindow::changeFrameBox);
+    connect(ui->frameSelector,
+            &QComboBox::activated,
+            &model,
+            &pixelEditorModel::selectFrame);
+    connect(ui->frameSelector,
+            &QComboBox::activated,
             this,
             &MainWindow::valueChanged);
 
@@ -490,8 +509,31 @@ void MainWindow::mainScreen()
     ui->spriteSizeSelectorLabel ->hide();
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
+    ui->frameSelector->addItem("Frame 1");
 
     ui->loadButton->setGeometry(260, 18, 75, 25);
+}
+
+void MainWindow::changeFrameBox(int data)
+{
+    if (data > 0)
+    {
+        ui->frameSelector->addItem("Frame " + QString::number(data));
+    }
+    //this is the case where someone deletes a frame, but there is only one frame
+    if (data == 0)
+    {
+        update();
+    }
+    else
+    {
+        qDebug() << "got to change frame box";
+        int index = ui->frameSelector->currentIndex();
+        ui->frameSelector->setCurrentIndex(index - 1);
+        update();
+        qDebug()<< "got past update";
+        ui->frameSelector->removeItem(ui->frameSelector->count() - 1);
+    }
 }
 
 void MainWindow::loadButtonClicked()
