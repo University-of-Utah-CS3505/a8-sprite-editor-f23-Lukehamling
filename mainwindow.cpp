@@ -137,7 +137,15 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(ui->frameSelector,
             &QComboBox::activated,
             &model,
-            &pixelEditorModel::selectFrame)
+            &pixelEditorModel::selectFrame);
+    connect(ui->deleteFrameButton,
+            &QPushButton::pressed,
+            this,
+            &MainWindow::valueChanged);
+    connect(ui->frameSelector,
+            &QComboBox::activated,
+            this,
+            &MainWindow::valueChanged);
 
     setupStartScreen();
     populateSpriteSizeComboBox();
@@ -417,7 +425,6 @@ void MainWindow::startButtonClicked()
     if (scale < 1) {
         scale = 1;
     }
-    ui->frameSelector->addItem("Frame 1");
     focusSpriteCenterx = x / 2;
     focusSpriteCentery = y / 2;
     qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery;
@@ -486,6 +493,7 @@ void MainWindow::mainScreen()
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
 
+    ui->frameSelector->addItem("Frame 1");
     ui->loadButton->setGeometry(260, 18, 75, 25);
 }
 
@@ -502,6 +510,6 @@ void MainWindow::changeFrameBox(int data)
     }
     else
     {
-        ui->frameSelector->removeItem(ui->frameSelector->count() - 1);
+        ui->frameSelector->removeItem(ui->frameSelector->currentIndex());
     }
 }
