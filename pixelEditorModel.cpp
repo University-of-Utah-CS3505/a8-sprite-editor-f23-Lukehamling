@@ -68,10 +68,9 @@ void pixelEditorModel::addFrame()
 
 }
 
-void pixelEditorModel::deleteFrame(int data)
+void pixelEditorModel::deleteFrame()
 {
-    int index = data;
-    frames.erase(next(begin(frames), data));
+    frames.pop_back();
     emit updateFrameBox(-1);
 }
 

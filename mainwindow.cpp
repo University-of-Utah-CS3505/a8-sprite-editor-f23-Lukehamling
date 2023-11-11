@@ -148,6 +148,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(ui->frameSelector,
             &QComboBox::activated,
             &model,
+<<<<<<< HEAD
             &pixelEditorModel::selectFrame);
     connect(ui->deleteFrameButton,
             &QPushButton::pressed,
@@ -165,6 +166,9 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &MainWindow::valueChanged);
 =======
 >>>>>>> Stashed changes
+=======
+            &pixelEditorModel::selectFrame)
+>>>>>>> parent of 7b63563 (-adding in progress code)
 
     setupStartScreen();
     populateSpriteSizeComboBox();
@@ -450,6 +454,7 @@ void MainWindow::startButtonClicked()
     if (scale < 1) {
         scale = 1;
     }
+    ui->frameSelector->addItem("Frame 1");
     focusSpriteCenterx = x / 2;
     focusSpriteCentery = y / 2;
     qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery;
@@ -518,7 +523,6 @@ void MainWindow::mainScreen()
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
 
-    ui->frameSelector->addItem("Frame 1");
     ui->loadButton->setGeometry(260, 18, 75, 25);
 }
 
@@ -535,6 +539,6 @@ void MainWindow::changeFrameBox(int data)
     }
     else
     {
-        ui->frameSelector->removeItem(ui->frameSelector->currentIndex());
+        ui->frameSelector->removeItem(ui->frameSelector->count() - 1);
     }
 }

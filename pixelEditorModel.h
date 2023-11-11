@@ -24,7 +24,7 @@ public slots:
     void save(QString filename);
     void load(QString filepath);
     void addFrame();
-    void deleteFrame(int data);
+    void deleteFrame();
     void selectFrame(int data);
     void changeFPS();
 
