@@ -5,10 +5,6 @@
 #include <QStack>
 #include <QJsonObject>
 
-class pixelEditorModel : public QObject
-{
-    Q_OBJECT
-
 #include <QImage>
 class pixelEditorModel : public QObject
 {
@@ -58,18 +54,17 @@ private:
         Fill
     };
 
+
     QStack<Sprite> redoStack;
     QStack<Sprite> undoStack;
-    void showFrame(int i);
-
-    QStack<std::vector<Sprite>> redoStack;
-    QStack<std::vector<Sprite>> undoStack;
     Tool currentTool;
     std::vector<Sprite> frames;
     int currentFrameIndex{0};
     QColor currentColor;
     int fps;
     QJsonObject spriteJSON;
+
+    void showFrame(int i);
 
     /// @brief Pops a Sprite off of the undo stack and adds it to the redo stack
     /// @return the Sprite object that was popped off of the undo stack
