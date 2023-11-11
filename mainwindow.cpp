@@ -10,6 +10,7 @@
 #include <QStringList>
 #include <QMouseEvent>
 #include <QFileDialog>
+#include <QMessageBox>
 
 using namespace std;
 void print(int num1, string toPrint, int num2) {
@@ -122,6 +123,10 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &MainWindow::loadFileSelected,
             &model,
             &pixelEditorModel::load);
+    connect(&model,
+            &pixelEditorModel::createErrorMessagePopup,
+            this,
+            &MainWindow::createErrorMessagePopup);
 
     // undo-redo & color select
     connect(ui->undoButton,
@@ -146,6 +151,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             this,
             &MainWindow::startButtonClicked);
+
     //Create new sprite based on this size
     connect(this,
             &MainWindow::selectedSpriteSize,
@@ -324,6 +330,12 @@ void MainWindow::loadClicked()
 
     if(!fileName.isEmpty())
         emit loadFileSelected(fileName);
+}
+
+void MainWindow::createErrorMessagePopup(QString windowTitle, QString errorMessage)
+{
+    QWidget popUp;
+    QMessageBox::warning(&popUp, windowTitle, errorMessage);
 }
 
 void MainWindow::setupStartScreen()

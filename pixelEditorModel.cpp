@@ -220,7 +220,7 @@ void pixelEditorModel::load(QString filename)
     }
     catch (...)
     {
-        // emit a signal to create a message popup saying an error occurred when reading
+        emit createErrorMessagePopup(QString("Error reading save file!"), QString("Unable to read selected saved file"));
     }
 }
 

@@ -41,6 +41,7 @@ public slots:
     void panRight();
     void saveClicked();
     void loadClicked();
+    void createErrorMessagePopup(QString windowTitle, QString errorMessage);
 
 signals:
     /// @brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will

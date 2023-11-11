@@ -37,6 +37,7 @@ public slots:
 
 signals:
     void updateCanvas();
+    void createErrorMessagePopup(QString windowTitle, QString errorMessage);
 
 private:
     enum Tool {
