@@ -72,6 +72,17 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &pixelEditorModel::redo);
     this->addAction(redoShortcut);
 
+    connect(ui->undoButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::undo);
+    connect(ui->redoButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::redo);
+    this->addAction(redoShortcut);
+
+
     connect(ui->colorButton,
             &QPushButton::pressed,
             &model,
@@ -147,6 +158,11 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             this,
             &MainWindow::valueChanged);
 
+    connect(&model,
+            &pixelEditorModel::updateCanvas,
+            this,
+            &MainWindow::valueChanged);
+
     setupStartScreen();
     populateSpriteSizeComboBox();
 }
@@ -194,20 +210,26 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
-        editorModel->changePixel(x,y);
+        editorModel->clickPixel(x,y);
     }
+    update();
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
-        editorModel->changePixel(x,y);
+        editorModel->movePixel(x,y);
     }
+    update();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
-    print("mouse released");
+    int x = event->pos().x();
+    int y = event->pos().y();
+    if (checkInCanvas(x, y)) {
+        editorModel->releasePixel(x,y);
+    }
     update();
 }
 
