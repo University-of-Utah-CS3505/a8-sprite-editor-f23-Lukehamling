@@ -65,22 +65,28 @@ Sprite pixelEditorModel::addToUndo()
 void pixelEditorModel::clickPixel(int x, int y)
 {
     addToUndo();
-    switch (currentTool) {
+    switch (currentTool)
+    {
     case Pen:
         frames[currentFrameIndex].setColor(x, y, currentColor);
         break;
+
     case Erase:
         frames[currentFrameIndex].setColor(x, y, Qt::transparent);
         break;
+
     case Fill:
         frames[currentFrameIndex].fill(x, y, currentColor);
         break;
+
     case Rectangle:
         // TODO store xy
         break;
+
     case Circle:
         // TODO store xy
         break;
+
     default:
         break;
     }
@@ -88,29 +94,35 @@ void pixelEditorModel::clickPixel(int x, int y)
 
 void pixelEditorModel::movePixel(int x, int y)
 {
-    switch (currentTool) {
-    case Pen:
-        // todo draw a line from point to point
-        frames[currentFrameIndex].setColor(x, y, currentColor);
-        break;
-    case Erase:
-        frames[currentFrameIndex].setColor(x, y, Qt::transparent);
-        break;
-    default:
-        break;
+    switch (currentTool)
+    {
+        case Pen:
+            // todo draw a line from point to point
+            frames[currentFrameIndex].setColor(x, y, currentColor);
+            break;
+
+        case Erase:
+            frames[currentFrameIndex].setColor(x, y, Qt::transparent);
+            break;
+
+        default:
+            break;
     }
 }
 
 void pixelEditorModel::releasePixel(int x, int y)
 {
-    switch (currentTool) {
-    default:
-    case Rectangle:
-//        frames[currentFrameIndex].drawRectangle(storedX, storedY, x, y, currentColor);
-        break;
-    case Circle:
-//        frames[currentFrameIndex].drawCircle(storedX, storedY, x, y, currentColor);
-        break;
+    switch (currentTool)
+    {
+        default:
+
+        case Rectangle:
+//          frames[currentFrameIndex].drawRectangle(storedX, storedY, x, y, currentColor);
+            break;
+
+        case Circle:
+//          frames[currentFrameIndex].drawCircle(storedX, storedY, x, y, currentColor);
+            break;
     }
     // we dont have to clear storedX,Y
     //addToUndo();
@@ -121,7 +133,9 @@ void pixelEditorModel::selectColor()
     QColor newColor = QColorDialog::getColor("Select Brush Color");
 
     if(newColor.isValid())
+    {
         currentColor = newColor;
+    }
 }
 
 void pixelEditorModel::createJSON()
@@ -164,19 +178,33 @@ void pixelEditorModel::save(QString filename)
     createJSON();
     QFile saveFile(filename);
     if (!saveFile.open(QIODevice::WriteOnly))
+    {
         return;
+    }
     QJsonDocument saveDoc(spriteJSON);
     saveFile.write(saveDoc.toJson());
 }
 
 void pixelEditorModel::load(QString filename)
 {
+
+
     try
     {
         QFile loadFile(filename);
         if (!loadFile.open(QIODevice::ReadOnly))
+        {
             qWarning("unable to load file");
+        }
 
+        if(!frames.empty())
+        {
+            //gets rid of all the previous frames if loading when there is already an existing project
+            for(Sprite frame : frames)
+            {
+                emit updateFrameBox(-1);
+            }
+        }
         QByteArray saveData = loadFile.readAll();
         QJsonDocument loadDocument(QJsonDocument::fromJson(saveData));
         QJsonObject savedData = loadDocument.object();
@@ -223,6 +251,14 @@ void pixelEditorModel::load(QString filename)
         emit updateCanvas();
         if (numberOfFrames.toInt() > 1)
             showFrame(0);
+
+        //gets rid of the extra option from the load method
+        emit updateFrameBox(-1);
+        //add all the frames to the frame picker
+        for (int i = 1; i <= frames.size(); i++)
+        {
+            emit updateFrameBox(i);
+        }
     }
     catch (...)
     {
@@ -260,13 +296,28 @@ void pixelEditorModel::selectFrame(int data)
     currentFrameIndex = data;
 }
 
+void pixelEditorModel::setStopped(bool stopped)
+{
+    this->stopped = stopped;
+    if(!stopped)
+    {
+        playAnimation();
+    }
+}
+
 void pixelEditorModel::playAnimation()
 {
+    if (stopped)
+    {
+        return;
+    }
+
     for(size_t i = 0; i < frames.size(); i++)
     {
         QImage frame = showFrame(i);
         QTimer::singleShot(i * (1000/fps), Qt::PreciseTimer, this, [this, frame](){emit showFrameSignal(frame); });
     }
+    QTimer::singleShot(frames.size() * (1000/fps), Qt::PreciseTimer, this, [this](){playAnimation();});
 }
 
 QImage pixelEditorModel::showFrame(int i)
@@ -274,8 +325,10 @@ QImage pixelEditorModel::showFrame(int i)
     Sprite frame = frames.at(i);
     QImage image = QImage(frame.width, frame.height, QImage::Format_ARGB32);
 
-    for (size_t i = 0; i < frame.width; i++) {
-        for (size_t j = 0; j < frame.height; j++) {
+    for (size_t i = 0; i < frame.width; i++)
+    {
+        for (size_t j = 0; j < frame.height; j++)
+        {
             image.setPixelColor(i, j, frame.getColor(i, j));
         }
     }

@@ -158,11 +158,16 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(ui->playButton,
             &QPushButton::pressed,
             &model,
-            &pixelEditorModel::playAnimation);
+            [&model](){model.setStopped(false);});
     connect(&model,
             &pixelEditorModel::showFrameSignal,
             this,
             &MainWindow::showFrame);
+    connect(ui->stopButton,
+            &QPushButton::pressed,
+            &model,
+            [&model](){model.setStopped(true);});
+
     // undo-redo & color select
     connect(ui->undoButton,
             &QPushButton::clicked,
@@ -436,6 +441,7 @@ void MainWindow::setupStartScreen()
     ui->startButton         ->setEnabled(false);
     ui->spriteSizeComboBox  ->setEnabled(false);
     ui->playButton          ->setEnabled(false);
+    ui->stopButton          ->setEnabled(false);
 
     ui->saveButton              ->hide();
     ui->addFrameButton          ->hide();
@@ -466,6 +472,7 @@ void MainWindow::setupStartScreen()
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
     ui->playButton              ->hide();
+    ui->stopButton              ->hide();
 }
 
 void MainWindow::newSpriteScreen()
@@ -505,50 +512,62 @@ void MainWindow::startButtonClicked()
         x = 32;
         y = 32;
         break;
+
     case 1:
         x = 64;
         y = 32;
         break;
+
     case 2:
         x = 32;
         y = 64;
         break;
+
     case 3:
         x = 64;
         y = 64;
         break;
+
     case 4:
         x = 128;
         y = 64;
         break;
+
     case 5:
         x = 64;
         y = 128;
         break;
+
     case 6:
         x = 128;
         y = 128;
         break;
+
     case 7:
         x = 256;
         y = 128;
         break;
+
     case 8:
         x = 128;
         y = 256;
         break;
+
     case 9:
         x = 256;
         y = 256;
         break;
+
     case 10:
         x = 512;
         y = 256;
         break;
+
     case 11:
         x = 256;
         y = 512;
         break;
+
     case 12:
         x = 512;
         y = 512;
@@ -588,6 +607,7 @@ void MainWindow::mainScreen()
     ui->frameSelector       ->setEnabled(true);
     ui->loadButton          ->setEnabled(true);
     ui->playButton          ->setEnabled(true);
+    ui->stopButton          ->setEnabled(true);
     ui->startButton         ->setEnabled(false);
     ui->spriteSizeComboBox  ->setEnabled(false);
     ui->createButton        ->setEnabled(false);
@@ -621,6 +641,7 @@ void MainWindow::mainScreen()
     ui->frameSelector           ->show();
     ui->loadButton              ->show();
     ui->playButton              ->show();
+    ui->stopButton              ->show();
     ui->spriteSizeSelectorLabel ->hide();
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();

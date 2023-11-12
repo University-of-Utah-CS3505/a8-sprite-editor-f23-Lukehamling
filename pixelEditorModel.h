@@ -71,6 +71,10 @@ public slots:
     ///@brief this method controls the logic for playing the animation in the view
     void playAnimation();
 
+    ///@brief this method changes the stopped bool which plays or stops the animation
+    ///@param stopped - the bool that decides if the animation should play or not
+    void setStopped(bool stopped);
+
     /// @brief This method will recieve the signal with the x,y dimensions sent from the view then
     ///        create the first sprite
     void createInitialSprite(unsigned short int x, unsigned short int y);
@@ -108,7 +112,7 @@ private:
         Fill
     };
 
-
+    bool stopped;
     QStack<Sprite> redoStack;
     QStack<Sprite> undoStack;
     Tool currentTool;
