@@ -228,8 +228,12 @@ void pixelEditorModel::load(QString filename)
         }
 
         // TODO: reflect the changes above to the main canvas
+
+        // emit updateMainCanvas(frames.at(0));
+        // emit updatePreviewWindow(frames.at(0));
         // send signal to set canvas size to (spriteWidth, spriteHeight);
-        createInitialSprite(spriteWidth, spriteHeight);
+        // createInitialSprite(spriteWidth, spriteHeight);
+        emit setCanvasSizeAfterLoading(spriteWidth, spriteHeight);
         emit updateCanvas();
         // send signal to update animation window to (frames.at(0));
         if (numberOfFrames.toInt() > 1)

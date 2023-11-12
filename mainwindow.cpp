@@ -148,17 +148,14 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QSlider::valueChanged,
             &model,
             &pixelEditorModel::changeFPS);
-
     connect(ui->FPSslider,
             &QSlider::valueChanged,
             this,
             &MainWindow::updateFPSLabel);
-
     connect(ui->playButton,
             &QPushButton::pressed,
             &model,
             &pixelEditorModel::playAnimation);
-
     connect(&model,
             &pixelEditorModel::showFrameSignal,
             this,
@@ -192,7 +189,10 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &MainWindow::selectedSpriteSize,
             &model,
             &pixelEditorModel::createInitialSprite);
-
+    connect(&model,
+            &pixelEditorModel::setCanvasSizeAfterLoading,
+            this,
+            &MainWindow::calculateFocusCenter);
     //Connect view control buttons
     connect(ui->panUpButton,
             &QPushButton::clicked,

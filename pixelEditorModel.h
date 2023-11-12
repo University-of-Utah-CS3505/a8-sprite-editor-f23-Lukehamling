@@ -18,11 +18,6 @@ public:
     unsigned short int spriteWidth;
     unsigned short int spriteHeight;
 
-signals:
-    ///@brief a signal that just tells the view to show the next frame of the animation
-    ///@param image - A QImage representation of the frame to show.
-    void showFrameSignal(QImage image);
-
 public slots:
     ///@brief this method reverts the last undo action,
     void redo();
@@ -73,7 +68,11 @@ signals:
     void updateFrameBox(int data);
     ///@brief this signal tells the view to redraw the canvas
     void updateCanvas();
+    ///@brief a signal that just tells the view to show the next frame of the animation
+    ///@param image - A QImage representation of the frame to show.
+    void showFrameSignal(QImage image);
     void createErrorMessagePopup(QString windowTitle, QString errorMessage);
+    void setCanvasSizeAfterLoading(unsigned short int width, unsigned short int height);
 
 private:
     ///@brief A small enumerator, just to help select the tool that the user has selected
