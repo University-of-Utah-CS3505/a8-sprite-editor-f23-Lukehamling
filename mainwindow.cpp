@@ -193,6 +193,10 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &pixelEditorModel::setCanvasSizeAfterLoading,
             this,
             &MainWindow::calculateFocusCenter);
+    connect(&model,
+            &pixelEditorModel::setCanvasSizeAfterLoading,
+            this,
+            &MainWindow::mainScreen);
     //Connect view control buttons
     connect(ui->panUpButton,
             &QPushButton::clicked,
@@ -601,6 +605,8 @@ void MainWindow::mainScreen()
     ui->playButton          ->setEnabled(true);
     ui->startButton         ->setEnabled(false);
     ui->spriteSizeComboBox  ->setEnabled(false);
+    ui->createButton        ->setEnabled(false);
+    ui->createNewOrLoadLabel->setEnabled(false);
 
     ui->saveButton              ->show();
     ui->addFrameButton          ->show();
@@ -633,9 +639,11 @@ void MainWindow::mainScreen()
     ui->spriteSizeSelectorLabel ->hide();
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
-    ui->frameSelector->addItem("Frame 1");
+    ui->createButton            ->hide();
+    ui->createNewOrLoadLabel    ->hide();
+    ui->frameSelector           ->addItem("Frame 1");
 
-    ui->loadButton->setGeometry(260, 18, 75, 25);
+    ui->loadButton              ->setGeometry(260, 18, 75, 25);
 }
 
 ///@include

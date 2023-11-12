@@ -71,6 +71,9 @@ public slots:
     /// @param height is the height of the Sprite
     void calculateFocusCenter(unsigned short int width, unsigned short int height);
 
+    /// @brief Sets the view to be the main editing window for creating Sprites.
+    void mainScreen();
+
 signals:
     ///@brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will
     ///        use this size to create a new Sprite.
@@ -93,7 +96,6 @@ private:
     ///@brief Called when the start button has been clicked. Determines the size of a new sprite based on user
     ///       selection from the ComboBox, emits the signal, then switches the view to the editor 'mainScreen'.
     void startButtonClicked();
-    void mainScreen();
     ///@brief Loads the combo box with appropriate Sprite sizes that the user can select.
     void populateSpriteSizeComboBox();
     ///@brief this method checks if the mouse is within the bounds of the canvas
