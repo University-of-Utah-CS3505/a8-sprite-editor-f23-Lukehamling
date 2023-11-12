@@ -72,16 +72,16 @@ void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor or
     setColor(x, y, fillColor);
 
     if(x > 0)
-        fill(x-1, y, fillColor);
+        fillRecursive(x-1, y, originalColor, fillColor);
 
     if(x < width)
-        fill(x+1, y, fillColor);
+        fillRecursive(x+1, y, originalColor, fillColor);
 
     if(y > 0)
-        fill(x, y-1, fillColor);
+        fillRecursive(x, y-1, originalColor, fillColor);
 
     if(y < height)
-        fill(x, y+1, fillColor);
+        fillRecursive(x, y+1, originalColor, fillColor);
 }
 
 void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,

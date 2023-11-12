@@ -100,6 +100,9 @@ signals:
     ///@brief sends the model a signal to execute the appropriate action when the save button/shortcut is clicked
     void saveFileSelected(QString filename);
 
+    ///@brief Sends the model the signal to change the selected tool.
+    void toolSelected(int tool);
+
 private:
     Ui::MainWindow *ui;
     pixelEditorModel* editorModel;
@@ -115,6 +118,21 @@ private:
     ///@brief Called when the start button has been clicked. Determines the size of a new sprite based on user
     ///       selection from the ComboBox, emits the signal, then switches the view to the editor 'mainScreen'.
     void startButtonClicked();
+
+    ///@brief When the fill button is clicked, this will emit the correct signal to the model.
+    void penButtonClicked();
+
+    ///@brief When the fill button is clicked, this will emit the correct signal to the model.
+    void fillButtonClicked();
+
+    ///@brief When the rectangle button is clicked, this will emit the correct signal to the model.
+    void rectangleButtonClicked();
+
+    ///@brief When the circle button is clicked, this will emit the correct signal to the model.
+    void circleButtonClicked();
+
+    ///@brief When the erase button is clicked, this will emit the correct signal to the model.
+    void eraseButtonClicked();
 
     ///@brief Loads the combo box with appropriate Sprite sizes that the user can select.
     void populateSpriteSizeComboBox();

@@ -181,6 +181,31 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::pressed,
             &model,
             &pixelEditorModel::selectColor);
+    connect(ui->penButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::penButtonClicked);
+    connect(ui->fillButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::fillButtonClicked);
+    connect(ui->eraseButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::eraseButtonClicked);
+    connect(ui->circleButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::circleButtonClicked);
+    connect(ui->rectangleButton,
+            &QPushButton::clicked,
+            this,
+            &MainWindow::rectangleButtonClicked);
+    connect(this,
+            &MainWindow::toolSelected,
+            &model,
+            &pixelEditorModel::updateSelectedTool);
+
       
     //Set connections for start up logic
     connect(ui->createButton,
@@ -685,4 +710,30 @@ void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short i
     focusSpriteCenterx = width / 2;
     focusSpriteCentery = height / 2;
     qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery;
+}
+
+
+void MainWindow::fillButtonClicked()
+{
+    emit toolSelected(4);
+}
+
+void MainWindow::eraseButtonClicked()
+{
+    emit toolSelected(1);
+}
+
+void MainWindow::penButtonClicked()
+{
+    emit toolSelected(0);
+}
+
+void MainWindow::circleButtonClicked()
+{
+    emit toolSelected(2);
+}
+
+void MainWindow::rectangleButtonClicked()
+{
+    emit toolSelected(3);
 }

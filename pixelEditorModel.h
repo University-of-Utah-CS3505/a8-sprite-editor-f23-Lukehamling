@@ -79,6 +79,10 @@ public slots:
     ///        create the first sprite
     void createInitialSprite(unsigned short int x, unsigned short int y);
 
+    /// @brief Changes the selected tool based on what the user has selected.
+    /// @param selectedTool is the tool the user has selected.
+    void updateSelectedTool(int selectedTool);
+
 signals:
     ///@brief this tells the view to add a new element in the frameSelector comboBox
     ///@param data - the number of the frame to add

@@ -349,3 +349,10 @@ void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short 
     Sprite initial(x,y);
     frames.push_back(initial);
 }
+
+void pixelEditorModel::updateSelectedTool(int tool)
+{
+    Tool selected = (Tool) tool;
+
+    currentTool = selected;
+}
