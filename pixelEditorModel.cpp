@@ -200,7 +200,7 @@ void pixelEditorModel::load(QString filename)
         QJsonValue numberOfFrames = savedData.value("numberOfFrames");
         int numberOfframes = numberOfFrames.toInt();
 
-        QJsonObject savedSprites = savedData.value("frames").toObject();
+        QJsonObject savedSprites = savedData.value("frame").toObject();
         frames.clear();
 
         for(int imageIndex = 0; imageIndex < numberOfframes; imageIndex++)
