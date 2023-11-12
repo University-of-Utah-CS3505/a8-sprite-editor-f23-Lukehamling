@@ -122,6 +122,10 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     this->addAction(panDownShortcut);
 
     // save-load
+    connect(&model,
+            &pixelEditorModel::updateCanvasViewSignal,
+            this,
+            &MainWindow::updateCanvasView);
     connect(ui->saveButton,
             &QPushButton::clicked,
             this,

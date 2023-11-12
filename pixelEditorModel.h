@@ -73,6 +73,7 @@ signals:
     void showFrameSignal(QImage image);
     void createErrorMessagePopup(QString windowTitle, QString errorMessage);
     void setCanvasSizeAfterLoading(unsigned short int width, unsigned short int height);
+    void updateCanvasViewSignal();
 
 private:
     ///@brief A small enumerator, just to help select the tool that the user has selected

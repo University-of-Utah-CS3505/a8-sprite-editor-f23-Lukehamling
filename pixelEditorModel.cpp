@@ -226,16 +226,15 @@ void pixelEditorModel::load(QString filename)
                 }
             }
         }
-
-        // TODO: reflect the changes above to the main canvas
-
-        // emit updateMainCanvas(frames.at(0));
-        // emit updatePreviewWindow(frames.at(0));
-        // send signal to set canvas size to (spriteWidth, spriteHeight);
-        // createInitialSprite(spriteWidth, spriteHeight);
         emit setCanvasSizeAfterLoading(spriteWidth, spriteHeight);
+        // TODO: reflect the changes above to the main canvas
+        emit updateCanvasViewSignal();
+        // emit updateMainCanvas(frames.at(0));
+
+        // shows the pic in the animation window
+        QImage img = showFrame(0);
+        emit showFrameSignal(img);
         emit updateCanvas();
-        // send signal to update animation window to (frames.at(0));
         if (numberOfFrames.toInt() > 1)
             showFrame(0);
     }
@@ -281,7 +280,7 @@ void pixelEditorModel::selectFrame(int data)
 ///@include
 void pixelEditorModel::playAnimation()
 {
-    for(size_t i =0; i < frames.size(); i++)
+    for(size_t i = 0; i < frames.size(); i++)
     {
         QImage frame = showFrame(i);
         QTimer::singleShot(i * (1000/fps), Qt::PreciseTimer, this, [this, frame](){emit showFrameSignal(frame); });

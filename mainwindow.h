@@ -36,10 +36,10 @@ public:
     ~MainWindow();
     ///@brief this is the override of the paint event for our model, it is used to draw things in the canvas
     void paintEvent(QPaintEvent*) override;
-    ///@brief this method changes the scale of the canvas for zooming and panning
-    void updateCanvasView();
 
 public slots:
+    ///@brief this method changes the scale of the canvas for zooming and panning
+    void updateCanvasView();
     ///@brief this is a method that just calls update, for when we are changing pixels in the model
     void valueChanged();
     ///@brief this method changes what is drawn on the canvas when we pan up
