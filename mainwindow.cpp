@@ -9,6 +9,8 @@
 #include <QShortcut>
 #include <QStringList>
 #include <QMouseEvent>
+#include <QFileDialog>
+#include <QMessageBox>
 
 using namespace std;
 void print(int num1, string toPrint, int num2) {
@@ -78,23 +80,70 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &model,
             &pixelEditorModel::redo);
     this->addAction(redoShortcut);
+      
+   QAction *saveShortcut = new QAction(this);
+   saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
+   connect(saveShortcut,
+           &QAction::triggered,
+           &model,
+           &pixelEditorModel::saveClicked);
+   this->addAction(saveShortcut);
 
-    connect(ui->undoButton,
+    QAction *panLeftShortcut = new QAction(this);
+    panLeftShortcut->setShortcut(Qt::Key_Left);
+    connect(panLeftShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panLeft);
+    this->addAction(panLeftShortcut);
+
+    QAction *panUpShortcut = new QAction(this);
+    panUpShortcut->setShortcut(Qt::Key_Up);
+    connect(panUpShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panUp);
+    this->addAction(panUpShortcut);
+
+    QAction *panRightShortcut = new QAction(this);
+    panRightShortcut->setShortcut(Qt::Key_Right);
+    connect(panRightShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panRight);
+    this->addAction(panRightShortcut);
+
+    QAction *panDownShortcut = new QAction(this);
+    panDownShortcut->setShortcut(Qt::Key_Down);
+    connect(panDownShortcut,
+            &QAction::triggered,
+            this,
+            &MainWindow::panDown);
+    this->addAction(panDownShortcut);
+
+    // save-load
+    connect(ui->saveButton,
             &QPushButton::clicked,
+            this,
+            &MainWindow::saveClicked);
+    connect(this,
+            &MainWindow::saveFileSelected,
             &model,
-            &pixelEditorModel::undo);
-    connect(ui->redoButton,
+            &pixelEditorModel::save);
+    connect(ui->loadButton,
             &QPushButton::clicked,
+            this,
+            &MainWindow::loadClicked);
+    connect(this,
+            &MainWindow::loadFileSelected,
             &model,
-            &pixelEditorModel::redo);
-    this->addAction(redoShortcut);
-
-
-    connect(ui->colorButton,
-            &QPushButton::pressed,
-            &model,
-            &pixelEditorModel::selectColor);
-
+            &pixelEditorModel::load);
+    connect(&model,
+            &pixelEditorModel::createErrorMessagePopup,
+            this,
+            &MainWindow::createErrorMessagePopup);
+    
+    //fps slider
     connect(ui->FPSslider,
             &QSlider::valueChanged,
             &model,
@@ -114,15 +163,20 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &pixelEditorModel::showFrameSignal,
             this,
             &MainWindow::showFrame);
-
-//    QAction *saveShortcut = new QAction(this);
-//    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
-//    connect(saveShortcut,
-//            &QAction::triggered,
-//            &model,
-//            &pixelEditorModel::save);
-//    this->addAction(saveShortcut);
-
+    // undo-redo & color select
+    connect(ui->undoButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::undo);
+    connect(ui->redoButton,
+            &QPushButton::clicked,
+            &model,
+            &pixelEditorModel::redo);
+    connect(ui->colorButton,
+            &QPushButton::pressed,
+            &model,
+            &pixelEditorModel::selectColor);
+      
     //Set connections for start up logic
     connect(ui->createButton,
             &QPushButton::clicked,
@@ -132,10 +186,6 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             this,
             &MainWindow::startButtonClicked);
-    connect(ui->loadButton,
-            &QPushButton::clicked,
-            this,
-            &MainWindow::loadButtonClicked);
 
     //Create new sprite based on this size
     connect(this,
@@ -336,6 +386,32 @@ void MainWindow::panRight()
 {
     focusSpriteCenterx += editorModel->spriteWidth / 4;
     updateCanvasView();
+}
+
+void MainWindow::saveClicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save File"),
+                                                    "/home/",
+                                                    tr("Sprites (*.ssp)"));
+    emit saveFileSelected(fileName);
+}
+
+void MainWindow::loadClicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open File"),
+                                                    "/home/",
+                                                    tr("Sprites (*.ssp)"));
+
+    if(!fileName.isEmpty())
+        emit loadFileSelected(fileName);
+}
+
+void MainWindow::createErrorMessagePopup(QString windowTitle, QString errorMessage)
+{
+    QWidget popUp;
+    QMessageBox::warning(&popUp, windowTitle, errorMessage);
 }
 
 ///@include
@@ -591,10 +667,4 @@ void MainWindow::changeFrameBox(int data)
         update();
         ui->frameSelector->removeItem(ui->frameSelector->count() - 1);
     }
-}
-
-///@include
-void MainWindow::loadButtonClicked()
-{
-    //TODO: Implement this method.
 }

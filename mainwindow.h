@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "sprite.h"
 #include <QMainWindow>
 #include "pixelEditorModel.h"
 
@@ -51,6 +50,12 @@ public slots:
     void panLeft();
     ///@brief this method changes what is drawn on the canvas when we pan right
     void panRight();
+    void saveClicked();
+    /// @brief The main screen for editing sprites. This contains the Sprite editor grid, along with all tools
+    ///         and animation window.
+    ///@brief When the load button is clicked, this will prompt the user to select a JSON file to load.
+    void loadClicked();
+    void createErrorMessagePopup(QString windowTitle, QString errorMessage);
     ///@brief this method changes the elements in the frame selector combo box, mainly used when we are adding and deleting frames
     ///@param data - this is the index of the new element, it will be -1 when we are deleting a frame and 0 when the user hits the
     ///       delete button but there is only one frame
@@ -65,6 +70,8 @@ signals:
     ///@brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will
     ///        use this size to create a new Sprite.
     void selectedSpriteSize(int x, int y);
+    void loadFileSelected(QString filename);
+    void saveFileSelected(QString filename);
 
 
 
@@ -81,10 +88,6 @@ private:
     ///@brief Called when the start button has been clicked. Determines the size of a new sprite based on user
     ///       selection from the ComboBox, emits the signal, then switches the view to the editor 'mainScreen'.
     void startButtonClicked();
-    ///@brief When the load button is clicked, this will prompt the user to select a JSON file to load.
-    void loadButtonClicked();
-    ///@brief The main screen for editing sprites. This contains the Sprite editor grid, along with all tools
-    ///       and animation window.
     void mainScreen();
     ///@brief Loads the combo box with appropriate Sprite sizes that the user can select.
     void populateSpriteSizeComboBox();

@@ -73,6 +73,7 @@ signals:
     void updateFrameBox(int data);
     ///@brief this signal tells the view to redraw the canvas
     void updateCanvas();
+    void createErrorMessagePopup(QString windowTitle, QString errorMessage);
 
 private:
     ///@brief A small enumerator, just to help select the tool that the user has selected

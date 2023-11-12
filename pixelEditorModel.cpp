@@ -227,17 +227,16 @@ void pixelEditorModel::load(QString filename)
             }
         }
 
-        // Emits signals to the UI to reflect the images of the loaded file rather than its current state.
-//        emit setUpCanvasSize(spriteWidth, spriteHeight);
-//        emit updateMainCanvas(frames.at(0));
-//        emit updatePreviewWindow(frames.at(0));
-//        int currentSprite = 0;
-//        if (numberOfframes > 1)
-//            changeFPS();
+        // TODO: reflect the changes above to the main canvas
+        // send signal to set canvas size to (spriteWidth, spriteHeight);
+        emit updateCanvas();
+        // send signal to update animation window to (frames.at(0));
+        // if (numberOfFrames > 1)
+        //  changeFPS();
     }
     catch (...)
     {
-        // emit a signal to create a message popup saying an error occurred when reading
+        emit createErrorMessagePopup(QString("Error reading save file!"), QString("Unable to read selected saved file"));
     }
 }
 
