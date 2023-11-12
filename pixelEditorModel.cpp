@@ -210,14 +210,12 @@ void pixelEditorModel::load(QString filename)
             }
         }
 
+        // TODO: reflect the changes above to the main canvas
+        // send signal to set canvas size to (spriteWidth, spriteHeight);
         emit updateCanvas();
-        // todo: Emit signals to the UI to reflect the images of the loaded file
-//        emit setUpCanvasSize(spriteWidth, spriteHeight);
-//        emit updateMainCanvas(frames.at(0));
-//        emit updatePreviewWindow(frames.at(0));
-//        int currentSprite = 0;
-//        if (numberOfframes > 1)
-//            changeFPS();
+        // send signal to update animation window to (frames.at(0));
+        // if (numberOfFrames > 1)
+        //  changeFPS();
     }
     catch (...)
     {
