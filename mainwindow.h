@@ -66,6 +66,11 @@ public slots:
     ///@param newFPS - this is the FPS value the label will be set to
     void updateFPSLabel(int newFPS);
 
+    /// @brief Mathematically determine the focused center of the Sprite so we can set the canvas size on screen.
+    /// @param width is the width of the Sprite
+    /// @param height is the height of the Sprite
+    void calculateFocusCenter(unsigned short int width, unsigned short int height);
+
 signals:
     ///@brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will
     ///        use this size to create a new Sprite.

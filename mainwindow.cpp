@@ -564,19 +564,10 @@ void MainWindow::startButtonClicked()
         y = 512;
         break;
     }
-    emit selectedSpriteSize(x, y);
-    int largeSide = x;
-    if (y > x)
-        largeSide = y;
-    scale = ui->canvas->height() / largeSide;
-    if (scale < 1) {
-        scale = 1;
-    }
-    focusSpriteCenterx = x / 2;
-    focusSpriteCentery = y / 2;
-    qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery;
-    updateCanvasView();
 
+    emit selectedSpriteSize(x, y);
+    calculateFocusCenter(x, y);
+    updateCanvasView();
     mainScreen();
 }
 
@@ -667,4 +658,18 @@ void MainWindow::changeFrameBox(int data)
         update();
         ui->frameSelector->removeItem(ui->frameSelector->count() - 1);
     }
+}
+
+void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short int height)
+{
+    int largeSide = width;
+    if (height > width)
+        largeSide = height;
+    scale = ui->canvas->height() / largeSide;
+    if (scale < 1) {
+        scale = 1;
+    }
+    focusSpriteCenterx = width / 2;
+    focusSpriteCentery = height / 2;
+    qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery;
 }
