@@ -85,8 +85,8 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
    saveShortcut->setShortcut(Qt::CTRL | Qt::Key_S);
    connect(saveShortcut,
            &QAction::triggered,
-           &model,
-           &pixelEditorModel::saveClicked);
+           this,
+           &MainWindow::saveClicked);
    this->addAction(saveShortcut);
 
     QAction *panLeftShortcut = new QAction(this);
