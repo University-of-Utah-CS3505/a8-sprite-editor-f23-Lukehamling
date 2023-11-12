@@ -12,7 +12,6 @@
 using std::vector;
 using std::swap;
 
-///@include
 Sprite::Sprite(unsigned short int spriteWidth, unsigned short int spriteHeight) : width{spriteWidth}, height{spriteHeight}
 {
     for(int i = 0; i < spriteWidth; i++)
@@ -25,13 +24,11 @@ Sprite::Sprite(unsigned short int spriteWidth, unsigned short int spriteHeight) 
     }
 }
 
-///@include
 Sprite::Sprite(QJsonObject loadedSprite)
 {
     //TODO: Implement this constructor after deserializing sprite
 }
 
-///@include
 Sprite::Sprite(const Sprite& spriteToCopy)
 {
     this->height    = spriteToCopy.height;
@@ -39,7 +36,6 @@ Sprite::Sprite(const Sprite& spriteToCopy)
     this->grid      = spriteToCopy.grid;
 }
 
-///@include
 Sprite& Sprite::operator=(Sprite otherSprite)
 {
     swap(this->height, otherSprite.height);
@@ -49,26 +45,22 @@ Sprite& Sprite::operator=(Sprite otherSprite)
     return *this;
 }
 
-///@include
 QColor Sprite::getColor(unsigned short int x, unsigned short int y)
 {
     return grid[x][y];
 }
 
-///@include
 void Sprite::setColor(unsigned short int x, unsigned short int y, QColor desiredColor)
 {
     grid[x][y] = desiredColor;
 }
 
-///@include
 void Sprite::fill(unsigned short int x, unsigned short int y, QColor fillColor)
 {
     QColor originalColor = getColor(x,y);
     fillRecursive(x,y, originalColor, fillColor);
 }
 
-///@include
 void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor originalColor, QColor fillColor)
 {
     if(getColor(x,y) == fillColor)
@@ -92,14 +84,12 @@ void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor or
         fill(x, y+1, fillColor);
 }
 
-///@include
 void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
                         unsigned short int endX, unsigned short int endY, QColor color)
 {
     //TODO: Implement this method
 }
 
-///@include
 void Sprite::drawRectangle(unsigned short int startX, unsigned short int startY,
                 unsigned short int endX, unsigned short int endY, QColor color)
 {
