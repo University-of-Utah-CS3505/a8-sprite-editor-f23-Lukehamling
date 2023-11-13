@@ -68,6 +68,10 @@ public:
     /// @param fillColor is the color that the appropriate pixels will change to.
     void fill(unsigned short int x, unsigned short int y, QColor fillColor);
 
+    /// @brief Creates a line on the sprite. Usefull to fill in gaps.
+    void drawLine(unsigned short int startX, unsigned short int startY,
+                  unsigned short int endX, unsigned short int endY, QColor color);
+
     /// @brief Creates a circle in the grid so the user can use pre-defined shapes. The user will click a starting pixel on the
     ///         sprite editor and an ending pixel. The circle will be drawn with one edge being on start(x,y) and the other
     ///         being on end (x,y) with a center point in the middle. The diameter can be calculated from starting (x,y) and ending (x,y).
@@ -96,6 +100,13 @@ private:
     ///         match the original color
     /// @param fillColor is the color that the pixels will be painted too if they meet the requirements
     void fillRecursive(unsigned short int x, unsigned short int y, QColor originalColor, QColor fillColor);
+
+    /// @brief draws a line left to right with a horizontal slope.
+    void drawLineLow(unsigned short int startX, unsigned short int startY,
+                  unsigned short int endX, unsigned short int endY, QColor color);
+    /// @brief draws a line bottom to top with a vertical slope.
+    void drawLineHigh(unsigned short int startX, unsigned short int startY,
+                  unsigned short int endX, unsigned short int endY, QColor color);
 };
 
 #endif // SPRITE_H

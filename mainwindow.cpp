@@ -343,9 +343,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
 
 
 void MainWindow::wheelEvent(QWheelEvent* event) {
-//    int x = event->globalPosition().x();
-//    int y = event->globalPosition().y();
-    print(event->angleDelta().y(), "wheel event", 0);
     float zoom = (event->angleDelta().y() / 120);
     if (zoom > 0) {
         scale = (scale * 1.5);

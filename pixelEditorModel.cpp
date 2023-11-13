@@ -69,6 +69,8 @@ void pixelEditorModel::clickPixel(int x, int y)
     {
     case Pen:
         frames[currentFrameIndex].setColor(x, y, currentColor);
+        storedX = x;
+        storedY = y;
         break;
 
     case Erase:
@@ -80,11 +82,13 @@ void pixelEditorModel::clickPixel(int x, int y)
         break;
 
     case Rectangle:
-        // TODO store xy
+        storedX = x;
+        storedY = y;
         break;
 
     case Circle:
-        // TODO store xy
+        storedX = x;
+        storedY = y;
         break;
 
     default:
@@ -96,17 +100,18 @@ void pixelEditorModel::movePixel(int x, int y)
 {
     switch (currentTool)
     {
-        case Pen:
-            // todo draw a line from point to point
-            frames[currentFrameIndex].setColor(x, y, currentColor);
-            break;
+    case Pen:
+        frames[currentFrameIndex].drawLine(storedX, storedY, x, y, currentColor);
+        storedX = x;
+        storedY = y;
+        break;
 
-        case Erase:
-            frames[currentFrameIndex].setColor(x, y, Qt::transparent);
-            break;
+    case Erase:
+        frames[currentFrameIndex].setColor(x, y, Qt::transparent);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -114,15 +119,16 @@ void pixelEditorModel::releasePixel(int x, int y)
 {
     switch (currentTool)
     {
-        default:
+    case Rectangle:
+        frames[currentFrameIndex].drawRectangle(storedX, storedY, x, y, currentColor);
+        break;
 
-        case Rectangle:
-//          frames[currentFrameIndex].drawRectangle(storedX, storedY, x, y, currentColor);
-            break;
+    case Circle:
+        frames[currentFrameIndex].drawCircle(storedX, storedY, x, y, currentColor);
+        break;
 
-        case Circle:
-//          frames[currentFrameIndex].drawCircle(storedX, storedY, x, y, currentColor);
-            break;
+    default:
+        break;
     }
     // we dont have to clear storedX,Y
     //addToUndo();

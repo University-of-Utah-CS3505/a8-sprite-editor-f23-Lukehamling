@@ -18,6 +18,9 @@ public:
     unsigned short int spriteWidth;
     unsigned short int spriteHeight;
 
+    int storedX;
+    int storedY;
+
 public slots:
     ///@brief this method reverts the last undo action,
     void redo();
