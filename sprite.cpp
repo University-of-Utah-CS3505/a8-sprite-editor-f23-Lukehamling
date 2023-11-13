@@ -9,10 +9,15 @@
 #include <QJsonObject>
 #include <vector>
 #include <math.h>
+#include <stack>
 
 using std::vector;
 using std::swap;
 using std::abs;
+using std::stack;
+using std::get;
+using std::tuple;
+using std::make_tuple;
 
 Sprite::Sprite(unsigned short int spriteWidth, unsigned short int spriteHeight) : width{spriteWidth}, height{spriteHeight}
 {
@@ -60,30 +65,39 @@ void Sprite::setColor(unsigned short int x, unsigned short int y, QColor desired
 void Sprite::fill(unsigned short int x, unsigned short int y, QColor fillColor)
 {
     QColor originalColor = getColor(x,y);
-    fillRecursive(x,y, originalColor, fillColor);
-}
 
-void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor originalColor, QColor fillColor)
-{
-    if(getColor(x,y) == fillColor)
-        return;
+    tuple<int, int> currentPixel;
+    stack<tuple<int, int>> pixels;
+    pixels.push(make_tuple(x, y));
 
-    if(getColor(x,y) != originalColor)
-        return;
+    while(!pixels.empty())
+    {
+        currentPixel = pixels.top();
+        pixels.pop();
 
-    setColor(x, y, fillColor);
+        int currentX = get<0>(currentPixel);
+        int currentY = get<1>(currentPixel);
 
-    if(x > 0)
-        fillRecursive(x-1, y, originalColor, fillColor);
+        if(getColor(currentX, currentY) == fillColor)
+            continue;
 
-    if(x < width - 1)
-        fillRecursive(x+1, y, originalColor, fillColor);
+        if(getColor(currentX, currentY) != originalColor)
+            continue;
 
-    if(y > 0)
-        fillRecursive(x, y-1, originalColor, fillColor);
+        setColor(currentX, currentY, fillColor);
 
-    if(y < height - 1)
-        fillRecursive(x, y+1, originalColor, fillColor);
+        if(currentX > 0)
+            pixels.push(make_tuple(currentX - 1, currentY));
+
+        if(currentX < width - 1)
+            pixels.push(make_tuple(currentX + 1, currentY));
+
+        if(currentY > 0)
+            pixels.push(make_tuple(currentX, currentY - 1));
+
+        if(currentY < height - 1)
+            pixels.push(make_tuple(currentX, currentY + 1));
+    }
 }
 
 void Sprite::drawLine(unsigned short int startX, unsigned short int startY,

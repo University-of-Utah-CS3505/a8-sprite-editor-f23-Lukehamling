@@ -61,8 +61,7 @@ public:
     void setColor(unsigned short int x, unsigned short int y, QColor desiredColor);
 
     /// @brief Fills all pixels in with fillColor starting at (x,y) and going until a pixel with a different color
-    ///         than the starting point is detected. This is a driver method that will call a recursive method
-    ///         that actually performs the filling.
+    ///         than the starting point is detected.
     /// @param x is the x location of the starting point
     /// @param y is the y location of the starting point
     /// @param fillColor is the color that the appropriate pixels will change to.
@@ -93,14 +92,6 @@ public:
                     unsigned short int endX, unsigned short int endY, QColor color);
 
 private:
-    /// @brief Recursive method that will perform the filling as long as the pixel at x,y matches originalColor
-    /// @param x is the x location of the pixel to change
-    /// @param y is the y location of the pixel to change
-    /// @param originalColor is the color of the first pixel, additional pixels will not be painted unless they
-    ///         match the original color
-    /// @param fillColor is the color that the pixels will be painted too if they meet the requirements
-    void fillRecursive(unsigned short int x, unsigned short int y, QColor originalColor, QColor fillColor);
-
     /// @brief draws a line left to right with a horizontal slope.
     void drawLineLow(unsigned short int startX, unsigned short int startY,
                   unsigned short int endX, unsigned short int endY, QColor color);
