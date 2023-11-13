@@ -212,8 +212,8 @@ void pixelEditorModel::load(QString filename)
 
         if(!frames.empty())
         {
-            //gets rid of all the previous frames if loading when there is already an existing project
-            for(int i =0; i < frames.size(); i++)
+            // gets rid of all the previous frames if loading when there is already an existing project
+            for(unsigned int i = 0; i < frames.size(); i++)
             {
                 emit updateFrameBox(-1);
             }
@@ -267,8 +267,9 @@ void pixelEditorModel::load(QString filename)
 
         //gets rid of the extra option from the load method
         emit updateFrameBox(-1);
+
         //add all the frames to the frame picker
-        for (int i = 1; i <= frames.size(); i++)
+        for (unsigned int i = 1; i <= frames.size(); i++)
         {
             emit updateFrameBox(i);
         }
