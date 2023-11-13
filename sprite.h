@@ -90,6 +90,9 @@ public:
     /// @return Height of Sprite
     unsigned short int getHeight();
 private:
+    unsigned short int width;
+    unsigned short int height;
+
     /// @brief This is a small helper method that lets us place pixels while doing Bresenham's circle algoritm
     /// @param centerX - the x of the centerpoint of the circle
     /// @param centerY - the y of the centerpoint of the circle

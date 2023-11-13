@@ -259,9 +259,9 @@
     <widget class="QPushButton" name="deleteFrameButton">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>30</x>
        <y>310</y>
-       <width>111</width>
+       <width>131</width>
        <height>21</height>
       </rect>
      </property>
@@ -272,9 +272,9 @@
     <widget class="QPushButton" name="addFrameButton">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>30</x>
        <y>280</y>
-       <width>111</width>
+       <width>131</width>
        <height>21</height>
       </rect>
      </property>

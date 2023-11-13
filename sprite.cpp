@@ -103,7 +103,7 @@ void Sprite::fill(unsigned short int x, unsigned short int y, QColor fillColor)
 }
 
 void Sprite::drawLine(unsigned short int startX, unsigned short int startY,
-              unsigned short int endX, unsigned short int endY, QColor color) {
+              unsigned short int endX, unsigned short int endY, QColor color)
 {
     // Bresenham's line algorithm. Low high logic
     int dx = endX - startX;
@@ -127,7 +127,7 @@ void Sprite::drawLine(unsigned short int startX, unsigned short int startY,
     }
 }
 void Sprite::drawLineLow(unsigned short int startX, unsigned short int startY,
-                      unsigned short int endX, unsigned short int endY, QColor color) {
+                      unsigned short int endX, unsigned short int endY, QColor color)
 {
     int dx = endX - startX;
     int dy = endY - startY;
@@ -139,7 +139,8 @@ void Sprite::drawLineLow(unsigned short int startX, unsigned short int startY,
     }
 }
 void Sprite::drawLineHigh(unsigned short int startX, unsigned short int startY,
-                      unsigned short int endX, unsigned short int endY, QColor color) {
+                      unsigned short int endX, unsigned short int endY, QColor color)
+{
     int dx = endX - startX;
     int dy = endY - startY;
     int x;
