@@ -93,6 +93,13 @@ public:
                     unsigned short int endX, unsigned short int endY, QColor color);
 
 private:
+    /// @brief This is a small helper method that lets us place pixels while doing Bresenham's circle algoritm
+    /// @param centerX - the x of the centerpoint of the circle
+    /// @param centerY - the y of the centerpoint of the circle
+    /// @param xIncrement - the increment for X
+    /// @param yIncrement - the increment for Y
+    /// @param color - the color we are drawing for the circle
+    void placePixelsInCircle(unsigned short int centerX, unsigned short int centerY, unsigned short int xIncrement, unsigned short int yIncrement, QColor color);
     /// @brief Recursive method that will perform the filling as long as the pixel at x,y matches originalColor
     /// @param x is the x location of the pixel to change
     /// @param y is the y location of the pixel to change
