@@ -16,6 +16,7 @@ using std::vector;
 class Sprite
 {
 private:
+
     vector<vector<QColor>> grid;
     const QColor DEFAULT_COLOR = Qt::transparent;
 
@@ -89,8 +90,14 @@ public:
     /// @return Height of Sprite
     unsigned short int getHeight();
 private:
-    unsigned short int width;
-    unsigned short int height;
+    /// @brief This is a small helper method that lets us place pixels while doing Bresenham's circle algoritm
+    /// @param centerX - the x of the centerpoint of the circle
+    /// @param centerY - the y of the centerpoint of the circle
+    /// @param xIncrement - the increment for X
+    /// @param yIncrement - the increment for Y
+    /// @param color - the color we are drawing for the circle
+    void placePixelsInCircle(unsigned short int centerX, unsigned short int centerY, unsigned short int xIncrement, unsigned short int yIncrement, QColor color);
+
 
     /// @brief draws a line left to right with a horizontal slope.
     void drawLineLow(unsigned short int startX, unsigned short int startY,
