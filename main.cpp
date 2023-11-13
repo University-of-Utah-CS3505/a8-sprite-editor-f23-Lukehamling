@@ -1,3 +1,10 @@
+/*
+    Team:       Coders for Christ
+    Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
+    Class:      CS3505
+    Assignment: 8 - Sprite Editor
+*/
+
 #include "mainwindow.h"
 #include "pixelEditorModel.h"
 

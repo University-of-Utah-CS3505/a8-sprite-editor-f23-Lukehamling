@@ -1,3 +1,10 @@
+/*
+    Team:       Coders for Christ
+    Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
+    Class:      CS3505
+    Assignment: 8 - Sprite Editor
+*/
+
 #include "mainwindow.h"
 #include "pixelEditorModel.h"
 #include "ui_mainwindow.h"
@@ -31,14 +38,14 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     ui->FPSslider->setMaximum(60);
     ui->FPSslider->setMinimum(1);
     ui->FPSslider->setValue(24);
-    ui->FPSLabel->setText("FPS 24");
+    ui->FPSLabel ->setText("FPS 24");
 
     // Math out some x,y locations for later calculation
-    const int canvasEdgeRight = ui->canvas->x() + ui->canvas->width();
+    const int canvasEdgeRight  = ui->canvas->x() + ui->canvas->width();
     const int canvasEdgeBottom = ui->canvas->y() + ui->canvas->height();
-    WhiteOutBoxLeft = QRect(0,0,ui->canvas->x(),this->height());
-    WhiteOutBoxRight = QRect(canvasEdgeRight,0,this->width() - canvasEdgeRight,this->height());
-    WhiteOutBoxTop = QRect(ui->canvas->x(),0,ui->canvas->width(),ui->canvas->y());
+    WhiteOutBoxLeft   = QRect(0,0,ui->canvas->x(),this->height());
+    WhiteOutBoxRight  = QRect(canvasEdgeRight,0,this->width() - canvasEdgeRight,this->height());
+    WhiteOutBoxTop    = QRect(ui->canvas->x(),0,ui->canvas->width(),ui->canvas->y());
     WhiteOutBoxBottom = QRect(ui->canvas->x(),canvasEdgeBottom,ui->canvas->width(),this->height() - canvasEdgeBottom);
     CanvasCenterx = ui->canvas->x() + (ui->canvas->width() / 2);
     CanvasCentery = ui->canvas->y() + (ui->canvas->height() / 2);
@@ -168,7 +175,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &model,
             [&model](){model.setStopped(true);});
 
-    // undo-redo & color select
+    // undo-redo & tool button connections
     connect(ui->undoButton,
             &QPushButton::clicked,
             &model,
@@ -216,6 +223,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::clicked,
             this,
             &MainWindow::startButtonClicked);
+    ui->startButton->setStyleSheet(QString("QPushButton {background-color: rgb(106,255,77);}"));
 
     //Create new sprite based on this size
     connect(this,
@@ -298,26 +306,29 @@ void MainWindow::updateCanvasView()
 
 bool MainWindow::checkInCanvas(int& x, int& y) {
     // move our window's 0,0 to the canvas 0,0
-    if (x < ui->canvas->x() || y < ui->canvas->y() || x > ui->canvas->width() + ui->canvas->x() || y > ui->canvas->height() + ui->canvas->y()) {
-        // we are clicking outside the canvas. Dont even calculate the sprite points
-        return false;
-    } else {
+    if (isOutsideCanvas(x,y))
+        return false; // we are clicking outside the canvas. Dont even calculate the sprite points
+
+    else
+    {
         Sprite* loadedSprite = editorModel->getSelectedSprite();
         x = (x - xOffset) / scale;
         y = (y - yOffset) / scale;
-        if (x < 0 || y < 0 || x >= loadedSprite->width || y >= loadedSprite->height) {
-            // we are checking if we are clicking outside the sprite
-            return false;
-        } else {
+
+        if (isOutsideSprite(x, y, loadedSprite))
+            return false;  // we are checking if we are clicking outside the sprite
+
+        else
             return true;
-        }
     }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
-    if (checkInCanvas(x, y)) {
+
+    if (checkInCanvas(x, y))
+    {
         editorModel->clickPixel(x,y);
         update();
     }
@@ -326,30 +337,42 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     int x = event->pos().x();
     int y = event->pos().y();
-    if (checkInCanvas(x, y)) {
+
+    if (checkInCanvas(x, y))
+    {
         editorModel->movePixel(x,y);
         update();
     }
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
+void MainWindow::mouseReleaseEvent(QMouseEvent* event)
+{
     int x = event->pos().x();
     int y = event->pos().y();
-    if (checkInCanvas(x, y)) {
+
+    if (checkInCanvas(x, y))
+    {
         editorModel->releasePixel(x,y);
         update();
     }
 }
 
 
-void MainWindow::wheelEvent(QWheelEvent* event) {
+void MainWindow::wheelEvent(QWheelEvent* event)
+{
     float zoom = (event->angleDelta().y() / 120);
-    if (zoom > 0) {
+
+    if (zoom > 0)
+    {
         scale = (scale * 1.5);
+
         if (scale == 1)
             scale = 2;
-    } else {
+    }
+    else
+    {
         scale = scale * 0.7;
+
         if (scale < 1)
             scale = 1;
     }
@@ -371,7 +394,6 @@ void MainWindow::showFrame(QImage image)
 void MainWindow::paintEvent(QPaintEvent*)
 {
     Sprite* loadedSprite = editorModel->getSelectedSprite();
-//    print(loadedSprite->width, "painting", loadedSprite->height);
     QPainter painter(this);
 
     QPen pen(Qt::black);
@@ -379,12 +401,14 @@ void MainWindow::paintEvent(QPaintEvent*)
     pen.setWidth(penWidth);
     painter.setPen(pen);
 
-    QRect spriteFrame(xOffset, yOffset, loadedSprite->width * scale, loadedSprite->height * scale);
+    QRect spriteFrame(xOffset, yOffset, loadedSprite->getWidth() * scale, loadedSprite->getHeight() * scale);
     painter.drawRect(spriteFrame);
 
     // draw the sprite
-    for (size_t i = 0; i < loadedSprite->width; i++) {
-        for (size_t j = 0; j < loadedSprite->height; j++) {
+    for (size_t i = 0; i < loadedSprite->getWidth(); i++)
+    {
+        for (size_t j = 0; j < loadedSprite->getHeight(); j++)
+        {
             int x = xOffset + (i * scale);
             int y = yOffset + (j * scale);
             QRect box(x, y, scale, scale);
@@ -397,6 +421,7 @@ void MainWindow::paintEvent(QPaintEvent*)
     painter.fillRect(WhiteOutBoxRight, Qt::white);
     painter.fillRect(WhiteOutBoxTop, Qt::white);
     painter.fillRect(WhiteOutBoxBottom, Qt::white);
+
     // add a black frame
     QRect canvasFrame(ui->canvas->x(), ui->canvas->y(), ui->canvas->width(), ui->canvas->height());
     painter.drawRect(canvasFrame);
@@ -404,25 +429,25 @@ void MainWindow::paintEvent(QPaintEvent*)
 
 void MainWindow::panUp()
 {
-    focusSpriteCentery -= editorModel->spriteHeight / 4;
+    focusSpriteCentery -= editorModel->getHeight() / 4;
     updateCanvasView();
 }
 
 void MainWindow::panDown()
 {
-    focusSpriteCentery += editorModel->spriteHeight / 4;
+    focusSpriteCentery += editorModel->getHeight() / 4;
     updateCanvasView();
 }
 
 void MainWindow::panLeft()
 {
-    focusSpriteCenterx -= editorModel->spriteWidth / 4;
+    focusSpriteCenterx -= editorModel->getWidth() / 4;
     updateCanvasView();
 }
 
 void MainWindow::panRight()
 {
-    focusSpriteCenterx += editorModel->spriteWidth / 4;
+    focusSpriteCenterx += editorModel->getWidth() / 4;
     updateCanvasView();
 }
 
@@ -454,71 +479,24 @@ void MainWindow::createErrorMessagePopup(QString windowTitle, QString errorMessa
 
 void MainWindow::setupStartScreen()
 {
-    ui->saveButton          ->setEnabled(false);
-    ui->addFrameButton      ->setEnabled(false);
-    ui->deleteFrameButton   ->setEnabled(false);
-    ui->circleButton        ->setEnabled(false);
-    ui->colorButton         ->setEnabled(false);
-    ui->deleteFrameButton   ->setEnabled(false);
-    ui->eraseButton         ->setEnabled(false);
-    ui->fillButton          ->setEnabled(false);
-    ui->panDownButton       ->setEnabled(false);
-    ui->panLeftButton       ->setEnabled(false);
-    ui->panRightButton      ->setEnabled(false);
-    ui->panUpButton         ->setEnabled(false);
-    ui->rectangleButton     ->setEnabled(false);
-    ui->redoButton          ->setEnabled(false);
-    ui->undoButton          ->setEnabled(false);
-    ui->FPSLabel            ->setEnabled(false);
-    ui->FPSslider           ->setEnabled(false);
-    ui->animationPreview    ->setEnabled(false);
-    ui->canvas              ->setEnabled(false);
-    ui->statusbar           ->setEnabled(false);
-    ui->penButton           ->setEnabled(false);
-    ui->frameSelectorLabel  ->setEnabled(false);
-    ui->frameSelector       ->setEnabled(false);
     ui->startButton         ->setEnabled(false);
     ui->spriteSizeComboBox  ->setEnabled(false);
-    ui->playButton          ->setEnabled(false);
-    ui->stopButton          ->setEnabled(false);
+    ui->topButtonsWidget    ->setEnabled(false);
+    ui->toolWidget          ->setEnabled(false);
+    ui->rightSideWidget     ->setEnabled(false);
 
-    ui->saveButton              ->hide();
-    ui->addFrameButton          ->hide();
-    ui->deleteFrameButton       ->hide();
-    ui->circleButton            ->hide();
-    ui->colorButton             ->hide();
-    ui->deleteFrameButton       ->hide();
-    ui->eraseButton             ->hide();
-    ui->fillButton              ->hide();
-    ui->panDownButton           ->hide();
-    ui->panLeftButton           ->hide();
-    ui->panRightButton          ->hide();
-    ui->panUpButton             ->hide();
-    ui->rectangleButton         ->hide();
-    ui->redoButton              ->hide();
-    ui->undoButton              ->hide();
-    ui->FPSLabel                ->hide();
-    ui->FPSslider               ->hide();
-    ui->animationPreview        ->hide();
-    ui->canvas                  ->hide();
-    ui->statusbar               ->hide();
-    ui->penButton               ->hide();
-    ui->frameSelectorLabel      ->hide();
-    ui->frameSelector           ->hide();
+    ui->topButtonsWidget        ->hide();
+    ui->toolWidget              ->hide();
+    ui->rightSideWidget         ->hide();
     ui->spriteSizeSelectorLabel ->hide();
-    ui->frameSelectorLabel      ->hide();
-    ui->frameSelector           ->hide();
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
-    ui->playButton              ->hide();
-    ui->stopButton              ->hide();
 }
 
 void MainWindow::newSpriteScreen()
 {
     ui->loadButton              ->setEnabled(false);
     ui->createButton            ->setEnabled(false);
-
     ui->loadButton              ->hide();
     ui->createButton            ->hide();
     ui->createNewOrLoadLabel    ->hide();
@@ -527,7 +505,6 @@ void MainWindow::newSpriteScreen()
     ui->spriteSizeComboBox      ->setEnabled(true);
     ui->spriteSizeSelectorLabel ->setEnabled(true);
     ui->startButton             ->setEnabled(true);
-
     ui->spriteSizeComboBox      ->show();
     ui->spriteSizeSelectorLabel ->show();
     ui->startButton             ->show();
@@ -537,7 +514,7 @@ void MainWindow::populateSpriteSizeComboBox()
 {
     QStringList sizeOptions{"32x32", "64x32", "32x64", "64x64", "128x64", "64x128", "128x128", "256x128", "128x256", "256x256", "512x256", "256x512", "512x512"};
     ui->spriteSizeComboBox->addItems(sizeOptions);
-    ui->spriteSizeComboBox->setMaxVisibleItems(4); //TODO: Still displays 10 items?
+    ui->spriteSizeComboBox->setMaxVisibleItems(4); //TODO: Still displays all items?
 }
 
 void MainWindow::startButtonClicked()
@@ -621,66 +598,20 @@ void MainWindow::startButtonClicked()
 
 void MainWindow::mainScreen()
 {
-    ui->saveButton          ->setEnabled(true);
-    ui->addFrameButton      ->setEnabled(true);
-    ui->deleteFrameButton   ->setEnabled(true);
-    ui->circleButton        ->setEnabled(true);
-    ui->colorButton         ->setEnabled(true);
-    ui->deleteFrameButton   ->setEnabled(true);
-    ui->eraseButton         ->setEnabled(true);
-    ui->fillButton          ->setEnabled(true);
-    ui->panDownButton       ->setEnabled(true);
-    ui->panLeftButton       ->setEnabled(true);
-    ui->panRightButton      ->setEnabled(true);
-    ui->panUpButton         ->setEnabled(true);
-    ui->rectangleButton     ->setEnabled(true);
-    ui->redoButton          ->setEnabled(true);
-    ui->undoButton          ->setEnabled(true);
-    ui->FPSLabel            ->setEnabled(true);
-    ui->FPSslider           ->setEnabled(true);
-    ui->animationPreview    ->setEnabled(true);
-    ui->canvas              ->setEnabled(true);
-    ui->statusbar           ->setEnabled(true);
-    ui->penButton           ->setEnabled(true);
-    ui->frameSelectorLabel  ->setEnabled(true);
-    ui->frameSelector       ->setEnabled(true);
+    ui->topButtonsWidget    ->setEnabled(true);
+    ui->toolWidget          ->setEnabled(true);
+    ui->rightSideWidget     ->setEnabled(true);
     ui->loadButton          ->setEnabled(true);
-    ui->playButton          ->setEnabled(true);
-    ui->stopButton          ->setEnabled(true);
     ui->startButton         ->setEnabled(false);
     ui->spriteSizeComboBox  ->setEnabled(false);
     ui->createButton        ->setEnabled(false);
     ui->createNewOrLoadLabel->setEnabled(false);
 
-    ui->saveButton              ->show();
-    ui->addFrameButton          ->show();
-    ui->deleteFrameButton       ->show();
-    ui->circleButton            ->show();
-    ui->colorButton             ->show();
-    ui->deleteFrameButton       ->show();
-    ui->eraseButton             ->show();
-    ui->fillButton              ->show();
-    ui->panDownButton           ->show();
-    ui->panLeftButton           ->show();
-    ui->panRightButton          ->show();
-    ui->panUpButton             ->show();
-    ui->rectangleButton         ->show();
-    ui->redoButton              ->show();
-    ui->undoButton              ->show();
-    ui->FPSLabel                ->show();
-    ui->FPSslider               ->show();
-    ui->animationPreview        ->show();
-    ui->canvas                  ->show();
-    ui->statusbar               ->show();
-    ui->penButton               ->show();
-    ui->frameSelectorLabel      ->show();
-    ui->frameSelector           ->show();
-    ui->spriteSizeSelectorLabel ->show();
-    ui->frameSelectorLabel      ->show();
-    ui->frameSelector           ->show();
+
+    ui->topButtonsWidget        ->show();
+    ui->toolWidget              ->show();
+    ui->rightSideWidget         ->show();
     ui->loadButton              ->show();
-    ui->playButton              ->show();
-    ui->stopButton              ->show();
     ui->spriteSizeSelectorLabel ->hide();
     ui->startButton             ->hide();
     ui->spriteSizeComboBox      ->hide();
@@ -688,7 +619,7 @@ void MainWindow::mainScreen()
     ui->createNewOrLoadLabel    ->hide();
     ui->frameSelector           ->addItem("Frame 1");
 
-    ui->loadButton              ->setGeometry(260, 18, 75, 25);
+    ui->loadButton              ->setGeometry(260, 8, 75, 25);
 }
 
 void MainWindow::changeFrameBox(int data)
@@ -715,11 +646,15 @@ void MainWindow::changeFrameBox(int data)
 void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short int height)
 {
     int largeSide = width;
+
     if (height > width)
         largeSide = height;
+
     OriginalScale = ui->canvas->height() / largeSide;
     scale = OriginalScale;
-    if (scale < 1) {
+
+    if (scale < 1)
+    {
         scale = 1;
     }
     focusSpriteCenterx = width / 2;
@@ -751,4 +686,14 @@ void MainWindow::circleButtonClicked()
 void MainWindow::rectangleButtonClicked()
 {
     emit toolSelected(3);
+}
+
+bool MainWindow::isOutsideCanvas(const int& x, const int& y)
+{
+    return x < ui->canvas->x() || y < ui->canvas->y() || x > ui->canvas->width() + ui->canvas->x() || y > ui->canvas->height() + ui->canvas->y();
+}
+
+bool MainWindow::isOutsideSprite(const int& x, const int& y, Sprite* loadedSprite)
+{
+    return x < 0 || y < 0 || x >= loadedSprite->getWidth() || y >= loadedSprite->getHeight();
 }
