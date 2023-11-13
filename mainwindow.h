@@ -19,6 +19,7 @@ class MainWindow : public QMainWindow
     QRect WhiteOutBoxBottom;
     int CanvasCenterx;
     int CanvasCentery;
+    int OriginalScale = 0;
 
     // these are inverse, so -5 to the center would move it 5 to the right.
     int scale = 0;
@@ -150,5 +151,8 @@ private:
 
     ///@brief Overrides the default mouse release event so we can use it for drawing
     virtual void mouseReleaseEvent(QMouseEvent* event) override;
+
+    ///@brief Determine when the scroll wheel is turned. Used to determine zooms.
+    virtual void wheelEvent(QWheelEvent* event) override;
 };
 #endif // MAINWINDOW_H

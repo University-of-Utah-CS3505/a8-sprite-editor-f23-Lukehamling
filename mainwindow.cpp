@@ -319,9 +319,8 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
         editorModel->clickPixel(x,y);
-        print(x, "checkInCanvas", y);
+        update();
     }
-    update();
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
@@ -329,8 +328,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
         editorModel->movePixel(x,y);
+        update();
     }
-    update();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
@@ -338,8 +337,26 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
         editorModel->releasePixel(x,y);
+        update();
     }
-    update();
+}
+
+
+void MainWindow::wheelEvent(QWheelEvent* event) {
+//    int x = event->globalPosition().x();
+//    int y = event->globalPosition().y();
+    print(event->angleDelta().y(), "wheel event", 0);
+    float zoom = (event->angleDelta().y() / 120);
+    if (zoom > 0) {
+        scale = (scale * 1.5);
+        if (scale == 1)
+            scale = 2;
+    } else {
+        scale = scale * 0.7;
+        if (scale < 1)
+            scale = 1;
+    }
+    updateCanvasView();
 }
 
 void MainWindow::updateFPSLabel(int newFPS)
@@ -703,7 +720,8 @@ void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short i
     int largeSide = width;
     if (height > width)
         largeSide = height;
-    scale = ui->canvas->height() / largeSide;
+    OriginalScale = ui->canvas->height() / largeSide;
+    scale = OriginalScale;
     if (scale < 1) {
         scale = 1;
     }
