@@ -27,215 +27,6 @@
      <string notr="true"/>
     </property>
    </widget>
-   <widget class="QSlider" name="FPSslider">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>160</y>
-      <width>160</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="FPSLabel">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>140</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>FPS counter</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>190</y>
-      <width>171</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="panUpButton">
-       <property name="text">
-        <string>Pan Up</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="panLeftButton">
-         <property name="text">
-          <string>Pan Left</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="panRightButton">
-         <property name="text">
-          <string>Pan Right</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QPushButton" name="panDownButton">
-       <property name="text">
-        <string>Pan Down</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="addFrameButton">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>310</y>
-      <width>111</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add Frame</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="deleteFrameButton">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>340</y>
-      <width>111</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Delete Frame</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="frameSelector">
-    <property name="geometry">
-     <rect>
-      <x>650</x>
-      <y>410</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="frameSelectorLabel">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>390</y>
-      <width>111</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select a frame!</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>10</y>
-      <width>254</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="topButtons">
-     <item>
-      <widget class="QPushButton" name="undoButton">
-       <property name="text">
-        <string>Undo</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="redoButton">
-       <property name="text">
-        <string>Redo</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="saveButton">
-       <property name="text">
-        <string>Save</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>50</y>
-      <width>95</width>
-      <height>371</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="leftButtons">
-     <item>
-      <widget class="QPushButton" name="rectangleButton">
-       <property name="text">
-        <string>Rectangle</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="circleButton">
-       <property name="text">
-        <string>Circle</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="fillButton">
-       <property name="text">
-        <string>Fill</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="colorButton">
-       <property name="text">
-        <string>Color</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="penButton">
-       <property name="text">
-        <string>Pen</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="eraseButton">
-       <property name="text">
-        <string>Erase</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="loadButton">
     <property name="geometry">
      <rect>
@@ -320,44 +111,283 @@
      <string>Start!</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="playButton">
+   <widget class="QWidget" name="topButtonsWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>30</y>
-      <width>51</width>
-      <height>24</height>
+      <x>0</x>
+      <y>0</y>
+      <width>255</width>
+      <height>41</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Play</string>
-    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>254</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="topButtons">
+      <item>
+       <widget class="QPushButton" name="undoButton">
+        <property name="text">
+         <string>Undo</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="redoButton">
+        <property name="text">
+         <string>Redo</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveButton">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
-   <widget class="QLabel" name="animationPreview">
+   <widget class="QWidget" name="toolWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>30</y>
-      <width>121</width>
-      <height>101</height>
+      <x>0</x>
+      <y>40</y>
+      <width>101</width>
+      <height>361</height>
      </rect>
     </property>
-    <property name="text">
-     <string/>
-    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>95</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="leftButtons">
+      <item>
+       <widget class="QPushButton" name="rectangleButton">
+        <property name="text">
+         <string>Rectangle</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="circleButton">
+        <property name="text">
+         <string>Circle</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="fillButton">
+        <property name="text">
+         <string>Fill</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="colorButton">
+        <property name="text">
+         <string>Color</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="penButton">
+        <property name="text">
+         <string>Pen</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="eraseButton">
+        <property name="text">
+         <string>Erase</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
-   <widget class="QPushButton" name="stopButton">
+   <widget class="QWidget" name="rightSideWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>90</y>
-      <width>51</width>
-      <height>24</height>
+      <x>630</x>
+      <y>20</y>
+      <width>201</width>
+      <height>421</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Stop</string>
-    </property>
+    <widget class="QPushButton" name="stopButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>60</y>
+       <width>51</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="frameSelectorLabel">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>360</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select a frame!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="deleteFrameButton">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>310</y>
+       <width>111</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete Frame</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="addFrameButton">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>280</y>
+       <width>111</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add Frame</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="playButton">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>0</y>
+       <width>51</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Play</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="frameSelector">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>380</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="FPSLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>110</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>FPS counter</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="FPSslider">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>160</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>160</y>
+       <width>171</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="panUpButton">
+        <property name="text">
+         <string>Pan Up</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="panLeftButton">
+          <property name="text">
+           <string>Pan Left</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="panRightButton">
+          <property name="text">
+           <string>Pan Right</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="panDownButton">
+        <property name="text">
+         <string>Pan Down</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QLabel" name="animationPreview">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>0</y>
+       <width>121</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -366,7 +396,7 @@
      <x>0</x>
      <y>0</y>
      <width>847</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
