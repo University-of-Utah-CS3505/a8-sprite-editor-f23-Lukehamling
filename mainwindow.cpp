@@ -62,6 +62,12 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     ui -> panLeftButton     -> setIcon(QIcon(":/buttons/left_arrow.png"));
     ui -> panRightButton    -> setIcon(QIcon(":/buttons/right_arrow.png"));
     ui -> deleteFrameButton -> setIcon(QIcon(":/buttons/remove_frame.png"));
+    ui -> playButton        -> setIcon(QIcon(":/buttons/play.png"));
+    ui -> stopButton        -> setIcon(QIcon(":/buttons/stop.png"));
+    ui -> penButton         -> setIcon(QIcon(":/buttons/pen.png"));
+    ui -> eraseButton       -> setIcon(QIcon(":/buttons/eraser.png"));
+    ui -> createButton      -> setIcon(QIcon(":/buttons/create.png"));
+    ui -> startButton       -> setIcon(QIcon(":/buttons/start.png"));
 
     // keyboard shortcuts
     QAction *undoShortcut = new QAction(this);

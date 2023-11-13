@@ -14,5 +14,11 @@
         <file>right_arrow.png</file>
         <file>up_arrow.png</file>
         <file>remove_frame.png</file>
+        <file>play.png</file>
+        <file>stop.png</file>
+        <file>eraser.png</file>
+        <file>pen.png</file>
+        <file>create.png</file>
+        <file>start.png</file>
     </qresource>
 </RCC>
