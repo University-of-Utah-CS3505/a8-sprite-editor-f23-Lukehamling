@@ -1,3 +1,10 @@
+/*
+    Team:       Coders for Christ
+    Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
+    Class:      CS3505
+    Assignment: 8 - Sprite Editor
+*/
+
 #include "pixelEditorModel.h"
 #include "sprite.h"
 #include <QJsonDocument>
@@ -146,8 +153,8 @@ void pixelEditorModel::selectColor()
 
 void pixelEditorModel::createJSON()
 {
-    spriteJSON.insert("height", frames[0].height);
-    spriteJSON.insert("width", frames[0].width);
+    spriteJSON.insert("height", frames[0].getHeight());
+    spriteJSON.insert("width", frames[0].getWidth());
     spriteJSON.insert("numberOfFrames", (int)frames.size());
 
     QJsonObject frame;
@@ -155,11 +162,11 @@ void pixelEditorModel::createJSON()
     {
         QJsonArray rows;
         // loops through row of pixel
-        for(int rowIndex = 0; rowIndex < frames[spriteIndex].height; rowIndex++)
+        for(int rowIndex = 0; rowIndex < frames[spriteIndex].getHeight(); rowIndex++)
         {
             QJsonArray pixels;
             // loops through each pixel in said row
-            for(int pixelIndex = 0; pixelIndex < frames[spriteIndex].width; pixelIndex++)
+            for(int pixelIndex = 0; pixelIndex < frames[spriteIndex].getWidth(); pixelIndex++)
             {
                 QJsonArray colors;
                 QColor currentPixelColor = frames[spriteIndex].getColor(pixelIndex, rowIndex);
@@ -206,7 +213,7 @@ void pixelEditorModel::load(QString filename)
         if(!frames.empty())
         {
             //gets rid of all the previous frames if loading when there is already an existing project
-            for(Sprite frame : frames)
+            for(int i =0; i < frames.size(); i++)
             {
                 emit updateFrameBox(-1);
             }
@@ -274,7 +281,7 @@ void pixelEditorModel::load(QString filename)
 
 void pixelEditorModel::addFrame()
 {
-    Sprite newFrame(frames[currentFrameIndex].width, frames[currentFrameIndex].height);
+    Sprite newFrame(frames[currentFrameIndex].getWidth(), frames[currentFrameIndex].getHeight());
     frames.push_back(newFrame);
     emit updateFrameBox(frames.size());
 }
@@ -285,7 +292,7 @@ void pixelEditorModel::deleteFrame()
     if(frames.size() == 1)
     {
         Sprite frame = frames[0];
-        frames[0] = Sprite(frame.width, frame.height);
+        frames[0] = Sprite(frame.getWidth(), frame.getHeight());
         emit updateFrameBox(0);
         return;
     }
@@ -329,11 +336,11 @@ void pixelEditorModel::playAnimation()
 QImage pixelEditorModel::showFrame(int i)
 {
     Sprite frame = frames.at(i);
-    QImage image = QImage(frame.width, frame.height, QImage::Format_ARGB32);
+    QImage image = QImage(frame.getWidth(), frame.getHeight(), QImage::Format_ARGB32);
 
-    for (size_t i = 0; i < frame.width; i++)
+    for (size_t i = 0; i < frame.getWidth(); i++)
     {
-        for (size_t j = 0; j < frame.height; j++)
+        for (size_t j = 0; j < frame.getHeight(); j++)
         {
             image.setPixelColor(i, j, frame.getColor(i, j));
         }
@@ -361,4 +368,14 @@ void pixelEditorModel::updateSelectedTool(int tool)
     Tool selected = (Tool) tool;
 
     currentTool = selected;
+}
+
+unsigned short int pixelEditorModel::getWidth()
+{
+    return this->spriteWidth;
+}
+
+unsigned short int pixelEditorModel::getHeight()
+{
+    return this->spriteHeight;
 }

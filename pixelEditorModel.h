@@ -1,3 +1,10 @@
+/*
+    Team:       Coders for Christ
+    Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
+    Class:      CS3505
+    Assignment: 8 - Sprite Editor
+*/
+
 #ifndef PIXELEDITORMODEL_H
 #define PIXELEDITORMODEL_H
 
@@ -15,11 +22,13 @@ public:
     ///@brief this method returns the sprite that is currently selected by the model
     Sprite* getSelectedSprite();
 
-    unsigned short int spriteWidth;
-    unsigned short int spriteHeight;
+    /// @brief Getter for the Sprite width.
+    /// @return Width of Sprite
+    unsigned short int getWidth();
 
-    int storedX;
-    int storedY;
+    /// @brief Getter for the Sprite height.
+    /// @return Height of Sprite
+    unsigned short int getHeight();
 
 public slots:
     ///@brief this method reverts the last undo action,
@@ -122,12 +131,16 @@ private:
     bool stopped;
     QStack<Sprite> redoStack;
     QStack<Sprite> undoStack;
+    vector<Sprite> frames;
     Tool currentTool;
-    std::vector<Sprite> frames;
-    int currentFrameIndex{0};
     QColor currentColor;
-    int fps;
     QJsonObject spriteJSON;
+    int storedX;
+    int storedY;
+    int fps;
+    int currentFrameIndex{0};
+    unsigned short int spriteWidth;
+    unsigned short int spriteHeight;
 
     ///@brief this is a small helper method to convert the sprite into a QImage
     ///@param the index of the frame we are converting into a QImage

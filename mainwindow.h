@@ -1,3 +1,10 @@
+/*
+    Team:       Coders for Christ
+    Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
+    Class:      CS3505
+    Assignment: 8 - Sprite Editor
+*/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -19,14 +26,14 @@ class MainWindow : public QMainWindow
     QRect WhiteOutBoxBottom;
     int CanvasCenterx;
     int CanvasCentery;
-    int OriginalScale = 0;
+    int OriginalScale{0};
 
     // these are inverse, so -5 to the center would move it 5 to the right.
-    int scale = 0;
-    float focusSpriteCenterx = 0;
-    float focusSpriteCentery = 0;
-    int xOffset = 0;
-    int yOffset = 0;
+    int scale{0};
+    float focusSpriteCenterx{0};
+    float focusSpriteCentery{0};
+    int xOffset{0};
+    int yOffset{0};
 
 public:
     ///@brief this is the constructor for our mainWindow
@@ -142,6 +149,14 @@ private:
     ///@param x - the x position of the mouse
     ///@param y - the y position of the mouse
     bool checkInCanvas(int& x, int& y);
+
+    /// @brief Helper method to determine if an (x,y) location is outside of the canvas
+    /// @returns true if outside canvas, false otherwise.
+    bool isOutsideCanvas(const int& x, const int& y);
+
+    /// @brief Helper method to determine if an (x,y) location is outside of the Sprite
+    /// @returns true if outside Sprite, false otherwise.
+    bool isOutsideSprite(const int& x, const int& y, Sprite* loadedSprite);
 
     ///@brief Overrides the default mouse press event so we can use it for drawing
     virtual void mousePressEvent(QMouseEvent* event) override;

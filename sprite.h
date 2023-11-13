@@ -1,5 +1,6 @@
 /*
-    Author:     Ryan Dalrymple
+    Team:       Coders for Christ
+    Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
     Class:      CS3505
     Assignment: 8 - Sprite Editor
 */
@@ -10,23 +11,16 @@
 #include <QColor>
 #include <QJsonObject>
 #include <vector>
-//#include <array>
 using std::vector;
-//using std::array;
 
 class Sprite
 {
 private:
 
-    //TODO: declaring arrays like this is problematic for what we are trying to do
-    //array<array<QColor, 32>, 32> grid;
     vector<vector<QColor>> grid;
     const QColor DEFAULT_COLOR = Qt::transparent;
-public:
-    //TODO: make these private and add getters but no setters
-    unsigned short int width;
-    unsigned short int height;
 
+public:
     /// @brief Constructor for Sprite object. The user will pass in a width and height for the spite that
     ///         will used to set the size of the editing grid in the view. The grid will be represented
     ///         in the Sprite object as a 2d vector of QColors. Indexing into the grid will work as expected
@@ -45,9 +39,6 @@ public:
 
     /// @brief Assignment overload. This will allow us to assign one sprite to another.
     Sprite& operator=(Sprite otherSprite);
-
-    //TODO: Did not create Destructor because no memory is being managed. Reach consensus with team
-    //      whether destructor is neccessary or not.
 
     /// @brief Retrieves a color from a certain pixel x,y location.
     /// @param x is the x location of the pixel in the Sprite
@@ -91,7 +82,26 @@ public:
     void drawRectangle(unsigned short int startX, unsigned short int startY,
                     unsigned short int endX, unsigned short int endY, QColor color);
 
+    /// @brief Getter for the Sprite width.
+    /// @return Width of Sprite
+    unsigned short int getWidth();
+
+    /// @brief Getter for the Sprite height.
+    /// @return Height of Sprite
+    unsigned short int getHeight();
 private:
+    unsigned short int width;
+    unsigned short int height;
+
+    /// @brief This is a small helper method that lets us place pixels while doing Bresenham's circle algoritm
+    /// @param centerX - the x of the centerpoint of the circle
+    /// @param centerY - the y of the centerpoint of the circle
+    /// @param xIncrement - the increment for X
+    /// @param yIncrement - the increment for Y
+    /// @param color - the color we are drawing for the circle
+    void placePixelsInCircle(unsigned short int centerX, unsigned short int centerY, unsigned short int xIncrement, unsigned short int yIncrement, QColor color);
+
+
     /// @brief draws a line left to right with a horizontal slope.
     void drawLineLow(unsigned short int startX, unsigned short int startY,
                   unsigned short int endX, unsigned short int endY, QColor color);
