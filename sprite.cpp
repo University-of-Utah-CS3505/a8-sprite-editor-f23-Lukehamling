@@ -74,13 +74,13 @@ void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor or
     if(x > 0)
         fillRecursive(x-1, y, originalColor, fillColor);
 
-    if(x < width)
+    if(x < width - 1)
         fillRecursive(x+1, y, originalColor, fillColor);
 
     if(y > 0)
         fillRecursive(x, y-1, originalColor, fillColor);
 
-    if(y < height)
+    if(y < height - 1)
         fillRecursive(x, y+1, originalColor, fillColor);
 }
 
