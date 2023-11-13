@@ -297,7 +297,6 @@ void MainWindow::updateCanvasView()
 }
 
 bool MainWindow::checkInCanvas(int& x, int& y) {
-    print("checkInCanvas");
     // move our window's 0,0 to the canvas 0,0
     if (x < ui->canvas->x() || y < ui->canvas->y() || x > ui->canvas->width() + ui->canvas->x() || y > ui->canvas->height() + ui->canvas->y()) {
         // we are clicking outside the canvas. Dont even calculate the sprite points
@@ -306,7 +305,7 @@ bool MainWindow::checkInCanvas(int& x, int& y) {
         Sprite* loadedSprite = editorModel->getSelectedSprite();
         x = (x - xOffset) / scale;
         y = (y - yOffset) / scale;
-        if (x < 0 || y < 0 || x > loadedSprite->width || y > loadedSprite->height) { // todo crashes if start to draw off go on sprite then release off
+        if (x < 0 || y < 0 || x >= loadedSprite->width || y >= loadedSprite->height) {
             // we are checking if we are clicking outside the sprite
             return false;
         } else {
@@ -320,8 +319,8 @@ void MainWindow::mousePressEvent(QMouseEvent* event) {
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
         editorModel->clickPixel(x,y);
+        update();
     }
-    update();
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent* event) {
@@ -329,8 +328,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event) {
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
         editorModel->movePixel(x,y);
+        update();
     }
-    update();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
@@ -338,8 +337,23 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event) {
     int y = event->pos().y();
     if (checkInCanvas(x, y)) {
         editorModel->releasePixel(x,y);
+        update();
     }
-    update();
+}
+
+
+void MainWindow::wheelEvent(QWheelEvent* event) {
+    float zoom = (event->angleDelta().y() / 120);
+    if (zoom > 0) {
+        scale = (scale * 1.5);
+        if (scale == 1)
+            scale = 2;
+    } else {
+        scale = scale * 0.7;
+        if (scale < 1)
+            scale = 1;
+    }
+    updateCanvasView();
 }
 
 void MainWindow::updateFPSLabel(int newFPS)
@@ -703,7 +717,8 @@ void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short i
     int largeSide = width;
     if (height > width)
         largeSide = height;
-    scale = ui->canvas->height() / largeSide;
+    OriginalScale = ui->canvas->height() / largeSide;
+    scale = OriginalScale;
     if (scale < 1) {
         scale = 1;
     }

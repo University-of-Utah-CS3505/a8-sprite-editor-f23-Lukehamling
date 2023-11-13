@@ -8,9 +8,11 @@
 #include <QColor>
 #include <QJsonObject>
 #include <vector>
+#include <math.h>
 
 using std::vector;
 using std::swap;
+using std::abs;
 
 Sprite::Sprite(unsigned short int spriteWidth, unsigned short int spriteHeight) : width{spriteWidth}, height{spriteHeight}
 {
@@ -74,14 +76,54 @@ void Sprite::fillRecursive(unsigned short int x, unsigned short int y, QColor or
     if(x > 0)
         fillRecursive(x-1, y, originalColor, fillColor);
 
-    if(x < width)
+    if(x < width - 1)
         fillRecursive(x+1, y, originalColor, fillColor);
 
     if(y > 0)
         fillRecursive(x, y-1, originalColor, fillColor);
 
-    if(y < height)
+    if(y < height - 1)
         fillRecursive(x, y+1, originalColor, fillColor);
+}
+
+void Sprite::drawLine(unsigned short int startX, unsigned short int startY,
+              unsigned short int endX, unsigned short int endY, QColor color) {
+    // Bresenham's line algorithm. Low high logic
+    int dx = endX - startX;
+    int dy = endY - startY;
+    if (abs(dy) < abs(dx)) {
+        if (startX > endX) {
+            drawLineLow(endX, endY, startX, startY, color);
+        } else {
+            drawLineLow( startX, startY, endX, endY, color);
+        }
+    } else {
+        if (startY > endY) {
+            drawLineHigh(endX, endY, startX, startY, color);
+        } else {
+            drawLineHigh( startX, startY, endX, endY, color);
+        }
+    }
+}
+void Sprite::drawLineLow(unsigned short int startX, unsigned short int startY,
+                      unsigned short int endX, unsigned short int endY, QColor color) {
+    int dx = endX - startX;
+    int dy = endY - startY;
+    int y;
+    for (int x = startX; x < endX; x++) {
+        y = startY + dy * (x - startX) / dx;
+        grid[x][y] = color;
+    }
+}
+void Sprite::drawLineHigh(unsigned short int startX, unsigned short int startY,
+                      unsigned short int endX, unsigned short int endY, QColor color) {
+    int dx = endX - startX;
+    int dy = endY - startY;
+    int x;
+    for (int y = startY; y < endY; y++) {
+        x = startX + dx * (y - startY) / dy;
+        grid[x][y] = color;
+    }
 }
 
 void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
@@ -93,5 +135,19 @@ void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
 void Sprite::drawRectangle(unsigned short int startX, unsigned short int startY,
                 unsigned short int endX, unsigned short int endY, QColor color)
 {
-    //TODO: Implement this method
+//    qDebug() << "X:" << startX << "," << endX << "Y:" << startY << "," << endX;
+    if (startX > endX) {
+        std::swap(startX, endX);
+    }
+    if (startY > endY) {
+        std::swap(startY, endY);
+    }
+    for (int x = startX; x <= endX; x++) {
+        grid[x][startY] = color;
+        grid[x][endY] = color;
+    }
+    for (int y = startY; y <= endY; y++) {
+        grid[startX][y] = color;
+        grid[endX][y] = color;
+    }
 }
