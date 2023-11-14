@@ -87,12 +87,14 @@ public slots:
     ///@param stopped - the bool that decides if the animation should play or not
     void setStopped(bool stopped);
 
-    /// @brief This method will recieve the signal with the x,y dimensions sent from the view then
-    ///        create the first sprite
+    ///@brief This method will recieve the signal with the x,y dimensions sent from the view then
+    ///       create the first sprit
+    ///@param x - the width of the sprite
+    ///@param y - the height of the sprite
     void createInitialSprite(unsigned short int x, unsigned short int y);
 
     /// @brief Changes the selected tool based on what the user has selected.
-    /// @param selectedTool is the tool the user has selected.
+    /// @param selectedTool - the tool the user has selected.
     void updateSelectedTool(int selectedTool);
 
 signals:
@@ -113,6 +115,8 @@ signals:
     void createErrorMessagePopup(QString windowTitle, QString errorMessage);
 
     ///@brief sets the size of the sprite after loading
+    ///@param width - the width of the sprite
+    ///@param height - the height of the sprite
     void setSpriteSizeAfterLoading(unsigned short int width, unsigned short int height);
 
     ///@brief tells the canvas to redraw
@@ -143,7 +147,8 @@ private:
     unsigned short int spriteHeight;
 
     ///@brief this is a small helper method to convert the sprite into a QImage
-    ///@param the index of the frame we are converting into a QImage
+    ///@param i - the index of the frame we are converting into a QImage
+    ///@return the frame as a QImage Object
     QImage showFrame(int i);
 
     /// @brief Pops a Sprite off of the undo stack and adds it to the redo stack

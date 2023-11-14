@@ -282,7 +282,7 @@ void pixelEditorModel::load(QString filename)
 
 void pixelEditorModel::addFrame()
 {
-    Sprite newFrame(frames[currentFrameIndex].getWidth(), frames[currentFrameIndex].getHeight());
+    Sprite newFrame = frames[frames.size() - 1];
     frames.push_back(newFrame);
     emit updateFrameBox(frames.size());
 }

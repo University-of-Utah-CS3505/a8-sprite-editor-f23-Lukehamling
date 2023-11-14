@@ -33,11 +33,6 @@ Sprite::Sprite(unsigned short int spriteWidth, unsigned short int spriteHeight) 
     }
 }
 
-Sprite::Sprite(QJsonObject loadedSprite)
-{
-    //TODO: Implement this constructor after deserializing sprite
-}
-
 Sprite::Sprite(const Sprite& spriteToCopy)
 {
     this->height    = spriteToCopy.height;

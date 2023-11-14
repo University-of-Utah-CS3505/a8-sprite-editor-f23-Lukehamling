@@ -83,6 +83,7 @@ public slots:
     void changeFrameBox(int data);
 
     ///@brief this method displays a QImage representing the next frame in the animation in the animation Preview wind
+    ///@param image - the QImage it is going to display
     void showFrame(QImage image);
 
     ///@brief this method changes the text of the label that displays the current FPS value
@@ -90,8 +91,8 @@ public slots:
     void updateFPSLabel(int newFPS);
 
     /// @brief Mathematically determine the focused center of the Sprite so we can set the canvas size on screen.
-    /// @param width is the width of the Sprite
-    /// @param height is the height of the Sprite
+    /// @param width - the width of the Sprite
+    /// @param height - the height of the Sprite
     void calculateFocusCenter(unsigned short int width, unsigned short int height);
 
     /// @brief Sets the view to be the main editing window for creating Sprites.
@@ -100,15 +101,20 @@ public slots:
 signals:
     ///@brief Emitted after the user opts to create a new sprite, selects a size, and hits start. The model will
     ///       use this size to create a new Sprite.
+    ///@param x - the width of the Sprite
+    ///@param y - the height of the Sprite
     void selectedSpriteSize(int x, int y);
 
     ///@brief sends the model a signal to execute the appropriate action when the load button is clicked
+    ///@param filename - the filename of the project we are loading from
     void loadFileSelected(QString filename);
 
     ///@brief sends the model a signal to execute the appropriate action when the save button/shortcut is clicked
+    ///@param filename - the name of the file we are saving to
     void saveFileSelected(QString filename);
 
     ///@brief Sends the model the signal to change the selected tool.
+    ///@param tool an int representation of the tool we have selected
     void toolSelected(int tool);
 
 private:
@@ -148,26 +154,36 @@ private:
     ///@brief this method checks if the mouse is within the bounds of the canvas
     ///@param x - the x position of the mouse
     ///@param y - the y position of the mouse
+    ///@returns true if the mouse is in the canvas, false if otherwise
     bool checkInCanvas(int& x, int& y);
 
-    /// @brief Helper method to determine if an (x,y) location is outside of the canvas
-    /// @returns true if outside canvas, false otherwise.
+    ///@brief Helper method to determine if an (x,y) location is outside of the canvas
+    ///@param x - the x position of the mouse
+    ///@param y - the y position of the mouse
+    ///@returns true if outside canvas, false otherwise.
     bool isOutsideCanvas(const int& x, const int& y);
 
-    /// @brief Helper method to determine if an (x,y) location is outside of the Sprite
-    /// @returns true if outside Sprite, false otherwise.
+    ///@brief Helper method to determine if an (x,y) location is outside of the Sprite
+    ///@param x - the x position of the mouse
+    ///@param y - the y position of the mouse
+    ///@param loadedSprite - the Sprite that is being displayed
+    ///@returns true if outside Sprite, false otherwise.
     bool isOutsideSprite(const int& x, const int& y, Sprite* loadedSprite);
 
     ///@brief Overrides the default mouse press event so we can use it for drawing
+    ///@param event - the mouse event passed into the method
     virtual void mousePressEvent(QMouseEvent* event) override;
 
     ///@brief Overrides the default mouse move event so we can use it for drawing
+    ///@param event - the mouse event passed into the method
     virtual void mouseMoveEvent(QMouseEvent* event) override;
 
     ///@brief Overrides the default mouse release event so we can use it for drawing
+    ///@param event - the mouse event passed into the method
     virtual void mouseReleaseEvent(QMouseEvent* event) override;
 
     ///@brief Determine when the scroll wheel is turned. Used to determine zooms.
+    ///@param event - the mouse event passed into the method
     virtual void wheelEvent(QWheelEvent* event) override;
 };
 #endif // MAINWINDOW_H
