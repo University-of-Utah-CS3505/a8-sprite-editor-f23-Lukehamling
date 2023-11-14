@@ -43,15 +43,16 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     // Math out some x,y locations for later calculation
     const int canvasEdgeRight  = ui->canvas->x() + ui->canvas->width();
     const int canvasEdgeBottom = ui->canvas->y() + ui->canvas->height();
-    WhiteOutBoxLeft   = QRect(0,0,ui->canvas->x(),this->height());
-    WhiteOutBoxRight  = QRect(canvasEdgeRight,0,this->width() - canvasEdgeRight,this->height());
-    WhiteOutBoxTop    = QRect(ui->canvas->x(),0,ui->canvas->width(),ui->canvas->y());
-    WhiteOutBoxBottom = QRect(ui->canvas->x(),canvasEdgeBottom,ui->canvas->width(),this->height() - canvasEdgeBottom);
-    CanvasCenterx = ui->canvas->x() + (ui->canvas->width() / 2);
-    CanvasCentery = ui->canvas->y() + (ui->canvas->height() / 2);
+
+    WhiteOutBoxLeft    = QRect(0,0,ui->canvas->x(),this->height());
+    WhiteOutBoxRight   = QRect(canvasEdgeRight,0,this->width() - canvasEdgeRight,this->height());
+    WhiteOutBoxTop     = QRect(ui->canvas->x(),0,ui->canvas->width(),ui->canvas->y());
+    WhiteOutBoxBottom  = QRect(ui->canvas->x(),canvasEdgeBottom,ui->canvas->width(),this->height() - canvasEdgeBottom);
+    CanvasCenterx      = ui->canvas->x() + (ui->canvas->width() / 2);
+    CanvasCentery      = ui->canvas->y() + (ui->canvas->height() / 2);
     focusSpriteCenterx = 900; // draw a empty box out of the way
     focusSpriteCentery = 900; // these views are initialzied in startButtonClicked()
-    scale = 1;
+    scale              = 1;
     updateCanvasView();// set the focus center and zoom/scale of our view
 
     // showing icons on the ui
@@ -306,8 +307,6 @@ void MainWindow::updateCanvasView()
     xOffset = CanvasCenterx - (focusSpriteCenterx * scale);
     yOffset = CanvasCentery - (focusSpriteCentery * scale);
     update();
-    qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery
-             << ",XOff:" << xOffset << ",YOff" << yOffset;
 }
 
 bool MainWindow::checkInCanvas(int& x, int& y) {
@@ -485,11 +484,11 @@ void MainWindow::createErrorMessagePopup(QString windowTitle, QString errorMessa
 
 void MainWindow::setupStartScreen()
 {
-    ui->startButton         ->setEnabled(false);
-    ui->spriteSizeComboBox  ->setEnabled(false);
-    ui->topButtonsWidget    ->setEnabled(false);
-    ui->toolWidget          ->setEnabled(false);
-    ui->rightSideWidget     ->setEnabled(false);
+    ui->startButton             ->setEnabled(false);
+    ui->spriteSizeComboBox      ->setEnabled(false);
+    ui->topButtonsWidget        ->setEnabled(false);
+    ui->toolWidget              ->setEnabled(false);
+    ui->rightSideWidget         ->setEnabled(false);
 
     ui->topButtonsWidget        ->hide();
     ui->toolWidget              ->hide();
@@ -604,14 +603,14 @@ void MainWindow::startButtonClicked()
 
 void MainWindow::mainScreen()
 {
-    ui->topButtonsWidget    ->setEnabled(true);
-    ui->toolWidget          ->setEnabled(true);
-    ui->rightSideWidget     ->setEnabled(true);
-    ui->loadButton          ->setEnabled(true);
-    ui->startButton         ->setEnabled(false);
-    ui->spriteSizeComboBox  ->setEnabled(false);
-    ui->createButton        ->setEnabled(false);
-    ui->createNewOrLoadLabel->setEnabled(false);
+    ui->topButtonsWidget        ->setEnabled(true);
+    ui->toolWidget              ->setEnabled(true);
+    ui->rightSideWidget         ->setEnabled(true);
+    ui->loadButton              ->setEnabled(true);
+    ui->startButton             ->setEnabled(false);
+    ui->spriteSizeComboBox      ->setEnabled(false);
+    ui->createButton            ->setEnabled(false);
+    ui->createNewOrLoadLabel    ->setEnabled(false);
 
 
     ui->topButtonsWidget        ->show();
@@ -623,8 +622,8 @@ void MainWindow::mainScreen()
     ui->spriteSizeComboBox      ->hide();
     ui->createButton            ->hide();
     ui->createNewOrLoadLabel    ->hide();
-    ui->frameSelector           ->addItem("Frame 1");
 
+    ui->frameSelector           ->addItem("Frame 1");
     ui->loadButton              ->setGeometry(260, 8, 75, 25);
 }
 
@@ -632,7 +631,6 @@ void MainWindow::changeFrameBox(int data)
 {
     if (data > 0)
     {
-        qDebug() << "called correct signal";
         ui->frameSelector->addItem("Frame " + QString::number(data));
     }
     //this is the case where someone deletes a frame, but there is only one frame
@@ -665,7 +663,6 @@ void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short i
     }
     focusSpriteCenterx = width / 2;
     focusSpriteCentery = height / 2;
-    qDebug() << "Scale:" << scale << ",X:" << focusSpriteCenterx << ",Y:" << focusSpriteCentery;
 }
 
 

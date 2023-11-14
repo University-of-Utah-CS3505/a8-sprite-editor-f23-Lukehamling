@@ -23,12 +23,14 @@
 pixelEditorModel::pixelEditorModel(QObject *parent)
 {
     setParent(parent);
-    currentColor = QColor(0, 0, 0);
-    currentTool = Pen;
+
+    currentColor      = QColor(0, 0, 0);
+    currentTool       = Pen;
     currentFrameIndex = 0;
+    fps               = 24;
+
     Sprite initial(16,16);
     frames.push_back(initial);
-    fps = 24;
 }
 
 Sprite* pixelEditorModel::getSelectedSprite()
@@ -161,25 +163,25 @@ void pixelEditorModel::createJSON()
     for(unsigned int spriteIndex = 0; spriteIndex < frames.size(); spriteIndex++)
     {
         QJsonArray rows;
-        // loops through row of pixel
+        // loops through rows of pixel
         for(int rowIndex = 0; rowIndex < frames[spriteIndex].getHeight(); rowIndex++)
         {
             QJsonArray pixels;
             // loops through each pixel in said row
             for(int pixelIndex = 0; pixelIndex < frames[spriteIndex].getWidth(); pixelIndex++)
             {
-                QJsonArray colors;
+                QJsonArray color;
                 QColor currentPixelColor = frames[spriteIndex].getColor(pixelIndex, rowIndex);
-                colors.push_back(currentPixelColor.red());
-                colors.push_back(currentPixelColor.green());
-                colors.push_back(currentPixelColor.blue());
-                colors.push_back(currentPixelColor.alpha());
-                pixels.push_back(colors);
+                color.push_back(currentPixelColor.red());
+                color.push_back(currentPixelColor.green());
+                color.push_back(currentPixelColor.blue());
+                color.push_back(currentPixelColor.alpha());
+                pixels.push_back(color);
             }
-            // Each rows will hold an array of each pixel in that row
+            // Each row will hold an array of each pixel in that row
             rows.push_back(pixels);
         }
-        // Each frames holds an array of rows that describe a sprite
+        // Each frame holds an array of rows that describe a sprite
         frame.insert("frame" + QString::number(spriteIndex), rows);
     }
     spriteJSON.insert("frame", frame);
@@ -187,7 +189,6 @@ void pixelEditorModel::createJSON()
 
 void pixelEditorModel::save(QString filename)
 {
-    qDebug() << "save clicked";
     createJSON();
     QFile saveFile(filename);
     if (!saveFile.open(QIODevice::WriteOnly))
@@ -222,14 +223,14 @@ void pixelEditorModel::load(QString filename)
         QJsonDocument loadDocument(QJsonDocument::fromJson(saveData));
         QJsonObject savedData = loadDocument.object();
 
-        QJsonValue height = savedData.value("height");
-        int spriteHeight = height.toInt();
-        QJsonValue width = savedData.value("width");
-        int spriteWidth = width.toInt();
+        QJsonValue height         = savedData.value("height");
+        int spriteHeight          = height.toInt();
+        QJsonValue width          = savedData.value("width");
+        int spriteWidth           = width.toInt();
         QJsonValue numberOfFrames = savedData.value("numberOfFrames");
-        int numberOfframes = numberOfFrames.toInt();
-
+        int numberOfframes        = numberOfFrames.toInt();
         QJsonObject savedSprites = savedData.value("frame").toObject();
+
         frames.clear();
 
         for(int imageIndex = 0; imageIndex < numberOfframes; imageIndex++)
@@ -246,9 +247,9 @@ void pixelEditorModel::load(QString filename)
                 for(int pixelIndex = 0; pixelIndex < spriteWidth; pixelIndex++)
                 {
                     QJsonArray colors = pixels.at(pixelIndex).toArray();
-                    int red = colors.at(0).toInt();
+                    int red   = colors.at(0).toInt();
                     int green = colors.at(1).toInt();
-                    int blue = colors.at(2).toInt();
+                    int blue  = colors.at(2).toInt();
                     int alpha = colors.at(3).toInt();
                     QColor currentPixelColor(red, green, blue, alpha);
                     frames[imageIndex].setColor(pixelIndex, rowIndex, currentPixelColor);
@@ -289,7 +290,6 @@ void pixelEditorModel::addFrame()
 
 void pixelEditorModel::deleteFrame()
 {
-    qDebug() << currentFrameIndex;
     if(frames.size() == 1)
     {
         Sprite frame = frames[0];
@@ -325,7 +325,6 @@ void pixelEditorModel::playAnimation()
     {
         return;
     }
-
     for(size_t i = 0; i < frames.size(); i++)
     {
         QImage frame = showFrame(i);

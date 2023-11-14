@@ -43,8 +43,8 @@ Sprite::Sprite(const Sprite& spriteToCopy)
 Sprite& Sprite::operator=(Sprite otherSprite)
 {
     swap(this->height, otherSprite.height);
-    swap(this->width, otherSprite.width);
-    swap(this->grid, otherSprite.grid);
+    swap(this->width,  otherSprite.width);
+    swap(this->grid,   otherSprite.grid);
 
     return *this;
 }
@@ -98,7 +98,7 @@ void Sprite::fill(unsigned short int x, unsigned short int y, QColor fillColor)
 }
 
 void Sprite::drawLine(unsigned short int startX, unsigned short int startY,
-              unsigned short int endX, unsigned short int endY, QColor color)
+                      unsigned short int endX, unsigned short int endY, QColor color)
 {
     // Bresenham's line algorithm. Low high logic
     int dx = endX - startX;
@@ -122,7 +122,7 @@ void Sprite::drawLine(unsigned short int startX, unsigned short int startY,
     }
 }
 void Sprite::drawLineLow(unsigned short int startX, unsigned short int startY,
-                      unsigned short int endX, unsigned short int endY, QColor color)
+                         unsigned short int endX, unsigned short int endY, QColor color)
 {
     int dx = endX - startX;
     int dy = endY - startY;
@@ -134,7 +134,7 @@ void Sprite::drawLineLow(unsigned short int startX, unsigned short int startY,
     }
 }
 void Sprite::drawLineHigh(unsigned short int startX, unsigned short int startY,
-                      unsigned short int endX, unsigned short int endY, QColor color)
+                          unsigned short int endX, unsigned short int endY, QColor color)
 {
     int dx = endX - startX;
     int dy = endY - startY;
@@ -151,9 +151,9 @@ void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
                         unsigned short int endX, unsigned short int endY, QColor color)
 {
     //Bresnem's Circle Algorithm
-    float radius = sqrt((pow(startX - endX, 2)) + (pow(startY - endY, 2)));
-    int xIncrement = 0;
-    int yIncrement = radius;
+    float radius          = sqrt((pow(startX - endX, 2)) + (pow(startY - endY, 2)));
+    int xIncrement        = 0;
+    int yIncrement        = radius;
     int decisionParamater = 3 - (2 * radius);
     placePixelsInCircle(startX, startY, xIncrement, yIncrement, color);
 
@@ -173,7 +173,8 @@ void Sprite::drawCircle(unsigned short int startX, unsigned short int startY,
     }
 }
 
-void Sprite::placePixelsInCircle(unsigned short int centerX, unsigned short int centerY, unsigned short int xIncrement, unsigned short int yIncrement, QColor color)
+void Sprite::placePixelsInCircle(unsigned short int centerX, unsigned short int centerY,
+                                 unsigned short int xIncrement, unsigned short int yIncrement, QColor color)
 {
     if((centerX + xIncrement < width) && (centerY + yIncrement < height))
     {
