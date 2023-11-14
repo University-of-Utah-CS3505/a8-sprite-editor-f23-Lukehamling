@@ -11,6 +11,10 @@
 #include <QColor>
 #include <QJsonObject>
 #include <vector>
+#include <math.h>
+#include <cmath>
+#include <stack>
+
 using std::vector;
 
 class Sprite

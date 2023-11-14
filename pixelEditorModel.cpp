@@ -6,19 +6,7 @@
 */
 
 #include "pixelEditorModel.h"
-#include "sprite.h"
-#include <QJsonDocument>
-#include <QJsonParseError>
-#include <QJsonObject>
-#include <QJsonValue>
-#include <QJsonArray>
-#include <QVector>
-#include <iostream>
-#include <QFileDialog>
-#include <QColorDialog>
-#include <QColorDialog>
-#include <QDebug>
-#include <QTimer>
+
 
 pixelEditorModel::pixelEditorModel(QObject *parent)
 {

@@ -10,6 +10,16 @@
 
 #include <QMainWindow>
 #include "pixelEditorModel.h"
+#include "ui_mainwindow.h"
+#include <string>
+#include <QPushButton>
+#include <QPainter>
+#include <QPen>
+#include <QShortcut>
+#include <QStringList>
+#include <QMouseEvent>
+#include <QFileDialog>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

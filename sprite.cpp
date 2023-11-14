@@ -6,12 +6,7 @@
 */
 
 #include "sprite.h"
-#include <QColor>
-#include <QJsonObject>
-#include <vector>
-#include <math.h>
-#include <cmath>
-#include <stack>
+
 
 using std::vector;
 using std::swap;

@@ -6,18 +6,6 @@
 */
 
 #include "mainwindow.h"
-#include "pixelEditorModel.h"
-#include "ui_mainwindow.h"
-
-#include <string>
-#include <QPushButton>
-#include <QPainter>
-#include <QPen>
-#include <QShortcut>
-#include <QStringList>
-#include <QMouseEvent>
-#include <QFileDialog>
-#include <QMessageBox>
 
 using namespace std;
 

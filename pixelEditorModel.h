@@ -11,6 +11,15 @@
 #include "sprite.h"
 #include <QStack>
 #include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonValue>
+#include <QJsonArray>
+#include <QVector>
+#include <QFileDialog>
+#include <QColorDialog>
+#include <QColorDialog>
+#include <QTimer>
 
 #include <QImage>
 class pixelEditorModel : public QObject
