@@ -131,6 +131,11 @@ signals:
     ///@brief tells the canvas to redraw
     void updateCanvasViewSignal();
 
+    ///@brief Calculates a new scale after loading a Sprite to make sure that the
+    ///         scale is correct when zooming.
+    ///@param width is the width of the Sprite
+    ///@param height is the height of the Sprite
+    void recalculateScale(unsigned short int width, unsigned short int height);
 private:
     ///@brief A small enumerator, just to help select the tool that the user has selected
     enum Tool {

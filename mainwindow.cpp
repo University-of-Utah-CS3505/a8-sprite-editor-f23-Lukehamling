@@ -141,6 +141,10 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &pixelEditorModel::createErrorMessagePopup,
             this,
             &MainWindow::createErrorMessagePopup);
+    connect(&model,
+            &pixelEditorModel::recalculateScale,
+            this,
+            &MainWindow::calculateFocusCenter);
     
     //animation events
     connect(ui->FPSslider,

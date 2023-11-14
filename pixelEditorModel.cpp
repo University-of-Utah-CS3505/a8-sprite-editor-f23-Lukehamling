@@ -267,6 +267,8 @@ void pixelEditorModel::load(QString filename)
     {
         emit createErrorMessagePopup(QString("Error reading save file!"), QString("Unable to read selected saved file"));
     }
+
+    emit recalculateScale(frames[0].getWidth(), frames[0].getHeight());
 }
 
 void pixelEditorModel::addFrame()
