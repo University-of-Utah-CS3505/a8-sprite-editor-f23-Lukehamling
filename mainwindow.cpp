@@ -20,12 +20,6 @@
 #include <QMessageBox>
 
 using namespace std;
-void print(int num1, string toPrint, int num2) {
-    qDebug() << num1 << toPrint << num2;
-}
-void print(string toPrint) {
-    qDebug() << toPrint;
-}
 
 MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     : QMainWindow(parent)
@@ -160,7 +154,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             this,
             &MainWindow::createErrorMessagePopup);
     
-    //fps slider
+    //animation events
     connect(ui->FPSslider,
             &QSlider::valueChanged,
             &model,
@@ -181,6 +175,17 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &QPushButton::pressed,
             &model,
             [&model](){model.setStopped(true);});
+    connect(ui->stopButton,
+            &QPushButton::pressed,
+            this,
+            [this](){ui->stopButton->setDisabled(true);
+                     ui->playButton->setEnabled(true);});
+    connect(ui->playButton,
+            &QPushButton::pressed,
+            this,
+            [this](){ui->playButton->setDisabled(true);
+                     ui->stopButton->setEnabled(true);});
+
 
     // undo-redo & tool button connections
     connect(ui->undoButton,
