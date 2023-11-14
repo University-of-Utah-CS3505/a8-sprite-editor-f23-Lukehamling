@@ -427,25 +427,29 @@ void MainWindow::paintEvent(QPaintEvent*)
 
 void MainWindow::panUp()
 {
-    focusSpriteCentery -= editorModel->getHeight() / 4;
+    double zoom = (double) OriginalScale / (double) scale;
+    focusSpriteCentery -= (editorModel->getHeight() / 4.0) * zoom;
     updateCanvasView();
 }
 
 void MainWindow::panDown()
 {
-    focusSpriteCentery += editorModel->getHeight() / 4;
+    double zoom = (double) OriginalScale / (double) scale;
+    focusSpriteCentery += (editorModel->getHeight() / 4.0) * zoom;
     updateCanvasView();
 }
 
 void MainWindow::panLeft()
 {
-    focusSpriteCenterx -= editorModel->getWidth() / 4;
+    double zoom = (double) OriginalScale / (double) scale;
+    focusSpriteCenterx -= (editorModel->getWidth() / 4) * zoom;
     updateCanvasView();
 }
 
 void MainWindow::panRight()
 {
-    focusSpriteCenterx += editorModel->getWidth() / 4;
+    double zoom = (double) OriginalScale / (double) scale;
+    focusSpriteCenterx += (editorModel->getWidth() / 4) * zoom;
     updateCanvasView();
 }
 
@@ -647,13 +651,11 @@ void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short i
     if (height > width)
         largeSide = height;
 
-    OriginalScale = ui->canvas->height() / largeSide;
-    scale = OriginalScale;
-
+    scale = ui->canvas->height() / largeSide;
     if (scale < 1)
-    {
         scale = 1;
-    }
+    OriginalScale = scale;
+
     focusSpriteCenterx = width / 2;
     focusSpriteCentery = height / 2;
 }
