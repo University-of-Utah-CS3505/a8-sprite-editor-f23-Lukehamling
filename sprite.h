@@ -92,7 +92,7 @@ public:
     ///@param endX - the ending x location that the user clicked
     ///@param endY - the ending y location that the user clicked
     void drawRectangle(unsigned short int startX, unsigned short int startY,
-                    unsigned short int endX, unsigned short int endY, QColor color);
+                       unsigned short int endX, unsigned short int endY, QColor color);
 
     ///@brief Getter for the Sprite width.
     ///@return Width of Sprite
@@ -111,15 +111,16 @@ private:
     ///@param xIncrement - the increment for X
     ///@param yIncrement - the increment for Y
     ///@param color - the color we are drawing for the circle
-    void placePixelsInCircle(unsigned short int centerX, unsigned short int centerY, unsigned short int xIncrement, unsigned short int yIncrement, QColor color);
+    void placePixelsInCircle(unsigned short int centerX, unsigned short int centerY,
+                             unsigned short int xIncrement, unsigned short int yIncrement, QColor color);
 
 
     ///@brief draws a line left to right with a horizontal slope.
     void drawLineLow(unsigned short int startX, unsigned short int startY,
-                  unsigned short int endX, unsigned short int endY, QColor color);
+                     unsigned short int endX, unsigned short int endY, QColor color);
     ///@brief draws a line bottom to top with a vertical slope.
     void drawLineHigh(unsigned short int startX, unsigned short int startY,
-                  unsigned short int endX, unsigned short int endY, QColor color);
+                      unsigned short int endX, unsigned short int endY, QColor color);
 };
 
 #endif // SPRITE_H

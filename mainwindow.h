@@ -165,7 +165,7 @@ private:
     ///@param x - the x position of the mouse
     ///@param y - the y position of the mouse
     ///@returns true if the mouse is in the canvas, false if otherwise
-    bool checkInCanvas(const int& x, const int& y);
+    bool checkInCanvas(int& x, int& y);
 
     ///@brief Helper method to determine if an (x,y) location is outside of the canvas
     ///@param x - the x position of the mouse

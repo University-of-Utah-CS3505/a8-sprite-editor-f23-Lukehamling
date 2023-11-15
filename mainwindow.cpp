@@ -3,6 +3,7 @@
     Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
     Class:      CS3505
     Assignment: 8 - Sprite Editor
+    Reviewed By: August O'Rourke
 */
 
 #include "mainwindow.h"
