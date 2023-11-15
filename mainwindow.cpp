@@ -9,7 +9,7 @@
 
 using namespace std;
 
-MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
+MainWindow::MainWindow(PixelEditorModel& model, QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -65,7 +65,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(undoShortcut,
             &QAction::triggered,
             &model,
-            &pixelEditorModel::undo);
+            &PixelEditorModel::undo);
     this->addAction(undoShortcut);
 
     QAction *redoShortcut = new QAction(this);
@@ -73,7 +73,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(redoShortcut,
             &QAction::triggered,
             &model,
-            &pixelEditorModel::redo);
+            &PixelEditorModel::redo);
     this->addAction(redoShortcut);
       
    QAction *saveShortcut = new QAction(this);
@@ -118,7 +118,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
 
     // save-load
     connect(&model,
-            &pixelEditorModel::updateCanvasViewSignal,
+            &PixelEditorModel::updateCanvasViewSignal,
             this,
             &MainWindow::updateCanvasView);
     connect(ui->saveButton,
@@ -128,7 +128,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(this,
             &MainWindow::saveFileSelected,
             &model,
-            &pixelEditorModel::save);
+            &PixelEditorModel::save);
     connect(ui->loadButton,
             &QPushButton::clicked,
             this,
@@ -136,13 +136,13 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(this,
             &MainWindow::loadFileSelected,
             &model,
-            &pixelEditorModel::load);
+            &PixelEditorModel::load);
     connect(&model,
-            &pixelEditorModel::createErrorMessagePopup,
+            &PixelEditorModel::createErrorMessagePopup,
             this,
             &MainWindow::createErrorMessagePopup);
     connect(&model,
-            &pixelEditorModel::recalculateScale,
+            &PixelEditorModel::recalculateScale,
             this,
             &MainWindow::calculateFocusCenter);
     
@@ -150,7 +150,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(ui->FPSslider,
             &QSlider::valueChanged,
             &model,
-            &pixelEditorModel::changeFPS);
+            &PixelEditorModel::changeFPS);
     connect(ui->FPSslider,
             &QSlider::valueChanged,
             this,
@@ -160,7 +160,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             &model,
             [&model](){model.setStopped(false);});
     connect(&model,
-            &pixelEditorModel::showFrameSignal,
+            &PixelEditorModel::showFrameSignal,
             this,
             &MainWindow::showFrame);
     connect(ui->stopButton,
@@ -183,15 +183,15 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(ui->undoButton,
             &QPushButton::clicked,
             &model,
-            &pixelEditorModel::undo);
+            &PixelEditorModel::undo);
     connect(ui->redoButton,
             &QPushButton::clicked,
             &model,
-            &pixelEditorModel::redo);
+            &PixelEditorModel::redo);
     connect(ui->colorButton,
             &QPushButton::pressed,
             &model,
-            &pixelEditorModel::selectColor);
+            &PixelEditorModel::selectColor);
     connect(ui->penButton,
             &QPushButton::clicked,
             this,
@@ -215,7 +215,7 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(this,
             &MainWindow::toolSelected,
             &model,
-            &pixelEditorModel::updateSelectedTool);
+            &PixelEditorModel::updateSelectedTool);
 
       
     //Set connections for start up logic
@@ -233,13 +233,13 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
     connect(this,
             &MainWindow::selectedSpriteSize,
             &model,
-            &pixelEditorModel::createInitialSprite);
+            &PixelEditorModel::createInitialSprite);
     connect(&model,
-            &pixelEditorModel::setSpriteSizeAfterLoading,
+            &PixelEditorModel::setSpriteSizeAfterLoading,
             this,
             &MainWindow::calculateFocusCenter);
     connect(&model,
-            &pixelEditorModel::setSpriteSizeAfterLoading,
+            &PixelEditorModel::setSpriteSizeAfterLoading,
             this,
             &MainWindow::mainScreen);
 
@@ -261,25 +261,25 @@ MainWindow::MainWindow(pixelEditorModel& model, QWidget* parent)
             this,
             &MainWindow::panDown);
     connect(&model,
-            &pixelEditorModel::updateCanvas,
+            &PixelEditorModel::updateCanvas,
             this,
             &MainWindow::valueChanged);
     connect(ui->addFrameButton,
             &QPushButton::clicked,
             &model,
-            &pixelEditorModel::addFrame);
+            &PixelEditorModel::addFrame);
     connect(ui->deleteFrameButton,
             &QPushButton::clicked,
             &model,
-            &pixelEditorModel::deleteFrame);
+            &PixelEditorModel::deleteFrame);
     connect(&model,
-            &pixelEditorModel::updateFrameBox,
+            &PixelEditorModel::updateFrameBox,
             this,
             &MainWindow::changeFrameBox);
     connect(ui->frameSelector,
             &QComboBox::activated,
             &model,
-            &pixelEditorModel::selectFrame);
+            &PixelEditorModel::selectFrame);
     connect(ui->frameSelector,
             &QComboBox::activated,
             this,
@@ -667,27 +667,27 @@ void MainWindow::calculateFocusCenter(unsigned short int width, unsigned short i
 
 void MainWindow::fillButtonClicked()
 {
-    emit toolSelected(4);
+    emit toolSelected(PixelEditorModel::Fill);
 }
 
 void MainWindow::eraseButtonClicked()
 {
-    emit toolSelected(1);
+    emit toolSelected(PixelEditorModel::Erase);
 }
 
 void MainWindow::penButtonClicked()
 {
-    emit toolSelected(0);
+    emit toolSelected(PixelEditorModel::Pen);
 }
 
 void MainWindow::circleButtonClicked()
 {
-    emit toolSelected(2);
+    emit toolSelected(PixelEditorModel::Circle);
 }
 
 void MainWindow::rectangleButtonClicked()
 {
-    emit toolSelected(3);
+    emit toolSelected(PixelEditorModel::Rectangle);
 }
 
 bool MainWindow::isOutsideCanvas(const int& x, const int& y)

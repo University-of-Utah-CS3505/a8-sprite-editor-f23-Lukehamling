@@ -3,6 +3,7 @@
     Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
     Class:      CS3505
     Assignment: 8 - Sprite Editor
+    Reviewed By: Ryan Dalrymple
 */
 
 #ifndef MAINWINDOW_H
@@ -29,7 +30,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    // constants
     QRect WhiteOutBoxLeft;
     QRect WhiteOutBoxRight;
     QRect WhiteOutBoxTop;
@@ -49,7 +49,7 @@ public:
     ///@brief this is the constructor for our mainWindow
     ///@param model - this is the model for our sprite editor
     ///@param parent - the parent for our main window
-    MainWindow(pixelEditorModel& model, QWidget *parent = nullptr);
+    MainWindow(PixelEditorModel& model, QWidget *parent = nullptr);
 
     ///@brief this is the destructor for our mainWindow
     ~MainWindow();
@@ -125,11 +125,11 @@ signals:
 
     ///@brief Sends the model the signal to change the selected tool.
     ///@param tool an int representation of the tool we have selected
-    void toolSelected(int tool);
+    void toolSelected(PixelEditorModel::Tool tool);
 
 private:
     Ui::MainWindow *ui;
-    pixelEditorModel* editorModel;
+    PixelEditorModel* editorModel;
 
     ///@brief Displays the start up screen while hiding all other elements of the UI. Forces a user to choose
     ///       whether to create a new sprite or load an old one.

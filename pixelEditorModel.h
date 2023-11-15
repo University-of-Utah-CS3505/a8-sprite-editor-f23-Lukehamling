@@ -3,6 +3,7 @@
     Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
     Class:      CS3505
     Assignment: 8 - Sprite Editor
+    Reviewed by: Vincentio Dane
 */
 
 #ifndef PIXELEDITORMODEL_H
@@ -22,12 +23,12 @@
 #include <QTimer>
 
 #include <QImage>
-class pixelEditorModel : public QObject
+class PixelEditorModel : public QObject
 {
     Q_OBJECT
 public:
     ///@brief the default constructer for our model
-    explicit pixelEditorModel(QObject *parent = nullptr);
+    explicit PixelEditorModel(QObject *parent = nullptr);
     ///@brief this method returns the sprite that is currently selected by the model
     Sprite* getSelectedSprite();
 
@@ -38,6 +39,16 @@ public:
     /// @brief Getter for the Sprite height.
     /// @return Height of Sprite
     unsigned short int getHeight();
+
+    ///@brief An enumerator to help select the tool that the user has selected
+    enum Tool
+    {
+        Pen,
+        Erase,
+        Circle,
+        Rectangle,
+        Fill
+    };
 
 public slots:
     ///@brief this method reverts the last undo action,
@@ -104,7 +115,7 @@ public slots:
 
     /// @brief Changes the selected tool based on what the user has selected.
     /// @param selectedTool - the tool the user has selected.
-    void updateSelectedTool(int selectedTool);
+    void updateSelectedTool(Tool tool);
 
 signals:
     ///@brief this tells the view to add a new element in the frameSelector comboBox
@@ -136,15 +147,8 @@ signals:
     ///@param width is the width of the Sprite
     ///@param height is the height of the Sprite
     void recalculateScale(unsigned short int width, unsigned short int height);
+
 private:
-    ///@brief A small enumerator, just to help select the tool that the user has selected
-    enum Tool {
-        Pen,
-        Erase,
-        Circle,
-        Rectangle,
-        Fill
-    };
 
     bool stopped;
     QStack<Sprite> redoStack;

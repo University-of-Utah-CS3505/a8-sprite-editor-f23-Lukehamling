@@ -3,12 +3,13 @@
     Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
     Class:      CS3505
     Assignment: 8 - Sprite Editor
+    Reviewed By: Ryan Dalrymple
 */
 
 #include "pixelEditorModel.h"
 
 
-pixelEditorModel::pixelEditorModel(QObject *parent)
+PixelEditorModel::PixelEditorModel(QObject *parent)
 {
     setParent(parent);
 
@@ -21,12 +22,12 @@ pixelEditorModel::pixelEditorModel(QObject *parent)
     frames.push_back(initial);
 }
 
-Sprite* pixelEditorModel::getSelectedSprite()
+Sprite* PixelEditorModel::getSelectedSprite()
 {
     return &frames[currentFrameIndex];
 }
 
-void pixelEditorModel::redo()
+void PixelEditorModel::redo()
 {
     qDebug() << "redo clicked";
 
@@ -39,7 +40,7 @@ void pixelEditorModel::redo()
     }
 }
 
-void pixelEditorModel::undo()
+void PixelEditorModel::undo()
 {
     qDebug() << "undo clicked";
     if (undoStack.size() > 0) {
@@ -52,14 +53,14 @@ void pixelEditorModel::undo()
     }
 }
 
-Sprite pixelEditorModel::addToUndo()
+Sprite PixelEditorModel::addToUndo()
 {
     Sprite tempSprite = frames[currentFrameIndex];
     undoStack.push(tempSprite);
     return tempSprite;
 }
 
-void pixelEditorModel::clickPixel(int x, int y)
+void PixelEditorModel::clickPixel(int x, int y)
 {
     addToUndo();
     switch (currentTool)
@@ -93,7 +94,7 @@ void pixelEditorModel::clickPixel(int x, int y)
     }
 }
 
-void pixelEditorModel::movePixel(int x, int y)
+void PixelEditorModel::movePixel(int x, int y)
 {
     switch (currentTool)
     {
@@ -112,7 +113,7 @@ void pixelEditorModel::movePixel(int x, int y)
     }
 }
 
-void pixelEditorModel::releasePixel(int x, int y)
+void PixelEditorModel::releasePixel(int x, int y)
 {
     switch (currentTool)
     {
@@ -131,7 +132,7 @@ void pixelEditorModel::releasePixel(int x, int y)
     //addToUndo();
 }
 
-void pixelEditorModel::selectColor()
+void PixelEditorModel::selectColor()
 {
     QColor newColor = QColorDialog::getColor("Select Brush Color");
 
@@ -141,7 +142,7 @@ void pixelEditorModel::selectColor()
     }
 }
 
-void pixelEditorModel::createJSON()
+void PixelEditorModel::createJSON()
 {
     spriteJSON.insert("height", frames[0].getHeight());
     spriteJSON.insert("width", frames[0].getWidth());
@@ -175,7 +176,7 @@ void pixelEditorModel::createJSON()
     spriteJSON.insert("frame", frame);
 }
 
-void pixelEditorModel::save(QString filename)
+void PixelEditorModel::save(QString filename)
 {
     createJSON();
     QFile saveFile(filename);
@@ -187,7 +188,7 @@ void pixelEditorModel::save(QString filename)
     saveFile.write(saveDoc.toJson());
 }
 
-void pixelEditorModel::load(QString filename)
+void PixelEditorModel::load(QString filename)
 {
 
 
@@ -271,14 +272,14 @@ void pixelEditorModel::load(QString filename)
     emit recalculateScale(frames[0].getWidth(), frames[0].getHeight());
 }
 
-void pixelEditorModel::addFrame()
+void PixelEditorModel::addFrame()
 {
     Sprite newFrame = frames[frames.size() - 1];
     frames.push_back(newFrame);
     emit updateFrameBox(frames.size());
 }
 
-void pixelEditorModel::deleteFrame()
+void PixelEditorModel::deleteFrame()
 {
     if(frames.size() == 1)
     {
@@ -295,12 +296,12 @@ void pixelEditorModel::deleteFrame()
     emit updateFrameBox(-1);
 }
 
-void pixelEditorModel::selectFrame(int data)
+void PixelEditorModel::selectFrame(int data)
 {
     currentFrameIndex = data;
 }
 
-void pixelEditorModel::setStopped(bool stopped)
+void PixelEditorModel::setStopped(bool stopped)
 {
     this->stopped = stopped;
     if(!stopped)
@@ -309,7 +310,7 @@ void pixelEditorModel::setStopped(bool stopped)
     }
 }
 
-void pixelEditorModel::playAnimation()
+void PixelEditorModel::playAnimation()
 {
     if (stopped)
     {
@@ -323,7 +324,7 @@ void pixelEditorModel::playAnimation()
     QTimer::singleShot(frames.size() * (1000/fps), Qt::PreciseTimer, this, [this](){playAnimation();});
 }
 
-QImage pixelEditorModel::showFrame(int i)
+QImage PixelEditorModel::showFrame(int i)
 {
     Sprite frame = frames.at(i);
     QImage image = QImage(frame.getWidth(), frame.getHeight(), QImage::Format_ARGB32);
@@ -338,12 +339,12 @@ QImage pixelEditorModel::showFrame(int i)
     return image;
 }
 
-void pixelEditorModel::changeFPS(int newFPS)
+void PixelEditorModel::changeFPS(int newFPS)
 {
     fps = newFPS;
 }
 
-void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short int y)
+void PixelEditorModel::createInitialSprite(unsigned short int x, unsigned short int y)
 {
     this->spriteWidth   = x;
     this->spriteHeight  = y;
@@ -353,19 +354,17 @@ void pixelEditorModel::createInitialSprite(unsigned short int x, unsigned short 
     frames.push_back(initial);
 }
 
-void pixelEditorModel::updateSelectedTool(int tool)
+void PixelEditorModel::updateSelectedTool(Tool tool)
 {
-    Tool selected = (Tool) tool;
-
-    currentTool = selected;
+    currentTool = tool;
 }
 
-unsigned short int pixelEditorModel::getWidth()
+unsigned short int PixelEditorModel::getWidth()
 {
     return this->spriteWidth;
 }
 
-unsigned short int pixelEditorModel::getHeight()
+unsigned short int PixelEditorModel::getHeight()
 {
     return this->spriteHeight;
 }

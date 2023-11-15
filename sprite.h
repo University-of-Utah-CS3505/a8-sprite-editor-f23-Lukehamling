@@ -3,6 +3,7 @@
     Authors:    Ryan Dalrymple, Vincentio Dane, Luke Hamling, August O'Rourke
     Class:      CS3505
     Assignment: 8 - Sprite Editor
+    Reviewed by Luke Hamling
 */
 
 #ifndef SPRITE_H
