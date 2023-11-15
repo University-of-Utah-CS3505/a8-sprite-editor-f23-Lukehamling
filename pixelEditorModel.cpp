@@ -29,7 +29,6 @@ Sprite* PixelEditorModel::getSelectedSprite()
 
 void PixelEditorModel::redo()
 {
-    qDebug() << "redo clicked";
 
     if(redoStack.size() > 0)
     {
@@ -42,7 +41,6 @@ void PixelEditorModel::redo()
 
 void PixelEditorModel::undo()
 {
-    qDebug() << "undo clicked";
     if (undoStack.size() > 0) {
         Sprite currentSprite = frames[currentFrameIndex];
         Sprite oldSprite = undoStack.pop();
